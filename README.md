@@ -8,13 +8,16 @@ BGROUND :: interactive background subtraction for XY-data
 Documentation, help and examples
 --------------------------------
 
-More detailed help, demo and source code including documentation *will be*
-in [GitHub](https://mirekslouf.github.io/bground).
+* [PyPI](https://pypi.org/project/bground) repository.
+* [GitHub](https://mirekslouf.github.io/bground) repository.
+* [GitHub Pages](https://mirekslouf.github.io/bground/)
+  with [documentation](https://mirekslouf.github.io/bground/docs).
 
 Versions of BGROUND
 -------------------
 
 * Version 0.0.1 = an incomplete testing version
-* Version 0.0.2 = a small improvement of algorithm
-* Version 0.0.3 = a small improvement of algorithm and docstrings
-* Version 0.1.0 = the 1st complete and working version with basic documentation
+* Version 0.0.2 = the basic algorithm works
+* Version 0.0.3 = a small improvement of code and docstrings
+* Version 0.1.0 = better arrangement of funcs in modules + semi-complete docs
+
