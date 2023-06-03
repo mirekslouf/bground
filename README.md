@@ -1,5 +1,5 @@
-BGROUND :: interactive background subtraction for XY-data
---------------------------------------------------------
+BGROUND :: interactive background subtraction
+---------------------------------------------
 
 * BGROUND draws an interactive plot of XY-data.
 * The user can define and subtract backgound using mouse and keyboard.
