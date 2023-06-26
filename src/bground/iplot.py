@@ -48,7 +48,12 @@ def create_plot(data, xlabel, ylabel='Intensity', xlim=[0,300], ylim=[0,300]):
     # = preparation of a standard plot, which will be made interactive later
     initialize_plot_parameters()
     X,Y = (data[0],data[1])
-    plt.gcf().canvas.set_window_title('Background definition')
+    # Set title
+    # 1st version (not working in some Matplotlib versions)
+    #   plt.gcf().canvas.set_window_title('Background definition')
+    # 2nd version (alternative, more robust = set number/string of a window)
+    #   plt.figure(num='Background definition')
+    plt.figure(num='Background definition')
     plt.plot(X,Y, 'b-')
     plt.xlim(xlim)
     plt.ylim(ylim)
