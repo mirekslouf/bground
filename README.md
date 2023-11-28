@@ -9,7 +9,7 @@ Documentation, help and examples
 --------------------------------
 
 * [PyPI](https://pypi.org/project/bground) repository.
-* [GitHub](https://mirekslouf.github.io/bground) repository.
+* [GitHub](https://github.com/mirekslouf/bground) repository.
 * [GitHub Pages](https://mirekslouf.github.io/bground/)
   with [documentation](https://mirekslouf.github.io/bground/docs).
 
