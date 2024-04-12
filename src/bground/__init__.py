@@ -1,5 +1,4 @@
 # Package initialization file.
-# (required for packing/distributing the directory as PY-package
 
 '''
 BGROUND package
@@ -15,5 +14,4 @@ The data are typically saved in a file containing two (or more) columns.
 * bground.bfunc = functions and utilities for background calculations
 '''
 
-# VERSION can be read when building PY-package
-__version__ = '0.1.0'
+__version__ = '0.2'

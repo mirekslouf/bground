@@ -7,7 +7,7 @@ The module defines simple user interface for program bground.
 * The user interface can be used easily in both Spyder and Jupyter.
 
 >>> # Simple usage of BGROUND package
->>> # ! Before running, switch to interactive plots: %matplotlib qt 
+>>> # ! Before running in Spyder switch to interactive plots: %matplotlib qt
 >>> # ! After finishing, switch back to non-interactive: %matplotlib inline
 >>>
 >>> # Import user interface of background package
@@ -34,51 +34,63 @@ import bground.bdata
 import bground.iplot
 
 
+
 class InputData:
+
     
     def __init__(self, input_file, **kwargs):
         self.input_file = input_file
         self.data = self.read_input_file(input_file, **kwargs)
+
     
     @staticmethod
     def read_input_file(input_file, **kwargs):
-        if 'unpack' in kwargs.keys(): kwargs.update({'unpack':True})
+        
+        # (1) If unpack argument was not given in **kwargs,
+        #     set unpack=True (we expect data in columns, not in rows).
+        if not 'unpack' in kwargs.keys(): kwargs.update({'unpack':True})
+        
+        # (2) Load data using np.loadtxt.
+        # (This method is basically a wrapper of np.loadtxt,
+        # (i.e. all arguments given to this function transfer to np.loadtxt
         data = np.loadtxt(input_file, **kwargs)
+        
+        # (3) Return the result = 2xN numpy array with XY-data.
         return(data)
 
 
+
 class PlotParams:
+
     
-    def __init__(self, xlabel=None, ylabel=None, xlim=None, ylim=None):
+    def __init__(self, output_file, 
+                 xlabel=None, ylabel=None, xlim=None, ylim=None):
+        self.output_file = output_file
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.xlim = xlim
         self.ylim = ylim
 
 
+
 class InteractivePlot:
+
     
-    def __init__(self, DATA, PPAR, OUT_FILE, CLI=False):
+    def __init__(self, DATA, PPAR, CLI=False):
         # Basic parameters
         self.data = DATA
         self.ppar = PPAR
-        self.out_file = OUT_FILE
         # Additional parameters
-        self.background = bground.bdata.bkg(OUT_FILE, 
+        self.background = bground.bdata.bkg(self.ppar.output_file, 
             bground.bdata.XYpoints([],[]), bground.bdata.XYcurve([],[]))
         # Initialize specific interactive backend
-        # (if Python runs in CLI = command line interface, outside Spyder
+        # (in case Python runs in CLI = command line interface, outside Spyder
         if CLI == True:
             matplotlib.use('QtAgg')
+
         
     def run(self):
-        plt = bground.iplot.create_plot(
-            self.data.data,
-            xlabel = self.ppar.xlabel,
-            ylabel = self.ppar.ylabel,
-            xlim = self.ppar.xlim,
-            ylim = self.ppar.ylim)
-        plt = bground.iplot.define_key_bindings(
-            plt, self.data.data, self.background, self.out_file)
+        fig,ax = bground.iplot.interactive_plot(
+            self.data.data, self.background, self.ppar)
         bground.iplot.print_ultrabrief_help()
-        plt.show()
+        fig.tight_layout()

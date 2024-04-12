@@ -19,5 +19,6 @@ Versions of BGROUND
 * Version 0.0.1 = an incomplete testing version
 * Version 0.0.2 = the basic algorithm works
 * Version 0.0.3 = a small improvement of code and docstrings
-* Version 0.1.0 = better arrangement of funcs in modules + semi-complete docs
-
+* Version 0.1 = OO-interface, better arrangement of funcs + semi-complete docs
+* Version 0.2 = improved OO-implementation + better UI (commands, saving, help)
+* Version 1.0 = TODO: final version, minor improvements & complete help on www
