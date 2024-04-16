@@ -1,29 +1,42 @@
 '''
-Module bground.bfunc
---------------------
+Module: bground.bfunc
+---------------------
 Functions for background calculation.
 
-* The functions are usually called from bground.iplot module.
-* The bground.iplot module defines interactive plot and its events.
+* The functions are usually called by functions in bground.iplot module.
+* The bground.iplot module defines an interactive plot = the user interface.
 * This module defines functions that perform the real background calculation.
+
+Technical notes:
+
+* All functions in this module manipulate with bground.bdata.bkg object.
+    - The bkg object contains all info needed for background subtraction.
+* The last function works also with data = 2D-numpy array object.
+    - The 2D-numpy array = a 2-row array: [X,Y] => Y should be bkgr-corrected.
+    - The last function calculates a 3-row array: [X,Y,background-corrected-Y].
 '''
 
 import numpy as np
 from scipy import interpolate
+import matplotlib.pyplot as plt
+
 
 def sort_bkg_points(bkg):
     '''
     Sort background points according to their X-coordinate.
-    The background points are inserted as the whole bkg object.
     
     Parameters
     ----------
     bkg : bground.bdata.bkg object
-        A bkg object containing unsorted list of background points.
+        A bkg object containing (among other things)
+        an unsorted list of background points.
 
     Returns
     -------
-    None; the output is bkg object with sorted background points.
+    None
+        The result is the updated bkg object.
+        The updated object contains bkg.points sorted according to
+        their X-coordinate.
     '''
     # Sorting is based on the trick found on www
     # GoogleSearch: python sort two 1D arrays
@@ -43,14 +56,17 @@ def calculate_background(data,bkg):
     ----------
     bkg : bground.bdata.bkg object
         Object containing the following items:
-            * basename = string, basename of output file(s)
-            * points = 3-column list: [PointType, X-coord, Y-coord]
-            * itype = type of interpolation for the calculation of bkground
+            
+        * basename = string, basename of output file(s)
+        * points = 3-column list: [PointType, X-coord, Y-coord]
+        * btype = a type of interpolation for the calculation of the bkground
     
     Returns
     -------
-    None; the result is the updated bkg object.
-        * bkg.X = calculated X-coordinates of the WHOLE background
+    None
+        The result is the updated bkg object.
+        
+        * bkg.X = calculated X-coordinates of the whole background
         * bkg.Y = calculated Y-coordinates of the WHOLE background
     '''
     # (1) Prepare background points = X,Y coordinates for interpolation
@@ -60,7 +76,7 @@ def calculate_background(data,bkg):
         # Interpolation = calculation of interpolation function F.
         # (F = interpolation object/function
         # (with which we easily calculate the interpolated data - see below
-        F = interpolate.interp1d(X,Y, kind=bkg.itype)
+        F = interpolate.interp1d(X,Y, kind=bkg.btype)
         Xmin = bkg.points.X[0]
         Xmax = bkg.points.X[-1]
         Xnew = data[0,(Xmin<=data[0])&(data[0]<=Xmax)]
@@ -109,3 +125,10 @@ def subtract_background(data, bkg):
     # (7) Return modified data array
     # (the last column the array contains background-corrected intensities
     return(data)
+
+    
+    
+    
+    
+    
+

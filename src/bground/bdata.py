@@ -1,6 +1,6 @@
 '''
-Module bground.bdata
---------------------
+Module: bground.bdata
+---------------------
 The module defines three simple clasess.
 The classes keep data for definition of background.
 
@@ -84,7 +84,7 @@ class XYcurve:
         self.X = X
         self.Y = Y
 
-class bkg:
+class XYbackground:
     '''
     User-defined background.
     '''
@@ -92,7 +92,7 @@ class bkg:
     def __init__(self, basename, 
                  points = XYpoints([],[]), 
                  curve = XYcurve([],[]),
-                 itype = 'linear'):
+                 btype = 'linear'):
         '''
         Initialize background.
 
@@ -105,8 +105,9 @@ class bkg:
             Coordinates of user-defined backround points.
         curve  : bdata.XYcurve object
             Backround curve = X,Y of all points of the calculated background.
-        itype : string; default is 'linear' 
-            Interpolation type = interpolation during backround calculation.
+        btype : string; default is 'linear' 
+            Background interpolation type
+            = interpolation during backround calculation.
             Implemented interpolation types: 'linear', 'quadratic', 'cubic'.
             
         Returns
@@ -126,4 +127,4 @@ class bkg:
         self.basename = basename
         self.points   = points
         self.curve    = curve 
-        self.itype    = itype
+        self.btype    = btype

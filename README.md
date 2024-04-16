@@ -1,9 +1,26 @@
-BGROUND :: interactive background subtraction
----------------------------------------------
+BGROUND :: semi-automated background subtraction
+------------------------------------------------
 
-* BGROUND draws an interactive plot of XY-data.
-* The user can define and subtract backgound using mouse and keyboard.
-* XY-data is an arbitrary text file containing two columns: [X-data, Y-data].
+* BGROUND performs semi-automated correction of background in XY-data.
+	- XY-data = usually a file with two columns - (X-data,Y-data)
+* How does it work?
+	- BGROUND reads XY-data and shows them in an interactive plot
+	- The user defines background points and backround types
+	- BGROUND does the rest (background calculation and subtraction)
+
+Installation
+------------
+* Requirement: Python with sci-modules: numpy, matplotlib, scipy, pandas
+* `pip install bground` = standard installation, no other packages needed
+
+Quick start
+-----------
+* Look at the
+  [worked example](https://www.dropbox.com/scl/fi/59og19il0qel4ajmg1io7/01_bground.nb.pdf?rlkey=aqdxrgn9jtaoounihiv2zhw7q&dl=0)
+  to see how BGROUND works.
+* Download
+  [complete examples with data](https://www.dropbox.com/scl/fo/08ougjp96dnwr1wqqm7be/AIStLY7i0yb80Yq3xKn1blw?rlkey=806nl015x93qte85feldycsxu&dl=0)
+  and try BGROUND yourself.
 
 Documentation, help and examples
 --------------------------------
@@ -21,4 +38,3 @@ Versions of BGROUND
 * Version 0.0.3 = a small improvement of code and docstrings
 * Version 0.1 = OO-interface, better arrangement of funcs + semi-complete docs
 * Version 0.2 = improved OO-implementation + better UI (commands, saving, help)
-* Version 1.0 = TODO: final version, minor improvements & complete help on www
