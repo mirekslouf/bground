@@ -11,7 +11,7 @@ BGROUND :: semi-automated background subtraction
 	
 Principle
 ---------
-<img src="https://mirekslouf.github.io/bground/docs/assets/bground_principle.png" alt="BGROUND principle" width="500"/>
+<img src="https://mirekslouf.github.io/bground/docs/assets/bground_principle.png" alt="BGROUND principle" width="600"/>
 
 Installation
 ------------
