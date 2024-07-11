@@ -41,10 +41,20 @@ def print_how_it_works():
     print('=============================================================')
     
 
-def print_all_keyboard_shortcuts(output_file='ouput_file.txt'):
+def print_all_keyboard_shortcuts(output_file='some_file'):
     '''
     Print help - BGROUND :: Interactive plot :: Keyboard shortcuts
     '''
+    
+    # (1) Define output file names
+    # (objective: all should have correct extensions
+    # (but we want to avoid double TXT extension for the main TXT file
+    TXTfile = output_file
+    BKGfile = output_file + '.bkg'
+    PNGfile = output_file + '.png'
+    if not(TXTfile.lower().endswith('.txt')): TXTfile = TXTfile + '.txt'
+    
+    # (2) Print help including the above defined output file names
     print('============================================================')
     print('BGROUND :: Interactive plot :: Keyboard shortcuts')
     print('------------------------------------------------------------')
@@ -57,13 +67,13 @@ def print_all_keyboard_shortcuts(output_file='ouput_file.txt'):
     print('------------------------------------------------------------')
     print('a = background points :: load the previously saved')
     print('b = background points :: save to BKG-file') 
-    print(f'(BKG-file = {output_file}' + '.bkg')
+    print(f'(BKG-file = {BKGfile}')
     print('--------')
     print('t = subtract current background & save data to TXT-file')
-    print(f'(TXT-file = {output_file}')
+    print(f'(TXT-file = {TXTfile}')
     print('--------')
     print('s = save current plot to PNG-file:')
-    print(f'(PNG-file = {output_file}' + '.png')
+    print(f'(PNG-file = {PNGfile}')
     print('(note: Matplotlib UI shortcut; filename just recommened')
     print('------------------------------------------------------------')
     print('Standard Matplotlib UI tools and shortcuts work as well.')

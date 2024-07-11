@@ -4,7 +4,7 @@ Module: bground.bfunc
 Functions for background calculation.
 
 * The functions are usually called by functions in bground.iplot module.
-* The bground.iplot module defines an interactive plot = the user interface.
+* The bground.iplot module defines an interactive plot, which is used as a GUI.
 * This module defines functions that perform the real background calculation.
 
 Technical notes:
@@ -18,7 +18,6 @@ Technical notes:
 
 import numpy as np
 from scipy import interpolate
-import matplotlib.pyplot as plt
 
 
 def sort_bkg_points(bkg):
@@ -54,6 +53,8 @@ def calculate_background(data,bkg):
     
     Parameters
     ----------
+    data : 
+        
     bkg : bground.bdata.bkg object
         Object containing the following items:
             

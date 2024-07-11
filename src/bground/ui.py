@@ -1,10 +1,12 @@
 '''
 Module: bground.ui
 ------------------
-The module defines simple user interface for program bground.
+The module defines a UI (user interface) for program bground.
 
-* The user interface aims to be simple and intuitive.
-* The user interface can be used easily in both Spyder and Jupyter.
+* Strictly speaking,
+  the module defines API (application programming interface).
+* Nevertheless,
+  the API can be employed as a simple UI within Spyder and/or Jupyter scripts.
 
 >>> # Simple usage of BGROUND package
 >>> # (before running in Spyder, switch to interactive plots: %matplotlib qt
@@ -155,12 +157,13 @@ class PlotParams:
         # Initialization of PlotParams object.
         # No docstring: just class description above + comments below.
         
-        # Brief description:
-        # * This object defines the output file + interactive plot parameters.
-        # * The output file will store the background-corrected data.
-        # * The interactive plot is a simple user interface,
-        #   by means of which the background is defined and calculated.
-        #   The plot parameters adjust the plot as described below.
+        # Brief description of PlotParams object:
+        #  * The object defines the output file(s) name
+        #    and interactive plot parameters.
+        #  * The output file will store the background-corrected data.
+        #  * The interactive plot is a simple user interface,
+        #    by means of which the background is defined and calculated.
+        #    The plot parameters adjust the plot as described below.
         
         self.output_file = output_file  # Name of the output file(s)
         self.xlabel = xlabel            # x-axis label of the interactive plot

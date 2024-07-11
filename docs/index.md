@@ -11,6 +11,5 @@ each example contains testing data.
 
 Complete [bground package documentation](./pdoc.html/index.html),
 auto-generated with [PDoc](https://pdoc.dev).
-<br>
-!TODO - not finalized = some docstrings should be improved
+
 

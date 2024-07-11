@@ -1,13 +1,13 @@
 '''
 Module: bground.iplot
 ---------------------
-The module defines functions that create an interactive plot.
+The module with functions to create an interactive plot.
 
-The interactive plot can be defined at three levels:
+The interactive plot can be defined/created at three levels/steps:
     
-* Level 1 = function yielding the interactive plot = a plot linked with events.
-* Level 2 = functions for event types (key_press_event, close_event, etc.).
-* Level 3 = functions for individual events (such as specific keypress events).
+* Level 1 = func yielding the interactive plot = the plot linked with events.
+* Level 2 = funcs for event types (such as key_press_event, close_event, ...).
+* Level 3 = funcs for individual sub-events (such as specific keypress events).
 
 Simplifications and limitations:
 
@@ -155,13 +155,14 @@ def on_close(event, ppar):
     out_file1 = ppar.output_file
     out_file2 = ppar.output_file + '.bkg'
     out_file3 = ppar.output_file + '.png'
+    if not(out_file1.lower().endswith('.txt')): out_file1 = out_file1 + '.txt'
     print()
     print('The interactive plot was closed.')
     print('If you followed the instructions on www,')
     print('the outputs should be saved in the following files:')
     print(f' - {out_file1} = TXT file with background-corrected XYdata')
     print(f' - {out_file2} = BKG file containing background points')
-    print(f' - {out_file3} = PNG file showing the background')
+    print(f' - {out_file3} = PNG plot of XY-data with defined background')
 
 
 # =============================================================================
@@ -290,7 +291,7 @@ def save_bkg_points(bkgr, ppar):
     with open(output_filename, 'w') as f:
         f.write(df.to_string())
         if ppar.messages:
-            print(f'background points saved to: [{output_filename}].')
+            print(f'background points saved to: [{output_filename}]')
     
 
 def subtract_bkg_and_save(plt, data, bkgr, ppar):
@@ -311,15 +312,20 @@ def subtract_bkg_and_save(plt, data, bkgr, ppar):
     # (c) Save background-corrected data to TXT-file
     # (we will use ppar object properties for this
     # (ppar.output_file = output file name, ppar.xlabel = label of X-data...
-    my_file_header = (
+    output_filename = ppar.output_file
+    if not(output_filename.lower().endswith('.txt')):
+        output_filename = output_filename + '.txt'
+    file_header = (
         f'Columns: {ppar.xlabel}, {ppar.ylabel}, ' +
         f'background-corrected-{ppar.ylabel}\n' +
         f'Background correction type: {bkgr.btype}')
     np.savetxt(
-        ppar.output_file, np.transpose(data), fmt=('%8.3f','%11.3e','%11.3e'),
-        header=my_file_header)
+        output_filename, 
+        np.transpose(data),
+        fmt=('%8.3f','%11.3e','%11.3e'),
+        header=file_header)
     if ppar.messages:
-        print(f'backround-corrected data saved to: [{ppar.output_file}].')
+        print(f'backround-corrected data saved to: [{output_filename}]')
 
 
 def save_PNG_image(ppar):
@@ -327,16 +333,26 @@ def save_PNG_image(ppar):
     Function for keypress 's'.
     
     Special case - 's' is Matplotlib UI shortcut,
-    which saves PNG image of the plot.
-    As key_press_event 's' was NOT disconnected from the plot (intentionally),
+    which saves PNG image of the current (interactive) plot.
+    
+    As key_press_event 's' was NOT disconnected from the plot,
     the following two things are going to happen:
     
     * At first, the default event (saving as PNG) will take place.
     * At second, this function prints a message on stdout (if requested).
     '''
+    
+    # 0) If 's' was pressed the current plot is saved automatically.
+    # (Note: default Matplotlib UI shortcut
+    
+    # 1) We define the output filename.
+    # (Note: this is only RECOMMENDED filename - user can select anything...
+    output_filename = ppar.output_file + '.png'
+    
+    # 2) We print the message that the plot was saved
+    # (Note: we add the info about the recommended filename
     if ppar.messages:
-        print('plot saved to PNG; recommended name:', end='')
-        print(f'[{ppar.output_file+".png"}].')
+        print(f'plot saved to PNG; recommended name: [{output_filename}]')
 
 
 # =============================================================================
