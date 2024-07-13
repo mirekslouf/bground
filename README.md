@@ -2,12 +2,12 @@ BGROUND :: semi-automated background subtraction
 ------------------------------------------------
 
 * BGROUND performs semi-automated background subtraction for XY-data.
-	- XY-data = usually a file with two (or more) columns - (X-data,Y-data)
-	- The user can define which columns represent the XY-data to process
+	- XY-data = usually a file with two (or more) columns - (X-data,Y-data).
+	- The user can define which columns represent the XY-data to process.
 * How does it work?
-	- BGROUND reads XY-data and shows them in an interactive plot
-	- The user defines background points and type (with mouse + keyboard)
-	- BGROUND does the rest (background calculation and subtraction)
+	- BGROUND reads XY-data and shows them in an interactive plot.
+	- The user defines background points (with a mouse + keyboard).
+	- BGROUND does the rest (background calculation and subtraction).
 	
 Principle
 ---------
@@ -43,4 +43,4 @@ Versions of BGROUND
 * Version 0.0.3 = a small improvement of code and docstrings
 * Version 0.1 = OO-interface, better arrangement of funcs + semi-complete docs
 * Version 0.2 = improved OO-implementation + better UI (commands, saving, help)
-* Version 1.0 = completed, fully working, tested, and documented version 1
+* Version 1.0 = finalized version 1, fully working, and completely documented

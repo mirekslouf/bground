@@ -1,7 +1,7 @@
 '''
 Module: bground.ui
 ------------------
-The module defines a UI (user interface) for program bground.
+The module defines a UI (user interface) for BGROUND package.
 
 * Strictly speaking,
   the module defines API (application programming interface).
@@ -24,9 +24,9 @@ The module defines a UI (user interface) for program bground.
 >>> PPAR = bkg.PlotParams(OUFILE,'Pixel','Intensity',xlim=[0,200],ylim=[0,180])
 >>> IPLOT = bkg.InteractivePlot(DATA, PPAR, CLI=False)
 >>>
->>> # Run the interactive plot + remove background + save the results
->>> # (a new window with interactive plot will be opened
->>> # (basic help in stdout; more: https://mirekslouf.github.io/bground/docs
+>>> # Run the interactive plot, by means of which we will remove the backround
+>>> # (a new window with an interactive plot will be opened
+>>> # (a basic on stdout; more at https://mirekslouf.github.io/bground/docs
 >>> # (the ouput files are saved by the user during the interactive processing 
 >>> IPLOT.run()
 '''
@@ -59,7 +59,8 @@ def set_plot_parameters(
 
     Returns
     -------
-    None; the result is a modification of the global plt.rcParams variable.
+    None
+        The result is a modification of the global plt.rcParams variable.
     '''
     # (1) Basic arguments -----------------------------------------------------
     if size:  # Figure size

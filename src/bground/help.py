@@ -3,9 +3,17 @@ Module: bground.help
 --------------------
 Help functions for bground package.
 
-* The functions are collected in this package.
-* The functions are connected to the InteractivePlot object.
-* The functions are usually called by means of the InteractivePlot object. 
+* This module is a collecton if simple textual help functions.
+* The functions are usually called within bground.ui module = from GUI.
+* Nevertheless, they can be also called directly, without any magic:
+
+>>> # A direct access to the BGROUND help functions
+>>> import bground as bkg
+>>> bkg.help.print_general_description()
+>>> bkg.help.print_how_it_works()
+>>> bkg.help.print_all_keyboard_shortcuts()
+>>> bkg.help.print_info_about_additional_help_on_www()
+
 '''
 
 def print_general_description():

@@ -9,10 +9,10 @@ The interactive plot can be defined/created at three levels/steps:
 * Level 2 = funcs for event types (such as key_press_event, close_event, ...).
 * Level 3 = funcs for individual sub-events (such as specific keypress events).
 
-Simplifications and limitations:
+Important technical notes:
 
 * We keep the (very reasonable) mouse events from Matplotlib UI.
-* We define *key_press_events*, by means of which we can do the whole job.
+* We define just *key_press_events*, with which we can do the whole job.
 * We can define additional simple events (here: *close_event* = on closing).
 '''
 

@@ -1,11 +1,10 @@
 '''
 Module: bground.bfunc
 ---------------------
-Functions for background calculation.
+Functions for the background calculation.
 
-* The functions are usually called by functions in bground.iplot module.
+* The functions are usually called indirectly, from bground.iplot module.
 * The bground.iplot module defines an interactive plot, which is used as a GUI.
-* This module defines functions that perform the real background calculation.
 
 Technical notes:
 
@@ -126,10 +125,3 @@ def subtract_background(data, bkg):
     # (7) Return modified data array
     # (the last column the array contains background-corrected intensities
     return(data)
-
-    
-    
-    
-    
-    
-

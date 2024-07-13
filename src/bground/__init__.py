@@ -18,7 +18,7 @@ Sub-modules of bground package:
 
 Usage of bground package:
 
-* See initial example at the top of bground.ui documentation.
+* See the initial example at the top of bground.ui documentation.
 '''
 
-__version__ = '1.0'
+__version__ = '1.0.1'

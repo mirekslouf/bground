@@ -2,17 +2,20 @@
 Module: bground.bdata
 ---------------------
 The module defines three simple clasess.
-The classes keep data for definition of background.
+The classes keep data for the backround definition.
 
 1. Class XYpoints = coordinates of the user-defined bakground points.
 2. Class XYcurve = two numpy arrays defining the whole calculated bkg curve.
-3. Class bkg = user defined background, containing
+3. Class bkg = complete info about the user-defined background, containing:
     - XYpoints object = the user-defined coordinates of bkg point
     - XYcurve object = the calculated background curve
     - a few other properties (name of file for saving bkg, type of bkg)
-    
-The first two classes (XYpoints, XYcurve) are uses just inside the 3rd one.
-The third class (bkg) is used in module iplot = the interactive bkg definition.
+
+Technical notes:
+
+* The first two classes (XYpoints, XYcurve) are used just inside the 3rd one.
+* The 3rd class (bkg) is used in module iplot = the interactive bkg definition.
+* For a common user, the classes are behind the sceenes, completely invisible.
 '''
 
 class XYpoints:
