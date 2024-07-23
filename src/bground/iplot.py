@@ -285,6 +285,12 @@ def save_bkg_points(bkgr, ppar):
     Save background points to file.
     The output file name is bkgr.basename + extension 'bkg'.
     '''
+    # Treat the special case when the user presses 'b'
+    # but there are no background points defined at the moment.
+    if len(bkgr.points.X) == 0:
+        print('no background points defined!')
+        return()
+    # Standard processing of event 'b' = saving of the background points.
     bfunc.sort_bkg_points(bkgr)
     output_filename = bkgr.basename + '.bkg'
     df = bkg_to_df(bkgr)
