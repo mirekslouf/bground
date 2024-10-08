@@ -21,4 +21,4 @@ Usage of bground package:
 * See the initial example at the top of bground.ui documentation.
 '''
 
-__version__ = '1.0.3'
+__version__ = '1.0.4'
