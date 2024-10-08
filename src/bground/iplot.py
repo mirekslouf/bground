@@ -267,7 +267,7 @@ def load_bkg_points(plt, data, bkgr, ppar):
     # (solution: manual renaming of the BKG-file before running this program
     input_filename = bkgr.basename + '.bkg'
     # b) read input file to DataFrame
-    df = pd.read_csv(input_filename, sep='\s+')
+    df = pd.read_csv(input_filename, sep=r'\s+')
     # c) initialize bkg object by means of above-read DataFrame
     bkgr.points = bdata.XYpoints(X = list(df.X), Y = list(df.Y))
     bkgr.btype='linear'

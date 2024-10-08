@@ -33,7 +33,7 @@ def print_general_description():
 
 def print_how_it_works():
     '''
-    Print help - BGROUND package :: How it works?'
+    Print help - BGROUND package :: How does it work?'
     '''
     print('=============================================================')
     print('BGROUND package :: How it works?')

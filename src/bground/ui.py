@@ -26,8 +26,8 @@ The module defines a UI (user interface) for BGROUND package.
 >>>
 >>> # Run the interactive plot, by means of which we will remove the backround
 >>> # (a new window with an interactive plot will be opened
->>> # (a basic on stdout; more at https://mirekslouf.github.io/bground/docs
->>> # (the ouput files are saved by the user during the interactive processing 
+>>> # (basic instructions + link to complete docs will be printed on stdout
+>>> # (ouput files will be saved by the user during the interactive processing 
 >>> IPLOT.run()
 '''
 
@@ -278,7 +278,7 @@ class InteractivePlot:
         plt.show()
 
 
-    def show_data_before_processing(
+    def plot_data_before_processing(
             self, title='Raw data before processing', grid=True):
         '''
         Plot raw XY-data BEFORE any processing.
@@ -336,7 +336,7 @@ class InteractivePlot:
         plt.show()
 
 
-    def show_data_with_bkgr_definition(
+    def plot_data_with_bkgr_definition(
             self, title='Data with background definition', grid=True):
         '''
         Plot XY-data and background AFTER the interactive plot is closed.
@@ -404,8 +404,8 @@ class InteractivePlot:
         plt.tight_layout()
         plt.show()
         
-    def show_data_after_bkgr_correction(
-            self, title='Data after background correction', 
+    def plot_data_after_bkgr_subtraction(
+            self, title='Data after background subtraction', 
             xlim=None, ylim=None, grid=True):
         '''
         Show background-corrected XY-data AFTER the interactive plot is closed.
