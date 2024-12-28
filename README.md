@@ -30,10 +30,13 @@ Quick start
 Documentation, help and examples
 --------------------------------
 
-* [PyPI](https://pypi.org/project/bground) repository.
-* [GitHub](https://github.com/mirekslouf/bground) repository.
+* [PyPI](https://pypi.org/project/bground) repository -
+  the stable version to install.
+* [GitHub](https://github.com/mirekslouf/bground) repository - 
+  the current version under development.
 * [GitHub Pages](https://mirekslouf.github.io/bground/)
-  with [documentation](https://mirekslouf.github.io/bground/docs).
+  with [help](https://mirekslouf.github.io/bground/docs)
+  and [complete package documentation](https://mirekslouf.github.io/bground/docs/pdoc.html/bground.html).
 
 Versions of BGROUND
 -------------------
