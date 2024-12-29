@@ -47,3 +47,9 @@ Versions of BGROUND
 * Version 0.1 = OO-interface, better arrangement of funcs + semi-complete docs
 * Version 0.2 = improved OO-implementation + better UI (commands, saving, help)
 * Version 1.0 = finalized version 1, fully working, and completely documented
+
+Acknowledgement
+---------------
+
+The development was co-funded by TACR, program NCK,
+project [TN02000020](https://www.isibrno.cz/en/centre-advanced-electron-and-photonic-optics).

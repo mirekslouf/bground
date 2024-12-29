@@ -21,7 +21,7 @@ Usage of bground package:
 * See the initial example at the top of bground.ui documentation.
 '''
 
-__version__ = '1.0.5'
+__version__ = '1.0.6'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.
