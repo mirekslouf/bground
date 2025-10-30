@@ -47,7 +47,6 @@ class XYpoints:
         '''
         Add one background point to XYpoints object.
         
-
         Parameters
         ----------
         Xcoord : float

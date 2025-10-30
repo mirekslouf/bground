@@ -1,19 +1,15 @@
 '''
-Module: bground.ui
-------------------
-The module defines a UI (user interface) for BGROUND package.
+Module: bground.api
+-------------------
+* Definition of API for (application programming interface) BGROUND package.
+* The API can be employed as a simple UI within Spyder and/or Jupyter scripts.
 
-* Strictly speaking,
-  the module defines API (application programming interface).
-* Nevertheless,
-  the API can be employed as a simple UI within Spyder and/or Jupyter scripts.
-
->>> # Simple usage of BGROUND package
+>>> # Simple usage of BGROUND package with bground.api module
 >>> # (before running in Spyder, switch to interactive plots: %matplotlib qt
 >>> # (after finishing, switch back to non-interactive: %matplotlib inline
 >>>
->>> # Import user interface of background package
->>> import bground.ui as bkg
+>>> # Import API of BGROUND package
+>>> import bground.api as bkg
 >>>
 >>> # Define I/O files
 >>> INFILE = 'ed1_raw.txt'
@@ -34,7 +30,8 @@ The module defines a UI (user interface) for BGROUND package.
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import bground.bdata, bground.bfunc, bground.help, bground.iplot
+import bground.bdata, bground.bfunc, bground.help
+import bground.iplot, bground.wvlet
 
 
 def set_plot_parameters(
@@ -403,6 +400,7 @@ class InteractivePlot:
         # Show the final plot
         plt.tight_layout()
         plt.show()
+
         
     def plot_data_after_bkgr_subtraction(
             self, title='Data after background subtraction', 
@@ -466,6 +464,7 @@ class InteractivePlot:
         # Show the final plot
         plt.tight_layout()
         plt.show()
+
         
     def print_general_help():
         '''
@@ -477,6 +476,7 @@ class InteractivePlot:
             The result is the help text printed on stdout.
         '''
         bground.help.print_general_help()
+
     
     def print_how_it_works():
         '''
@@ -488,6 +488,7 @@ class InteractivePlot:
             The result is the help text printed on stdout.
         '''
         bground.help.print_all_keyboard_shortcuts()
+
         
     def print_all_keyboard_shortcuts(output_file='output_file.txt'):
         '''
@@ -506,6 +507,7 @@ class InteractivePlot:
             The result is the help text printed on stdout.
         '''
         bground.help.print_all_keyboard_shortcuts(output_file)
+
         
     def print_info_about_more_help_on_www():
         '''
@@ -518,5 +520,8 @@ class InteractivePlot:
         '''
         bground.help.print_info_about_more_help_on_www()
 
-            
-            
+
+class WaveletBackgroundSubtraction:
+
+    pass
+

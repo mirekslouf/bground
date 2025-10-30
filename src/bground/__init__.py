@@ -10,18 +10,19 @@ Semi-automatic background subtraction.
 
 Sub-modules of bground package:
 
-* bground.ui = simple user interface
-* bground.iplot = create interactive plot for background removal
+* bground.api = package API, which can be used as a simple UI = user interface
 * bground.bdata = classes/data structures for background definition
 * bground.bfunc = functions and utilities for final background removal
 * bground.help = supplementary functions, which can print help to the package
+* bground.iplot = semi-automatic background subtraction with an interactive plot
+* bground.wvlet = automatic background subtraction using wavelet transform
 
 Usage of bground package:
 
 * See the initial example at the top of bground.ui documentation.
 '''
 
-__version__ = '1.0.6'
+__version__ = '1.1'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

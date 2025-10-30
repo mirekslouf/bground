@@ -1,7 +1,9 @@
 '''
 Module: bground.iplot
 ---------------------
-The module with functions to create an interactive plot.
+Backgournd subtraction using an interactive plot.
+
+* Semi-automatic method: user defines the bkg points in semi-interactive plot.
 
 The interactive plot can be defined/created at three levels/steps:
     
