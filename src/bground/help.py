@@ -3,101 +3,250 @@ Module: bground.help
 --------------------
 Help functions for bground package.
 
-* This module is a collecton if simple textual help functions.
-* The functions are usually called within bground.ui module = from GUI.
-* Nevertheless, they can be also called directly, without any magic:
+* This module is a collecton if simple help functions.
+* The functions just print a brief textual information on stdout.
+* The funcs are grouped into classes; each bkgr subtraction method ~ class.
+* Three functions - intro, more_help, how_it_works - available for all methods.
 
->>> # A direct access to the BGROUND help functions
->>> import bground as bkg
->>> bkg.help.print_general_description()
->>> bkg.help.print_how_it_works()
->>> bkg.help.print_all_keyboard_shortcuts()
->>> bkg.help.print_info_about_additional_help_on_www()
+>>> # Typical access to printed help from bground
+>>> # (the help accessed via bground.api
+>>> import bground.api as bkg
+>>> bkg.InteractivePlot.Help.intro()
+>>> bkg.InteractivePlot.Help.more_help()
+>>> bkg.InteractivePlot.Help.how_it_works()
 
+>>> # Typical access to printed help from ediff
+>>> # (bground is usually used within ediff package
+>>> # (bground.api is auto-imported as ediff.bkg or ed.bkg
+>>> import ediff as ed
+>>> ed.bkg.InteractivePlot.Help.intro()
+>>> ed.bkg.InteractivePlot.Help.more_help()
+>>> ed.bkg.InteractivePlot.Help.how_it_works()
 '''
 
-def print_general_description():
-    '''
-    Print help - BGROUND package :: General description
-    '''
-    print('=============================================================')
-    print('BGROUND package :: General description')
-    print('-------------------------------------------------------------')
-    print('* BGROUND = semi-automatic removal of background in XY-data')
-    print('* XY-data = usually a file with two (or more) columns')
-    print('  one of the columns = X-data, some other column = Y-data')
-    print('* semi-automatic removal = user defines background points')
-    print('  and computer does the rest')
-    print('=============================================================')
-    
 
-def print_how_it_works():
-    '''
-    Print help - BGROUND package :: How does it work?'
-    '''
-    print('=============================================================')
-    print('BGROUND package :: How it works?')
-    print('-------------------------------------------------------------')
-    print('* BGROUND opens Matplotlib interactive plot')
-    print('* the user defines backround points with mouse and keyboard')
-    print('* mouse actions/events are Matplotlib UI defaults')
-    print('* keyboard actions/events are defined by the program')
-    print('  - keys for background definition: 1,2,3,4,5,6')
-    print('  - keys for saving the results   : a,b,t,s')
-    print('  - basic help is printed when the interactive plot opens')
-    print('  - more details: bground.help.print_all_keyboard_shortcuts')
-    print('=============================================================')
-    
+# At the beginning of this module, we define intelligent_detent method.
+# It performs intelligent de-dentation of multiline Python strings.
+# This method is used in all help functions below.
 
-def print_all_keyboard_shortcuts(output_file='some_file'):
-    '''
-    Print help - BGROUND :: Interactive plot :: Keyboard shortcuts
-    '''
-    
-    # (1) Define output file names
-    # (objective: all should have correct extensions
-    # (but we want to avoid double TXT extension for the main TXT file
-    TXTfile = output_file
-    BKGfile = output_file + '.bkg'
-    PNGfile = output_file + '.png'
-    if not(TXTfile.lower().endswith('.txt')): TXTfile = TXTfile + '.txt'
-    
-    # (2) Print help including the above defined output file names
-    print('============================================================')
-    print('BGROUND :: Interactive plot :: Keyboard shortcuts')
-    print('------------------------------------------------------------')
-    print('1 = add a background point (at the mouse cursor position)')
-    print('2 = delete a background point (close to the mouse cursor)')
-    print('3 = show the plot with all background points')
-    print('4 = show the plot with linear spline background')
-    print('5 = show the plot with quadratic spline background')
-    print('6 = show the plot with cubic spline background')
-    print('------------------------------------------------------------')
-    print('a = background points :: load the previously saved')
-    print('b = background points :: save to BKG-file') 
-    print(f'(BKG-file = {BKGfile}')
-    print('--------')
-    print('t = subtract current background & save data to TXT-file')
-    print(f'(TXT-file = {TXTfile}')
-    print('--------')
-    print('s = save current plot to PNG-file:')
-    print(f'(PNG-file = {PNGfile}')
-    print('(note: Matplotlib UI shortcut; filename just recommened')
-    print('------------------------------------------------------------')
-    print('Standard Matplotlib UI tools and shortcuts work as well.')
-    print('See: https://matplotlib.org/stable/users/interactive.html')
-    print('============================================================')
+import re
 
 
-def print_info_about_additional_help_on_www():
+def intelligent_dedent(text: str) -> str:
     '''
-    Print help - BGROUND package :: Additional help on www
+    Intelligent dedentation - print multi-line string reasonably.
+
+    Parameters
+    ----------
+    text : str
+        A multi-line string to print.
+        The initial Python indentation is ignored (Python dedentation).
+        The internal string indentation is preserved (internal indentation).
+
+    Returns
+    -------
+    str
+        Processed string after inteligent dedentation.
+        
+    Technical notes
+    ---------------
+    * This function is used in printed help.
+    * The printed help messages are typically multiline texts.
     '''
-    print('=============================================================')
-    print('BGROUND package :: Additional help on www')
-    print('-------------------------------------------------------------')
-    print('* PyPI    : https://pypi.org/project/bground')
-    print('* GitHub  : https://github.com/mirekslouf/bground')
-    print('  - pages : https://mirekslouf.github.io/bground')
-    print('  - docum : https://mirekslouf.github.io/bground/docs')
-    print('=============================================================')
+    
+    # The following algorithm created with AI/ChGPT.
+    # The code was slightly simplified - extra commands removed.
+    # Original comments were improved + additional comments were added.
+    
+    # Split {text} into lines and ignore empty leading/trailing ones
+    # (note #1: line.strip() returns falsi if it is an empty line
+    # (note #2: the algorithm can delete 
+    lines = text.splitlines()
+    # Remove possible empty line(s) at the beginning
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    # Remove possible empty line(s) at the end
+    while lines and not lines[-1].strip():
+        lines.pop()
+    # Return empty string if the multiline string contained just empty lines
+    if not lines:
+        return ""
+
+    # Find minimum indentation (tabs or spaces) among non-empty lines.
+    # (note #1: line.strip() returns false if it is an empty line
+    # (note #2: re.match(r'^[\t]*',line).groupt(0) = initial tabs = \t chars
+    # (... line with two tabs contains \t\t at the beginning = 2 chars
+    # (... the same is done for spaces => we use r'^[ \t]*' - space is there
+    indent_levels = [
+        len(re.match(r'^[ \t]*', line).group(0))
+        for line in lines if line.strip()
+    ]
+    min_indent = min(indent_levels)
+
+    # Remove {min_indent} characters from the start of each line
+    # (this is where some unnecessary/extra commands were removed
+    dedented = [ line[min_indent:] for line in lines ]
+    return("\n".join(dedented))
+
+
+class GeneralHelp:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: general help to whole bground package.
+    '''
+    
+    
+    def brief_intro():
+        '''
+        BGROUND printed help :: Brief introduction
+        '''
+        
+        help_text = '''
+        ==================================================================
+        BGROUND package :: background subtraction in XY-data
+        ------------------------------------------------------------------
+        * XY-data = usually a file with two (or more) columns
+          one of the columns = X-data, some other column = Y-data
+          the user can select columns + specify other props of the input
+        * semi-automatic bkg subtraction = select InteractivePlot method
+          define bkg points with a mouse and keyboard
+          and computer does the rest
+        * automatic bkg subtraction = select one of automatic methods
+          define input parameters of the method or use defaults
+          and computer does the rest
+        ==================================================================
+        '''
+        
+        print(intelligent_dedent(help_text))
+        
+    
+    def more_help():
+        '''
+        BGROUND printed help :: Where to find additional help
+        '''
+        
+        help_text = '''
+        ==================================================================
+        BGROUND package :: where to find more help
+        ------------------------------------------------------------------
+        Documentation + examples in www:
+        * GitHub pages : https://mirekslouf.github.io/bground
+        * GitHub docum : https://mirekslouf.github.io/bground/docs
+        ------------------------------------------------------------------
+        Additional help to the individual bkgr subtraction methods:
+        >>> import bground.api as bkg
+        >>> bkg.InteractivePlot.Help.how_it_works()
+        ------------------------------------------------------------------
+        Alternative access to help functions within ediff package
+        >>> import ediff as ed
+        >>> ed.bkg.InteractivePlot.Help.how_it_works()
+        ==================================================================
+        '''
+        
+        print(intelligent_dedent(help_text))
+
+
+class InteractivePlot:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to bground.iplot = InteractivePlot bkgr subtraction method.
+    '''
+    
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: InteractivePlot :: How it works
+        '''
+        
+        help_text = '''
+        ===============================================================
+        BGROUND :: InteractivePlot :: How it works
+        ---------------------------------------------------------------
+        * BGROUND opens Matplotlib interactive plot
+        * the user defines backround points with mouse and keyboard
+        * mouse actions/events are Matplotlib UI defaults
+        * keyboard shortcuts/actions/events are defined by the program
+          - keys for background definition: 1,2,3,4,5,6
+          - keys for saving the results   : a,b,t,s
+          - basic help is printed when the interactive plot opens
+        --------------------------------------------------------------
+        Complete help on keyboard shortcuts with detailed explanation:
+        >>> import bground.api as bkg
+        >>> bkg.InteractivePlot.Help.keyboard_shortcuts()
+        --------------------------------------------------------------
+        Alternative access to help from EDIFF package:
+        >>> import ediff as ed
+        >>> ed.bkg.InteractivePlot.Help.keyboard_shortcuts()
+        ===============================================================
+        '''
+        
+        print(intelligent_dedent(help_text))
+    
+    
+    def keyboard_shortcuts( output_file='some_file'):
+        '''
+        BGROUND printed help :: InteractivePlot :: Keyboard shortcuts
+        '''
+        
+        # (1) Define output file names
+        # (objective: all should have correct extensions
+        # (but we want to avoid double TXT extension for the main TXT file
+        TXTfile = output_file
+        BKGfile = output_file + '.bkg'
+        PNGfile = output_file + '.png'
+        if not(TXTfile.lower().endswith('.txt')): TXTfile = TXTfile + '.txt'
+        
+        # (2) Print help including the above defined output file names
+        
+        help_text = f'''
+        ============================================================
+        BGROUND :: Interactive plot :: Keyboard shortcuts
+        ------------------------------------------------------------
+        1 = add a background point (at the mouse cursor position)
+        2 = delete a background point (close to the mouse cursor)
+        3 = show the plot with all background points
+        4 = show the plot with linear spline background
+        5 = show the plot with quadratic spline background
+        6 = show the plot with cubic spline background
+        ------------------------------------------------------------
+        a = background points :: load the previously saved
+        b = background points :: save to BKG-file'
+        (BKG-file = {BKGfile}
+        --------
+        t = subtract current background & save data to TXT-file
+        (TXT-file = {TXTfile}
+        --------
+        s = save current plot to PNG-file:
+        (PNG-file = {PNGfile}
+        (note: Matplotlib UI shortcut; filename just recommened
+        ------------------------------------------------------------
+        Standard Matplotlib UI tools and shortcuts work as well.
+        See: https://matplotlib.org/stable/users/interactive.html
+        ============================================================
+        '''
+        
+        print(intelligent_dedent(help_text))
+        
+        
+class WaveletMethod:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to bground.wvlet = WaveletMethod of background subtraction.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: WaveletMethod :: How it works
+        '''
+        
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+

@@ -1,31 +1,40 @@
 '''
 Module: bground.api
 -------------------
-* Definition of API for (application programming interface) BGROUND package.
-* The API can be employed as a simple UI within Spyder and/or Jupyter scripts.
 
->>> # Simple usage of BGROUND package with bground.api module
->>> # (before running in Spyder, switch to interactive plots: %matplotlib qt
->>> # (after finishing, switch back to non-interactive: %matplotlib inline
+Definition of API for (application programming interface) of BGROUND package.
+
+* The API can be employed as a simple UI within Spyder and/or Jupyter scripts.
+* The main purpose of the API - easy access to functions for bkgr subtraction.
+
+Short example:
+        
+>>> # Semi-automated background subtraction with InteractivePlot method
+>>> # (in Spyder, use %matplotlib qt before running this script
 >>>
 >>> # Import API of BGROUND package
 >>> import bground.api as bkg
 >>>
 >>> # Define I/O files
->>> INFILE = 'ed1_raw.txt'
->>> OUFILE = 'ed2_bcorr.txt'
+>>> INPUT  = 'ed1_raw.txt'
+>>> OUTPUT = 'ed2_bcorr.txt'
 >>>
->>> # Define data, plot parameters and interactive plot
->>> DATA = bkg.InputData(INFILE, usecols=[0,1], unpack=True)
->>> PPAR = bkg.PlotParams(OUFILE,'Pixel','Intensity',xlim=[0,200],ylim=[0,180])
->>> IPLOT = bkg.InteractivePlot(DATA, PPAR, CLI=False)
+>>> # Define data, plot parameters and background subtraction method
+>>> DATA = bkg.InputData(INPUT, usecols=[0,1], unpack=True)
+>>> PPAR = bkg.PlotParams(OUTPUT,'Pixel','Intensity',xlim=[0,200],ylim=[0,180])
+>>> SMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
 >>>
->>> # Run the interactive plot, by means of which we will remove the backround
+>>> # Run the InteractivePlot method
 >>> # (a new window with an interactive plot will be opened
->>> # (basic instructions + link to complete docs will be printed on stdout
->>> # (ouput files will be saved by the user during the interactive processing 
->>> IPLOT.run()
+>>> # (follow the instructions in stdout to define and subtract bkgr
+>>> SMET.run()
+
+More examples for the individual bkgr subtraction methods:
+
+* Semi-automated background subtraction: bground.api.InteractivePlot
+* Automated background subtraction: bground.api.WaveletMethod
 '''
+
 
 import numpy as np
 import matplotlib
@@ -178,17 +187,42 @@ class PlotParams:
 
 class InteractivePlot:
     '''
-    The interactive plot employed in background removal.
+    InteractivePlot method of backround subtraction.
 
-    * InteractivePlot class defines the interactive plot for bkgr removal.
+    * When running the method, a new window with interactive plot is opened.
+    * The user defines background points using keyboard shortcuts and mouse.
+    * The program does the rest - subtracts bkgr and shows/saves the results.
+        
+    Example:
+        
+    >>> # Semi-automated background subtraction with InteractivePlot method
+    >>> # (before running in Spyder, turn on interactive plots: %matplotlib qt
+    >>> # (after finishing, switch back to non-interactive: %matplotlib inline
+    >>>
+    >>> # Import API of BGROUND package
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'ed1_raw.txt'
+    >>> OUT = 'ed2_bcorr.txt'
+    >>>
+    >>> # Define data, plot parameters and background subtraction method
+    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
+    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
+    >>> SMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
+    >>>
+    >>> # Run the InteractivePlot method
+    >>> # (a new window with an interactive plot will be opened
+    >>> # (follow the instructions in stdout to define and subtract bkgr
+    >>> # (ouput files will be saved at the end the interactive processing 
+    >>> SMET.run()
+    
+    Note - arguments when initializing InteractivePlot method:
+        
     * The first two arguments (DATA, PPAR) are the two classes defined above.
     * The third argument (CLI) should be True for command-line interfaces/runs.
     * The fourth argument (messages) determines if to print messages to stdout.
-    
-    The usage of InteractivePlot class is shown in the example above.
-    
-    * The rest of the documentation => detailed comments in the source code.
-    * Selected methods have a standard documentation for the sake of clarity.
+
     '''
 
     
@@ -465,63 +499,136 @@ class InteractivePlot:
         plt.tight_layout()
         plt.show()
 
-        
-    def print_general_help():
+    
+    class Help():
         '''
-        Print help - BGROUND :: general help
-        
-        Returns
-        -------
-        None
-            The result is the help text printed on stdout.
+        Help functions to InteractivePlot method of background subtraction.
         '''
-        bground.help.print_general_help()
+        
+    
+        def intro():
+            '''
+            BGROUND printed help :: Brief introduction
+            
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.GeneralHelp.brief_intro()
+            
+        
+        def more_help():
+            '''
+            BGROUND printed help :: Where to find more help
+            
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.GeneralHelp.more_help()
+    
+        
+        def how_it_works():
+            '''
+            BGROUND printed help :: InteractivePlot :: How it works
+    
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.InteractivePlot.how_it_works()
+    
+            
+        def keyboard_shortcuts(output_file='output_file.txt'):
+            '''
+            BGROUND printed help :: Interactive plot :: Keyboard shortcuts
+    
+            Parameters
+            ----------
+            output_file : str, optional
+                Name of real (or fictive) output file.
+                The name is used just in the help text.
+                It is possible to keep the default = 'output_file.txt'
+    
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.InteractivePlot.keyboard_shortcuts(output_file)
+
+
+class WaveletMethod:
+    '''
+    WaveletMethod of backround subtraction.
+   
+    * Define the input parameters and run the method.
+    * The method is fully automated - it subtracts bkgr and saves the results.
+        
+    Example:
+        
+    >>> # Automated background subtraction with WaveletMethod
+    >>>
+    >>> # Import API of BGROUND package
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'ed1_raw.txt'
+    >>> OUT = 'ed2_bcorr.txt'
+    >>>
+    >>> # Define data, plot parameters and background subtraction method
+    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
+    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
+    >>> SMET = bkg.WaveletMethod(DATA, PPAR, ...)
+    >>> 
+    >>> # Run the WaveletMethod
+    >>> # (ouput files will be saved automatically at the end of processing 
+    >>> SMET.run()
+    '''
+    
+
+    class Help():
+        '''
+        Help functions to WaveletMethod of background subtraction.
+        '''
 
     
-    def print_how_it_works():
-        '''
-        Print help - BGROUND :: How it works?
-
-        Returns
-        -------
-        None
-            The result is the help text printed on stdout.
-        '''
-        bground.help.print_all_keyboard_shortcuts()
-
+        def intro():
+            '''
+            BGROUND printed help :: Brief introduction
+            
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.GeneralHelp.brief_intro()
+            
         
-    def print_all_keyboard_shortcuts(output_file='output_file.txt'):
-        '''
-        Print help - BGROUND :: Interactive plot :: Keyboard shortcuts
-
-        Parameters
-        ----------
-        output_file : str, optional
-            Name of real (or fictive) output file.
-            The name is used just in the help text.
-            It is possible to keep the default = 'output_file.txt'
-
-        Returns
-        -------
-        None
-            The result is the help text printed on stdout.
-        '''
-        bground.help.print_all_keyboard_shortcuts(output_file)
-
+        def more_help():
+            '''
+            BGROUND printed help :: Where to find more help
+            
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.GeneralHelp.more_help()
         
-    def print_info_about_more_help_on_www():
-        '''
-        Print help - BGROUND package :: Additional help on www
-
-        Returns
-        -------
-        None
-            The result is the help text printed on stdout.
-        '''
-        bground.help.print_info_about_more_help_on_www()
-
-
-class WaveletBackgroundSubtraction:
-
-    pass
-
+            
+        def how_it_works():
+            '''
+            BGROUND printed help :: WaveletMethod :: How it works
+    
+            Returns
+            -------
+            None
+                The result is the help text printed on stdout.
+            '''
+            bground.help.WaveletMethod.how_it_works()
+            
+            

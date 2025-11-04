@@ -14,15 +14,15 @@ Sub-modules of bground package:
 * bground.bdata = classes/data structures for background definition
 * bground.bfunc = functions and utilities for final background removal
 * bground.help = supplementary functions, which can print help to the package
-* bground.iplot = semi-automatic background subtraction with an interactive plot
+* bground.iplot = semi-automatic bkg subtraction with an interactive plot
 * bground.wvlet = automatic background subtraction using wavelet transform
 
 Usage of bground package:
 
-* See the initial example at the top of bground.ui documentation.
+* See the initial example at the top of bground.api documentation.
 '''
 
-__version__ = '1.1'
+__version__ = '1.1.1'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

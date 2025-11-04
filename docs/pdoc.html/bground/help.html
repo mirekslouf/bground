@@ -36,16 +36,40 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="function" href="#print_general_description">print_general_description</a>
+                    <a class="function" href="#intelligent_dedent">intelligent_dedent</a>
             </li>
             <li>
-                    <a class="function" href="#print_how_it_works">print_how_it_works</a>
+                    <a class="class" href="#GeneralHelp">GeneralHelp</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#GeneralHelp.brief_intro">brief_intro</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#GeneralHelp.more_help">more_help</a>
+                        </li>
+                </ul>
+
             </li>
             <li>
-                    <a class="function" href="#print_all_keyboard_shortcuts">print_all_keyboard_shortcuts</a>
+                    <a class="class" href="#InteractivePlot">InteractivePlot</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#InteractivePlot.how_it_works">how_it_works</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#InteractivePlot.keyboard_shortcuts">keyboard_shortcuts</a>
+                        </li>
+                </ul>
+
             </li>
             <li>
-                    <a class="function" href="#print_info_about_additional_help_on_www">print_info_about_additional_help_on_www</a>
+                    <a class="class" href="#WaveletMethod">WaveletMethod</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#WaveletMethod.how_it_works">how_it_works</a>
+                        </li>
+                </ul>
+
             </li>
     </ul>
 
@@ -68,18 +92,30 @@
 <p>Help functions for bground package.</p>
 
 <ul>
-<li>This module is a collecton if simple textual help functions.</li>
-<li>The functions are usually called within bground.ui module = from GUI.</li>
-<li>Nevertheless, they can be also called directly, without any magic:</li>
+<li>This module is a collecton if simple help functions.</li>
+<li>The functions just print a brief textual information on stdout.</li>
+<li>The funcs are grouped into classes; each bkgr subtraction method ~ class.</li>
+<li>Three functions - intro, more_help, how_it_works - available for all methods.</li>
 </ul>
 
 <div class="pdoc-code codehilite">
-<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="c1"># A direct access to the BGROUND help functions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">bground</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bkg</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">print_general_description</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">print_how_it_works</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">print_all_keyboard_shortcuts</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">print_info_about_additional_help_on_www</span><span class="p">()</span>
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Typical access to printed help from bground</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (the help accessed via <a href="api.html">bground.api</a></span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn"><a href="api.html">bground.api</a></span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bkg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">InteractivePlot</span><span class="o">.</span><span class="n">Help</span><span class="o">.</span><span class="n">intro</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">InteractivePlot</span><span class="o">.</span><span class="n">Help</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bkg</span><span class="o">.</span><span class="n">InteractivePlot</span><span class="o">.</span><span class="n">Help</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Typical access to printed help from ediff</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (bground is usually used within ediff package</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (<a href="api.html">bground.api</a> is auto-imported as ediff.bkg or ed.bkg</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">ediff</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">bkg</span><span class="o">.</span><span class="n">InteractivePlot</span><span class="o">.</span><span class="n">Help</span><span class="o">.</span><span class="n">intro</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">bkg</span><span class="o">.</span><span class="n">InteractivePlot</span><span class="o">.</span><span class="n">Help</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ed</span><span class="o">.</span><span class="n">bkg</span><span class="o">.</span><span class="n">InteractivePlot</span><span class="o">.</span><span class="n">Help</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
 </code></pre>
 </div>
 </div>
@@ -93,262 +129,799 @@
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd">--------------------</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">Help functions for bground package.</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">* This module is a collecton if simple textual help functions.</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">* The functions are usually called within bground.ui module = from GUI.</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">* Nevertheless, they can be also called directly, without any magic:</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">&gt;&gt;&gt; # A direct access to the BGROUND help functions</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">&gt;&gt;&gt; import bground as bkg</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">&gt;&gt;&gt; bkg.help.print_general_description()</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">&gt;&gt;&gt; bkg.help.print_how_it_works()</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">&gt;&gt;&gt; bkg.help.print_all_keyboard_shortcuts()</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">&gt;&gt;&gt; bkg.help.print_info_about_additional_help_on_www()</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_general_description</span><span class="p">():</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    Print help - BGROUND package :: General description</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND package :: General description&#39;</span><span class="p">)</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* BGROUND = semi-automatic removal of background in XY-data&#39;</span><span class="p">)</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* XY-data = usually a file with two (or more) columns&#39;</span><span class="p">)</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  one of the columns = X-data, some other column = Y-data&#39;</span><span class="p">)</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* semi-automatic removal = user defines background points&#39;</span><span class="p">)</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  and computer does the rest&#39;</span><span class="p">)</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">* This module is a collecton if simple help functions.</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">* The functions just print a brief textual information on stdout.</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">* The funcs are grouped into classes; each bkgr subtraction method ~ class.</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">* Three functions - intro, more_help, how_it_works - available for all methods.</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">&gt;&gt;&gt; # Typical access to printed help from bground</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">&gt;&gt;&gt; # (the help accessed via bground.api</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">&gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">&gt;&gt;&gt; bkg.InteractivePlot.Help.intro()</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">&gt;&gt;&gt; bkg.InteractivePlot.Help.more_help()</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">&gt;&gt;&gt; bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">&gt;&gt;&gt; # Typical access to printed help from ediff</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="sd">&gt;&gt;&gt; # (bground is usually used within ediff package</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">&gt;&gt;&gt; # (bground.api is auto-imported as ediff.bkg or ed.bkg</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">&gt;&gt;&gt; import ediff as ed</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">&gt;&gt;&gt; ed.bkg.InteractivePlot.Help.intro()</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">&gt;&gt;&gt; ed.bkg.InteractivePlot.Help.more_help()</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">&gt;&gt;&gt; ed.bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="c1"># At the beginning of this module, we define intelligent_detent method.</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="c1"># It performs intelligent de-dentation of multiline Python strings.</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a><span class="c1"># This method is used in all help functions below.</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_how_it_works</span><span class="p">():</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">    Print help - BGROUND package :: How does it work?&#39;</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND package :: How it works?&#39;</span><span class="p">)</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* BGROUND opens Matplotlib interactive plot&#39;</span><span class="p">)</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* the user defines backround points with mouse and keyboard&#39;</span><span class="p">)</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* mouse actions/events are Matplotlib UI defaults&#39;</span><span class="p">)</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* keyboard actions/events are defined by the program&#39;</span><span class="p">)</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - keys for background definition: 1,2,3,4,5,6&#39;</span><span class="p">)</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - keys for saving the results   : a,b,t,s&#39;</span><span class="p">)</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - basic help is printed when the interactive plot opens&#39;</span><span class="p">)</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - more details: bground.help.print_all_keyboard_shortcuts&#39;</span><span class="p">)</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>    
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_all_keyboard_shortcuts</span><span class="p">(</span><span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span><span class="p">):</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">    Print help - BGROUND :: Interactive plot :: Keyboard shortcuts</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="k">def</span><span class="w"> </span><span class="nf">intelligent_dedent</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">    Intelligent dedentation - print multi-line string reasonably.</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">    Parameters</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">    ----------</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">    text : str</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        A multi-line string to print.</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        The initial Python indentation is ignored (Python dedentation).</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        The internal string indentation is preserved (internal indentation).</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">    Returns</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">    -------</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">    str</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        Processed string after inteligent dedentation.</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">        </span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">    Technical notes</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="sd">    ---------------</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="sd">    * This function is used in printed help.</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">    * The printed help messages are typically multiline texts.</span>
 </span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">    &#39;&#39;&#39;</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>    
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="c1"># (1) Define output file names</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="c1"># (objective: all should have correct extensions</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="c1"># (but we want to avoid double TXT extension for the main TXT file</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">output_file</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="n">BKGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.bkg&#39;</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="n">PNGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">TXTfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">)):</span> <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">TXTfile</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="c1"># (2) Print help including the above defined output file names</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;============================================================&#39;</span><span class="p">)</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND :: Interactive plot :: Keyboard shortcuts&#39;</span><span class="p">)</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1 = add a background point (at the mouse cursor position)&#39;</span><span class="p">)</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2 = delete a background point (close to the mouse cursor)&#39;</span><span class="p">)</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;3 = show the plot with all background points&#39;</span><span class="p">)</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;4 = show the plot with linear spline background&#39;</span><span class="p">)</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;5 = show the plot with quadratic spline background&#39;</span><span class="p">)</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;6 = show the plot with cubic spline background&#39;</span><span class="p">)</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;a = background points :: load the previously saved&#39;</span><span class="p">)</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;b = background points :: save to BKG-file&#39;</span><span class="p">)</span> 
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(BKG-file = </span><span class="si">{</span><span class="n">BKGfile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------&#39;</span><span class="p">)</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;t = subtract current background &amp; save data to TXT-file&#39;</span><span class="p">)</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(TXT-file = </span><span class="si">{</span><span class="n">TXTfile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------&#39;</span><span class="p">)</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;s = save current plot to PNG-file:&#39;</span><span class="p">)</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(PNG-file = </span><span class="si">{</span><span class="n">PNGfile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;(note: Matplotlib UI shortcut; filename just recommened&#39;</span><span class="p">)</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Standard Matplotlib UI tools and shortcuts work as well.&#39;</span><span class="p">)</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;See: https://matplotlib.org/stable/users/interactive.html&#39;</span><span class="p">)</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;============================================================&#39;</span><span class="p">)</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="c1"># The following algorithm created with AI/ChGPT.</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="c1"># The code was slightly simplified - extra commands removed.</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="c1"># Original comments were improved + additional comments were added.</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="c1"># Split {text} into lines and ignore empty leading/trailing ones</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="c1"># (note #1: line.strip() returns falsi if it is an empty line</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="c1"># (note #2: the algorithm can delete </span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="c1"># Remove possible empty line(s) at the beginning</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="k">while</span> <span class="n">lines</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>        <span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="c1"># Remove possible empty line(s) at the end</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="k">while</span> <span class="n">lines</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="c1"># Return empty string if the multiline string contained just empty lines</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">:</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>    <span class="c1"># Find minimum indentation (tabs or spaces) among non-empty lines.</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="c1"># (note #1: line.strip() returns false if it is an empty line</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="c1"># (note #2: re.match(r&#39;^[\t]*&#39;,line).groupt(0) = initial tabs = \t chars</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>    <span class="c1"># (... line with two tabs contains \t\t at the beginning = 2 chars</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="c1"># (... the same is done for spaces =&gt; we use r&#39;^[ \t]*&#39; - space is there</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="n">indent_levels</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^[ \t]*&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="p">]</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">min_indent</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indent_levels</span><span class="p">)</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>    <span class="c1"># Remove {min_indent} characters from the start of each line</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="c1"># (this is where some unnecessary/extra commands were removed</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>    <span class="n">dedented</span> <span class="o">=</span> <span class="p">[</span> <span class="n">line</span><span class="p">[</span><span class="n">min_indent</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span> <span class="p">]</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>    <span class="k">return</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dedented</span><span class="p">))</span>
 </span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>
 </span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_info_about_additional_help_on_www</span><span class="p">():</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="k">class</span><span class="w"> </span><span class="nc">GeneralHelp</span><span class="p">:</span>
 </span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">    Print help - BGROUND package :: Additional help on www</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND package :: Additional help on www&#39;</span><span class="p">)</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* PyPI    : https://pypi.org/project/bground&#39;</span><span class="p">)</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* GitHub  : https://github.com/mirekslouf/bground&#39;</span><span class="p">)</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - pages : https://mirekslouf.github.io/bground&#39;</span><span class="p">)</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - docum : https://mirekslouf.github.io/bground/docs&#39;</span><span class="p">)</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">    Class with help functions.</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">    </span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">    * The functions print simple textual help.</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">    * Here: general help to whole bground package.</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>    
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>    
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">brief_intro</span><span class="p">():</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        BGROUND printed help :: Brief introduction</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="s1">        ==================================================================</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="s1">        BGROUND package :: background subtraction in XY-data</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="s1">        * XY-data = usually a file with two (or more) columns</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="s1">          one of the columns = X-data, some other column = Y-data</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="s1">          the user can select columns + specify other props of the input</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="s1">        * semi-automatic bkg subtraction = select InteractivePlot method</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="s1">          define bkg points with a mouse and keyboard</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="s1">          and computer does the rest</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="s1">        * automatic bkg subtraction = select one of automatic methods</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="s1">          define input parameters of the method or use defaults</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="s1">          and computer does the rest</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="s1">        ==================================================================</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">        BGROUND printed help :: Where to find additional help</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="s1">        ==================================================================</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="s1">        BGROUND package :: where to find more help</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="s1">        Documentation + examples in www:</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a><span class="s1">        * GitHub pages : https://mirekslouf.github.io/bground</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="s1">        * GitHub docum : https://mirekslouf.github.io/bground/docs</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="s1">        Additional help to the individual bkgr subtraction methods:</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="s1">        &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="s1">        &gt;&gt;&gt; bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="s1">        Alternative access to help functions within ediff package</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="s1">        &gt;&gt;&gt; import ediff as ed</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="s1">        &gt;&gt;&gt; ed.bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="s1">        ==================================================================</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>        
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="k">class</span><span class="w"> </span><span class="nc">InteractivePlot</span><span class="p">:</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">    Class with help functions.</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">    </span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">    * The functions print simple textual help.</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">    * Here: help to bground.iplot = InteractivePlot bkgr subtraction method.</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        BGROUND printed help :: InteractivePlot :: How it works</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>        
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="s1">        ===============================================================</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="s1">        BGROUND :: InteractivePlot :: How it works</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="s1">        ---------------------------------------------------------------</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="s1">        * BGROUND opens Matplotlib interactive plot</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="s1">        * the user defines backround points with mouse and keyboard</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="s1">        * mouse actions/events are Matplotlib UI defaults</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="s1">        * keyboard shortcuts/actions/events are defined by the program</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="s1">          - keys for background definition: 1,2,3,4,5,6</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="s1">          - keys for saving the results   : a,b,t,s</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="s1">          - basic help is printed when the interactive plot opens</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="s1">        --------------------------------------------------------------</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="s1">        Complete help on keyboard shortcuts with detailed explanation:</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a><span class="s1">        &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a><span class="s1">        &gt;&gt;&gt; bkg.InteractivePlot.Help.keyboard_shortcuts()</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a><span class="s1">        --------------------------------------------------------------</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="s1">        Alternative access to help from EDIFF package:</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="s1">        &gt;&gt;&gt; import ediff as ed</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="s1">        &gt;&gt;&gt; ed.bkg.InteractivePlot.Help.keyboard_shortcuts()</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="s1">        ===============================================================</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>        
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>    
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>    
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">keyboard_shortcuts</span><span class="p">(</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span><span class="p">):</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">        BGROUND printed help :: InteractivePlot :: Keyboard shortcuts</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>        
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>        <span class="c1"># (1) Define output file names</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="c1"># (objective: all should have correct extensions</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>        <span class="c1"># (but we want to avoid double TXT extension for the main TXT file</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>        <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">output_file</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>        <span class="n">BKGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.bkg&#39;</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>        <span class="n">PNGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">TXTfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">)):</span> <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">TXTfile</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>        
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>        <span class="c1"># (2) Print help including the above defined output file names</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>        
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a><span class="s1">        ============================================================</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="s1">        BGROUND :: Interactive plot :: Keyboard shortcuts</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="s1">        1 = add a background point (at the mouse cursor position)</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a><span class="s1">        2 = delete a background point (close to the mouse cursor)</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="s1">        3 = show the plot with all background points</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="s1">        4 = show the plot with linear spline background</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="s1">        5 = show the plot with quadratic spline background</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="s1">        6 = show the plot with cubic spline background</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a><span class="s1">        a = background points :: load the previously saved</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a><span class="s1">        b = background points :: save to BKG-file&#39;</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a><span class="s1">        (BKG-file = </span><span class="si">{</span><span class="n">BKGfile</span><span class="si">}</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a><span class="s1">        --------</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="s1">        t = subtract current background &amp; save data to TXT-file</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="s1">        (TXT-file = </span><span class="si">{</span><span class="n">TXTfile</span><span class="si">}</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a><span class="s1">        --------</span>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a><span class="s1">        s = save current plot to PNG-file:</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a><span class="s1">        (PNG-file = </span><span class="si">{</span><span class="n">PNGfile</span><span class="si">}</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="s1">        (note: Matplotlib UI shortcut; filename just recommened</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="s1">        Standard Matplotlib UI tools and shortcuts work as well.</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="s1">        See: https://matplotlib.org/stable/users/interactive.html</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a><span class="s1">        ============================================================</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>        
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>        
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>        
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a><span class="k">class</span><span class="w"> </span><span class="nc">WaveletMethod</span><span class="p">:</span>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a><span class="sd">    Class with help functions.</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a><span class="sd">    </span>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a><span class="sd">    * The functions print simple textual help.</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a><span class="sd">    * Here: help to bground.wvlet = WaveletMethod of background subtraction.</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>     
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>    
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a><span class="sd">        BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>        
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>        <span class="c1"># TODO: brief text explanation</span>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>        <span class="c1"># (analogy of the same method in InterativePlot class above</span>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not implemented yet ...&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
             </section>
-                <section id="print_general_description">
-                            <input id="print_general_description-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+                <section id="intelligent_dedent">
+                            <input id="intelligent_dedent-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">print_general_description</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+        <span class="name">intelligent_dedent</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
 
-                <label class="view-source-button" for="print_general_description-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="intelligent_dedent-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#print_general_description"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="print_general_description-20"><a href="#print_general_description-20"><span class="linenos">20</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_general_description</span><span class="p">():</span>
-</span><span id="print_general_description-21"><a href="#print_general_description-21"><span class="linenos">21</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="print_general_description-22"><a href="#print_general_description-22"><span class="linenos">22</span></a><span class="sd">    Print help - BGROUND package :: General description</span>
-</span><span id="print_general_description-23"><a href="#print_general_description-23"><span class="linenos">23</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="print_general_description-24"><a href="#print_general_description-24"><span class="linenos">24</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-25"><a href="#print_general_description-25"><span class="linenos">25</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND package :: General description&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-26"><a href="#print_general_description-26"><span class="linenos">26</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-27"><a href="#print_general_description-27"><span class="linenos">27</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* BGROUND = semi-automatic removal of background in XY-data&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-28"><a href="#print_general_description-28"><span class="linenos">28</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* XY-data = usually a file with two (or more) columns&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-29"><a href="#print_general_description-29"><span class="linenos">29</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  one of the columns = X-data, some other column = Y-data&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-30"><a href="#print_general_description-30"><span class="linenos">30</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* semi-automatic removal = user defines background points&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-31"><a href="#print_general_description-31"><span class="linenos">31</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  and computer does the rest&#39;</span><span class="p">)</span>
-</span><span id="print_general_description-32"><a href="#print_general_description-32"><span class="linenos">32</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
+    <a class="headerlink" href="#intelligent_dedent"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="intelligent_dedent-36"><a href="#intelligent_dedent-36"><span class="linenos">36</span></a><span class="k">def</span><span class="w"> </span><span class="nf">intelligent_dedent</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="intelligent_dedent-37"><a href="#intelligent_dedent-37"><span class="linenos">37</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="intelligent_dedent-38"><a href="#intelligent_dedent-38"><span class="linenos">38</span></a><span class="sd">    Intelligent dedentation - print multi-line string reasonably.</span>
+</span><span id="intelligent_dedent-39"><a href="#intelligent_dedent-39"><span class="linenos">39</span></a>
+</span><span id="intelligent_dedent-40"><a href="#intelligent_dedent-40"><span class="linenos">40</span></a><span class="sd">    Parameters</span>
+</span><span id="intelligent_dedent-41"><a href="#intelligent_dedent-41"><span class="linenos">41</span></a><span class="sd">    ----------</span>
+</span><span id="intelligent_dedent-42"><a href="#intelligent_dedent-42"><span class="linenos">42</span></a><span class="sd">    text : str</span>
+</span><span id="intelligent_dedent-43"><a href="#intelligent_dedent-43"><span class="linenos">43</span></a><span class="sd">        A multi-line string to print.</span>
+</span><span id="intelligent_dedent-44"><a href="#intelligent_dedent-44"><span class="linenos">44</span></a><span class="sd">        The initial Python indentation is ignored (Python dedentation).</span>
+</span><span id="intelligent_dedent-45"><a href="#intelligent_dedent-45"><span class="linenos">45</span></a><span class="sd">        The internal string indentation is preserved (internal indentation).</span>
+</span><span id="intelligent_dedent-46"><a href="#intelligent_dedent-46"><span class="linenos">46</span></a>
+</span><span id="intelligent_dedent-47"><a href="#intelligent_dedent-47"><span class="linenos">47</span></a><span class="sd">    Returns</span>
+</span><span id="intelligent_dedent-48"><a href="#intelligent_dedent-48"><span class="linenos">48</span></a><span class="sd">    -------</span>
+</span><span id="intelligent_dedent-49"><a href="#intelligent_dedent-49"><span class="linenos">49</span></a><span class="sd">    str</span>
+</span><span id="intelligent_dedent-50"><a href="#intelligent_dedent-50"><span class="linenos">50</span></a><span class="sd">        Processed string after inteligent dedentation.</span>
+</span><span id="intelligent_dedent-51"><a href="#intelligent_dedent-51"><span class="linenos">51</span></a><span class="sd">        </span>
+</span><span id="intelligent_dedent-52"><a href="#intelligent_dedent-52"><span class="linenos">52</span></a><span class="sd">    Technical notes</span>
+</span><span id="intelligent_dedent-53"><a href="#intelligent_dedent-53"><span class="linenos">53</span></a><span class="sd">    ---------------</span>
+</span><span id="intelligent_dedent-54"><a href="#intelligent_dedent-54"><span class="linenos">54</span></a><span class="sd">    * This function is used in printed help.</span>
+</span><span id="intelligent_dedent-55"><a href="#intelligent_dedent-55"><span class="linenos">55</span></a><span class="sd">    * The printed help messages are typically multiline texts.</span>
+</span><span id="intelligent_dedent-56"><a href="#intelligent_dedent-56"><span class="linenos">56</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="intelligent_dedent-57"><a href="#intelligent_dedent-57"><span class="linenos">57</span></a>    
+</span><span id="intelligent_dedent-58"><a href="#intelligent_dedent-58"><span class="linenos">58</span></a>    <span class="c1"># The following algorithm created with AI/ChGPT.</span>
+</span><span id="intelligent_dedent-59"><a href="#intelligent_dedent-59"><span class="linenos">59</span></a>    <span class="c1"># The code was slightly simplified - extra commands removed.</span>
+</span><span id="intelligent_dedent-60"><a href="#intelligent_dedent-60"><span class="linenos">60</span></a>    <span class="c1"># Original comments were improved + additional comments were added.</span>
+</span><span id="intelligent_dedent-61"><a href="#intelligent_dedent-61"><span class="linenos">61</span></a>    
+</span><span id="intelligent_dedent-62"><a href="#intelligent_dedent-62"><span class="linenos">62</span></a>    <span class="c1"># Split {text} into lines and ignore empty leading/trailing ones</span>
+</span><span id="intelligent_dedent-63"><a href="#intelligent_dedent-63"><span class="linenos">63</span></a>    <span class="c1"># (note #1: line.strip() returns falsi if it is an empty line</span>
+</span><span id="intelligent_dedent-64"><a href="#intelligent_dedent-64"><span class="linenos">64</span></a>    <span class="c1"># (note #2: the algorithm can delete </span>
+</span><span id="intelligent_dedent-65"><a href="#intelligent_dedent-65"><span class="linenos">65</span></a>    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+</span><span id="intelligent_dedent-66"><a href="#intelligent_dedent-66"><span class="linenos">66</span></a>    <span class="c1"># Remove possible empty line(s) at the beginning</span>
+</span><span id="intelligent_dedent-67"><a href="#intelligent_dedent-67"><span class="linenos">67</span></a>    <span class="k">while</span> <span class="n">lines</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+</span><span id="intelligent_dedent-68"><a href="#intelligent_dedent-68"><span class="linenos">68</span></a>        <span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="intelligent_dedent-69"><a href="#intelligent_dedent-69"><span class="linenos">69</span></a>    <span class="c1"># Remove possible empty line(s) at the end</span>
+</span><span id="intelligent_dedent-70"><a href="#intelligent_dedent-70"><span class="linenos">70</span></a>    <span class="k">while</span> <span class="n">lines</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+</span><span id="intelligent_dedent-71"><a href="#intelligent_dedent-71"><span class="linenos">71</span></a>        <span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</span><span id="intelligent_dedent-72"><a href="#intelligent_dedent-72"><span class="linenos">72</span></a>    <span class="c1"># Return empty string if the multiline string contained just empty lines</span>
+</span><span id="intelligent_dedent-73"><a href="#intelligent_dedent-73"><span class="linenos">73</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">:</span>
+</span><span id="intelligent_dedent-74"><a href="#intelligent_dedent-74"><span class="linenos">74</span></a>        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+</span><span id="intelligent_dedent-75"><a href="#intelligent_dedent-75"><span class="linenos">75</span></a>
+</span><span id="intelligent_dedent-76"><a href="#intelligent_dedent-76"><span class="linenos">76</span></a>    <span class="c1"># Find minimum indentation (tabs or spaces) among non-empty lines.</span>
+</span><span id="intelligent_dedent-77"><a href="#intelligent_dedent-77"><span class="linenos">77</span></a>    <span class="c1"># (note #1: line.strip() returns false if it is an empty line</span>
+</span><span id="intelligent_dedent-78"><a href="#intelligent_dedent-78"><span class="linenos">78</span></a>    <span class="c1"># (note #2: re.match(r&#39;^[\t]*&#39;,line).groupt(0) = initial tabs = \t chars</span>
+</span><span id="intelligent_dedent-79"><a href="#intelligent_dedent-79"><span class="linenos">79</span></a>    <span class="c1"># (... line with two tabs contains \t\t at the beginning = 2 chars</span>
+</span><span id="intelligent_dedent-80"><a href="#intelligent_dedent-80"><span class="linenos">80</span></a>    <span class="c1"># (... the same is done for spaces =&gt; we use r&#39;^[ \t]*&#39; - space is there</span>
+</span><span id="intelligent_dedent-81"><a href="#intelligent_dedent-81"><span class="linenos">81</span></a>    <span class="n">indent_levels</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="intelligent_dedent-82"><a href="#intelligent_dedent-82"><span class="linenos">82</span></a>        <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^[ \t]*&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span><span id="intelligent_dedent-83"><a href="#intelligent_dedent-83"><span class="linenos">83</span></a>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="intelligent_dedent-84"><a href="#intelligent_dedent-84"><span class="linenos">84</span></a>    <span class="p">]</span>
+</span><span id="intelligent_dedent-85"><a href="#intelligent_dedent-85"><span class="linenos">85</span></a>    <span class="n">min_indent</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indent_levels</span><span class="p">)</span>
+</span><span id="intelligent_dedent-86"><a href="#intelligent_dedent-86"><span class="linenos">86</span></a>
+</span><span id="intelligent_dedent-87"><a href="#intelligent_dedent-87"><span class="linenos">87</span></a>    <span class="c1"># Remove {min_indent} characters from the start of each line</span>
+</span><span id="intelligent_dedent-88"><a href="#intelligent_dedent-88"><span class="linenos">88</span></a>    <span class="c1"># (this is where some unnecessary/extra commands were removed</span>
+</span><span id="intelligent_dedent-89"><a href="#intelligent_dedent-89"><span class="linenos">89</span></a>    <span class="n">dedented</span> <span class="o">=</span> <span class="p">[</span> <span class="n">line</span><span class="p">[</span><span class="n">min_indent</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span> <span class="p">]</span>
+</span><span id="intelligent_dedent-90"><a href="#intelligent_dedent-90"><span class="linenos">90</span></a>    <span class="k">return</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dedented</span><span class="p">))</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Print help - BGROUND package :: General description</p>
+            <div class="docstring"><p>Intelligent dedentation - print multi-line string reasonably.</p>
+
+<h6 id="parameters">Parameters</h6>
+
+<ul>
+<li><strong>text</strong> (str):
+A multi-line string to print.
+The initial Python indentation is ignored (Python dedentation).
+The internal string indentation is preserved (internal indentation).</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>str</strong>: Processed string after inteligent dedentation.</li>
+</ul>
+
+<h6 id="technical-notes">Technical notes</h6>
+
+<ul>
+<li>This function is used in printed help.</li>
+<li>The printed help messages are typically multiline texts.</li>
+</ul>
 </div>
 
 
                 </section>
-                <section id="print_how_it_works">
-                            <input id="print_how_it_works-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                <section id="GeneralHelp">
+                            <input id="GeneralHelp-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
             
-        <span class="def">def</span>
-        <span class="name">print_how_it_works</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+    <span class="def">class</span>
+    <span class="name">GeneralHelp</span>:
 
-                <label class="view-source-button" for="print_how_it_works-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="GeneralHelp-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#print_how_it_works"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="print_how_it_works-35"><a href="#print_how_it_works-35"><span class="linenos">35</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_how_it_works</span><span class="p">():</span>
-</span><span id="print_how_it_works-36"><a href="#print_how_it_works-36"><span class="linenos">36</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="print_how_it_works-37"><a href="#print_how_it_works-37"><span class="linenos">37</span></a><span class="sd">    Print help - BGROUND package :: How does it work?&#39;</span>
-</span><span id="print_how_it_works-38"><a href="#print_how_it_works-38"><span class="linenos">38</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="print_how_it_works-39"><a href="#print_how_it_works-39"><span class="linenos">39</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-40"><a href="#print_how_it_works-40"><span class="linenos">40</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND package :: How it works?&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-41"><a href="#print_how_it_works-41"><span class="linenos">41</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-42"><a href="#print_how_it_works-42"><span class="linenos">42</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* BGROUND opens Matplotlib interactive plot&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-43"><a href="#print_how_it_works-43"><span class="linenos">43</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* the user defines backround points with mouse and keyboard&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-44"><a href="#print_how_it_works-44"><span class="linenos">44</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* mouse actions/events are Matplotlib UI defaults&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-45"><a href="#print_how_it_works-45"><span class="linenos">45</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* keyboard actions/events are defined by the program&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-46"><a href="#print_how_it_works-46"><span class="linenos">46</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - keys for background definition: 1,2,3,4,5,6&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-47"><a href="#print_how_it_works-47"><span class="linenos">47</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - keys for saving the results   : a,b,t,s&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-48"><a href="#print_how_it_works-48"><span class="linenos">48</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - basic help is printed when the interactive plot opens&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-49"><a href="#print_how_it_works-49"><span class="linenos">49</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - more details: bground.help.print_all_keyboard_shortcuts&#39;</span><span class="p">)</span>
-</span><span id="print_how_it_works-50"><a href="#print_how_it_works-50"><span class="linenos">50</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
+    <a class="headerlink" href="#GeneralHelp"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="GeneralHelp-93"><a href="#GeneralHelp-93"><span class="linenos"> 93</span></a><span class="k">class</span><span class="w"> </span><span class="nc">GeneralHelp</span><span class="p">:</span>
+</span><span id="GeneralHelp-94"><a href="#GeneralHelp-94"><span class="linenos"> 94</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-95"><a href="#GeneralHelp-95"><span class="linenos"> 95</span></a><span class="sd">    Class with help functions.</span>
+</span><span id="GeneralHelp-96"><a href="#GeneralHelp-96"><span class="linenos"> 96</span></a><span class="sd">    </span>
+</span><span id="GeneralHelp-97"><a href="#GeneralHelp-97"><span class="linenos"> 97</span></a><span class="sd">    * The functions print simple textual help.</span>
+</span><span id="GeneralHelp-98"><a href="#GeneralHelp-98"><span class="linenos"> 98</span></a><span class="sd">    * Here: general help to whole bground package.</span>
+</span><span id="GeneralHelp-99"><a href="#GeneralHelp-99"><span class="linenos"> 99</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-100"><a href="#GeneralHelp-100"><span class="linenos">100</span></a>    
+</span><span id="GeneralHelp-101"><a href="#GeneralHelp-101"><span class="linenos">101</span></a>    
+</span><span id="GeneralHelp-102"><a href="#GeneralHelp-102"><span class="linenos">102</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">brief_intro</span><span class="p">():</span>
+</span><span id="GeneralHelp-103"><a href="#GeneralHelp-103"><span class="linenos">103</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-104"><a href="#GeneralHelp-104"><span class="linenos">104</span></a><span class="sd">        BGROUND printed help :: Brief introduction</span>
+</span><span id="GeneralHelp-105"><a href="#GeneralHelp-105"><span class="linenos">105</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-106"><a href="#GeneralHelp-106"><span class="linenos">106</span></a>        
+</span><span id="GeneralHelp-107"><a href="#GeneralHelp-107"><span class="linenos">107</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-108"><a href="#GeneralHelp-108"><span class="linenos">108</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp-109"><a href="#GeneralHelp-109"><span class="linenos">109</span></a><span class="s1">        BGROUND package :: background subtraction in XY-data</span>
+</span><span id="GeneralHelp-110"><a href="#GeneralHelp-110"><span class="linenos">110</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp-111"><a href="#GeneralHelp-111"><span class="linenos">111</span></a><span class="s1">        * XY-data = usually a file with two (or more) columns</span>
+</span><span id="GeneralHelp-112"><a href="#GeneralHelp-112"><span class="linenos">112</span></a><span class="s1">          one of the columns = X-data, some other column = Y-data</span>
+</span><span id="GeneralHelp-113"><a href="#GeneralHelp-113"><span class="linenos">113</span></a><span class="s1">          the user can select columns + specify other props of the input</span>
+</span><span id="GeneralHelp-114"><a href="#GeneralHelp-114"><span class="linenos">114</span></a><span class="s1">        * semi-automatic bkg subtraction = select InteractivePlot method</span>
+</span><span id="GeneralHelp-115"><a href="#GeneralHelp-115"><span class="linenos">115</span></a><span class="s1">          define bkg points with a mouse and keyboard</span>
+</span><span id="GeneralHelp-116"><a href="#GeneralHelp-116"><span class="linenos">116</span></a><span class="s1">          and computer does the rest</span>
+</span><span id="GeneralHelp-117"><a href="#GeneralHelp-117"><span class="linenos">117</span></a><span class="s1">        * automatic bkg subtraction = select one of automatic methods</span>
+</span><span id="GeneralHelp-118"><a href="#GeneralHelp-118"><span class="linenos">118</span></a><span class="s1">          define input parameters of the method or use defaults</span>
+</span><span id="GeneralHelp-119"><a href="#GeneralHelp-119"><span class="linenos">119</span></a><span class="s1">          and computer does the rest</span>
+</span><span id="GeneralHelp-120"><a href="#GeneralHelp-120"><span class="linenos">120</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp-121"><a href="#GeneralHelp-121"><span class="linenos">121</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-122"><a href="#GeneralHelp-122"><span class="linenos">122</span></a>        
+</span><span id="GeneralHelp-123"><a href="#GeneralHelp-123"><span class="linenos">123</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span><span id="GeneralHelp-124"><a href="#GeneralHelp-124"><span class="linenos">124</span></a>        
+</span><span id="GeneralHelp-125"><a href="#GeneralHelp-125"><span class="linenos">125</span></a>    
+</span><span id="GeneralHelp-126"><a href="#GeneralHelp-126"><span class="linenos">126</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="GeneralHelp-127"><a href="#GeneralHelp-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-128"><a href="#GeneralHelp-128"><span class="linenos">128</span></a><span class="sd">        BGROUND printed help :: Where to find additional help</span>
+</span><span id="GeneralHelp-129"><a href="#GeneralHelp-129"><span class="linenos">129</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-130"><a href="#GeneralHelp-130"><span class="linenos">130</span></a>        
+</span><span id="GeneralHelp-131"><a href="#GeneralHelp-131"><span class="linenos">131</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-132"><a href="#GeneralHelp-132"><span class="linenos">132</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp-133"><a href="#GeneralHelp-133"><span class="linenos">133</span></a><span class="s1">        BGROUND package :: where to find more help</span>
+</span><span id="GeneralHelp-134"><a href="#GeneralHelp-134"><span class="linenos">134</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp-135"><a href="#GeneralHelp-135"><span class="linenos">135</span></a><span class="s1">        Documentation + examples in www:</span>
+</span><span id="GeneralHelp-136"><a href="#GeneralHelp-136"><span class="linenos">136</span></a><span class="s1">        * GitHub pages : https://mirekslouf.github.io/bground</span>
+</span><span id="GeneralHelp-137"><a href="#GeneralHelp-137"><span class="linenos">137</span></a><span class="s1">        * GitHub docum : https://mirekslouf.github.io/bground/docs</span>
+</span><span id="GeneralHelp-138"><a href="#GeneralHelp-138"><span class="linenos">138</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp-139"><a href="#GeneralHelp-139"><span class="linenos">139</span></a><span class="s1">        Additional help to the individual bkgr subtraction methods:</span>
+</span><span id="GeneralHelp-140"><a href="#GeneralHelp-140"><span class="linenos">140</span></a><span class="s1">        &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="GeneralHelp-141"><a href="#GeneralHelp-141"><span class="linenos">141</span></a><span class="s1">        &gt;&gt;&gt; bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="GeneralHelp-142"><a href="#GeneralHelp-142"><span class="linenos">142</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp-143"><a href="#GeneralHelp-143"><span class="linenos">143</span></a><span class="s1">        Alternative access to help functions within ediff package</span>
+</span><span id="GeneralHelp-144"><a href="#GeneralHelp-144"><span class="linenos">144</span></a><span class="s1">        &gt;&gt;&gt; import ediff as ed</span>
+</span><span id="GeneralHelp-145"><a href="#GeneralHelp-145"><span class="linenos">145</span></a><span class="s1">        &gt;&gt;&gt; ed.bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="GeneralHelp-146"><a href="#GeneralHelp-146"><span class="linenos">146</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp-147"><a href="#GeneralHelp-147"><span class="linenos">147</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp-148"><a href="#GeneralHelp-148"><span class="linenos">148</span></a>        
+</span><span id="GeneralHelp-149"><a href="#GeneralHelp-149"><span class="linenos">149</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Print help - BGROUND package :: How does it work?'</p>
+            <div class="docstring"><p>Class with help functions.</p>
+
+<ul>
+<li>The functions print simple textual help.</li>
+<li>Here: general help to whole bground package.</li>
+</ul>
 </div>
 
 
+                            <div id="GeneralHelp.brief_intro" class="classattr">
+                                        <input id="GeneralHelp.brief_intro-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">brief_intro</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="GeneralHelp.brief_intro-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#GeneralHelp.brief_intro"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="GeneralHelp.brief_intro-102"><a href="#GeneralHelp.brief_intro-102"><span class="linenos">102</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">brief_intro</span><span class="p">():</span>
+</span><span id="GeneralHelp.brief_intro-103"><a href="#GeneralHelp.brief_intro-103"><span class="linenos">103</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.brief_intro-104"><a href="#GeneralHelp.brief_intro-104"><span class="linenos">104</span></a><span class="sd">        BGROUND printed help :: Brief introduction</span>
+</span><span id="GeneralHelp.brief_intro-105"><a href="#GeneralHelp.brief_intro-105"><span class="linenos">105</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.brief_intro-106"><a href="#GeneralHelp.brief_intro-106"><span class="linenos">106</span></a>        
+</span><span id="GeneralHelp.brief_intro-107"><a href="#GeneralHelp.brief_intro-107"><span class="linenos">107</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.brief_intro-108"><a href="#GeneralHelp.brief_intro-108"><span class="linenos">108</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp.brief_intro-109"><a href="#GeneralHelp.brief_intro-109"><span class="linenos">109</span></a><span class="s1">        BGROUND package :: background subtraction in XY-data</span>
+</span><span id="GeneralHelp.brief_intro-110"><a href="#GeneralHelp.brief_intro-110"><span class="linenos">110</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp.brief_intro-111"><a href="#GeneralHelp.brief_intro-111"><span class="linenos">111</span></a><span class="s1">        * XY-data = usually a file with two (or more) columns</span>
+</span><span id="GeneralHelp.brief_intro-112"><a href="#GeneralHelp.brief_intro-112"><span class="linenos">112</span></a><span class="s1">          one of the columns = X-data, some other column = Y-data</span>
+</span><span id="GeneralHelp.brief_intro-113"><a href="#GeneralHelp.brief_intro-113"><span class="linenos">113</span></a><span class="s1">          the user can select columns + specify other props of the input</span>
+</span><span id="GeneralHelp.brief_intro-114"><a href="#GeneralHelp.brief_intro-114"><span class="linenos">114</span></a><span class="s1">        * semi-automatic bkg subtraction = select InteractivePlot method</span>
+</span><span id="GeneralHelp.brief_intro-115"><a href="#GeneralHelp.brief_intro-115"><span class="linenos">115</span></a><span class="s1">          define bkg points with a mouse and keyboard</span>
+</span><span id="GeneralHelp.brief_intro-116"><a href="#GeneralHelp.brief_intro-116"><span class="linenos">116</span></a><span class="s1">          and computer does the rest</span>
+</span><span id="GeneralHelp.brief_intro-117"><a href="#GeneralHelp.brief_intro-117"><span class="linenos">117</span></a><span class="s1">        * automatic bkg subtraction = select one of automatic methods</span>
+</span><span id="GeneralHelp.brief_intro-118"><a href="#GeneralHelp.brief_intro-118"><span class="linenos">118</span></a><span class="s1">          define input parameters of the method or use defaults</span>
+</span><span id="GeneralHelp.brief_intro-119"><a href="#GeneralHelp.brief_intro-119"><span class="linenos">119</span></a><span class="s1">          and computer does the rest</span>
+</span><span id="GeneralHelp.brief_intro-120"><a href="#GeneralHelp.brief_intro-120"><span class="linenos">120</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp.brief_intro-121"><a href="#GeneralHelp.brief_intro-121"><span class="linenos">121</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.brief_intro-122"><a href="#GeneralHelp.brief_intro-122"><span class="linenos">122</span></a>        
+</span><span id="GeneralHelp.brief_intro-123"><a href="#GeneralHelp.brief_intro-123"><span class="linenos">123</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>BGROUND printed help :: Brief introduction</p>
+</div>
+
+
+                            </div>
+                            <div id="GeneralHelp.more_help" class="classattr">
+                                        <input id="GeneralHelp.more_help-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">more_help</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="GeneralHelp.more_help-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#GeneralHelp.more_help"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="GeneralHelp.more_help-126"><a href="#GeneralHelp.more_help-126"><span class="linenos">126</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="GeneralHelp.more_help-127"><a href="#GeneralHelp.more_help-127"><span class="linenos">127</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.more_help-128"><a href="#GeneralHelp.more_help-128"><span class="linenos">128</span></a><span class="sd">        BGROUND printed help :: Where to find additional help</span>
+</span><span id="GeneralHelp.more_help-129"><a href="#GeneralHelp.more_help-129"><span class="linenos">129</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.more_help-130"><a href="#GeneralHelp.more_help-130"><span class="linenos">130</span></a>        
+</span><span id="GeneralHelp.more_help-131"><a href="#GeneralHelp.more_help-131"><span class="linenos">131</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.more_help-132"><a href="#GeneralHelp.more_help-132"><span class="linenos">132</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp.more_help-133"><a href="#GeneralHelp.more_help-133"><span class="linenos">133</span></a><span class="s1">        BGROUND package :: where to find more help</span>
+</span><span id="GeneralHelp.more_help-134"><a href="#GeneralHelp.more_help-134"><span class="linenos">134</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp.more_help-135"><a href="#GeneralHelp.more_help-135"><span class="linenos">135</span></a><span class="s1">        Documentation + examples in www:</span>
+</span><span id="GeneralHelp.more_help-136"><a href="#GeneralHelp.more_help-136"><span class="linenos">136</span></a><span class="s1">        * GitHub pages : https://mirekslouf.github.io/bground</span>
+</span><span id="GeneralHelp.more_help-137"><a href="#GeneralHelp.more_help-137"><span class="linenos">137</span></a><span class="s1">        * GitHub docum : https://mirekslouf.github.io/bground/docs</span>
+</span><span id="GeneralHelp.more_help-138"><a href="#GeneralHelp.more_help-138"><span class="linenos">138</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp.more_help-139"><a href="#GeneralHelp.more_help-139"><span class="linenos">139</span></a><span class="s1">        Additional help to the individual bkgr subtraction methods:</span>
+</span><span id="GeneralHelp.more_help-140"><a href="#GeneralHelp.more_help-140"><span class="linenos">140</span></a><span class="s1">        &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="GeneralHelp.more_help-141"><a href="#GeneralHelp.more_help-141"><span class="linenos">141</span></a><span class="s1">        &gt;&gt;&gt; bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="GeneralHelp.more_help-142"><a href="#GeneralHelp.more_help-142"><span class="linenos">142</span></a><span class="s1">        ------------------------------------------------------------------</span>
+</span><span id="GeneralHelp.more_help-143"><a href="#GeneralHelp.more_help-143"><span class="linenos">143</span></a><span class="s1">        Alternative access to help functions within ediff package</span>
+</span><span id="GeneralHelp.more_help-144"><a href="#GeneralHelp.more_help-144"><span class="linenos">144</span></a><span class="s1">        &gt;&gt;&gt; import ediff as ed</span>
+</span><span id="GeneralHelp.more_help-145"><a href="#GeneralHelp.more_help-145"><span class="linenos">145</span></a><span class="s1">        &gt;&gt;&gt; ed.bkg.InteractivePlot.Help.how_it_works()</span>
+</span><span id="GeneralHelp.more_help-146"><a href="#GeneralHelp.more_help-146"><span class="linenos">146</span></a><span class="s1">        ==================================================================</span>
+</span><span id="GeneralHelp.more_help-147"><a href="#GeneralHelp.more_help-147"><span class="linenos">147</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="GeneralHelp.more_help-148"><a href="#GeneralHelp.more_help-148"><span class="linenos">148</span></a>        
+</span><span id="GeneralHelp.more_help-149"><a href="#GeneralHelp.more_help-149"><span class="linenos">149</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>BGROUND printed help :: Where to find additional help</p>
+</div>
+
+
+                            </div>
                 </section>
-                <section id="print_all_keyboard_shortcuts">
-                            <input id="print_all_keyboard_shortcuts-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                <section id="InteractivePlot">
+                            <input id="InteractivePlot-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
             
-        <span class="def">def</span>
-        <span class="name">print_all_keyboard_shortcuts</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span></span><span class="return-annotation">):</span></span>
+    <span class="def">class</span>
+    <span class="name">InteractivePlot</span>:
 
-                <label class="view-source-button" for="print_all_keyboard_shortcuts-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="InteractivePlot-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#print_all_keyboard_shortcuts"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="print_all_keyboard_shortcuts-53"><a href="#print_all_keyboard_shortcuts-53"><span class="linenos">53</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_all_keyboard_shortcuts</span><span class="p">(</span><span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span><span class="p">):</span>
-</span><span id="print_all_keyboard_shortcuts-54"><a href="#print_all_keyboard_shortcuts-54"><span class="linenos">54</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="print_all_keyboard_shortcuts-55"><a href="#print_all_keyboard_shortcuts-55"><span class="linenos">55</span></a><span class="sd">    Print help - BGROUND :: Interactive plot :: Keyboard shortcuts</span>
-</span><span id="print_all_keyboard_shortcuts-56"><a href="#print_all_keyboard_shortcuts-56"><span class="linenos">56</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="print_all_keyboard_shortcuts-57"><a href="#print_all_keyboard_shortcuts-57"><span class="linenos">57</span></a>    
-</span><span id="print_all_keyboard_shortcuts-58"><a href="#print_all_keyboard_shortcuts-58"><span class="linenos">58</span></a>    <span class="c1"># (1) Define output file names</span>
-</span><span id="print_all_keyboard_shortcuts-59"><a href="#print_all_keyboard_shortcuts-59"><span class="linenos">59</span></a>    <span class="c1"># (objective: all should have correct extensions</span>
-</span><span id="print_all_keyboard_shortcuts-60"><a href="#print_all_keyboard_shortcuts-60"><span class="linenos">60</span></a>    <span class="c1"># (but we want to avoid double TXT extension for the main TXT file</span>
-</span><span id="print_all_keyboard_shortcuts-61"><a href="#print_all_keyboard_shortcuts-61"><span class="linenos">61</span></a>    <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">output_file</span>
-</span><span id="print_all_keyboard_shortcuts-62"><a href="#print_all_keyboard_shortcuts-62"><span class="linenos">62</span></a>    <span class="n">BKGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.bkg&#39;</span>
-</span><span id="print_all_keyboard_shortcuts-63"><a href="#print_all_keyboard_shortcuts-63"><span class="linenos">63</span></a>    <span class="n">PNGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
-</span><span id="print_all_keyboard_shortcuts-64"><a href="#print_all_keyboard_shortcuts-64"><span class="linenos">64</span></a>    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">TXTfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">)):</span> <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">TXTfile</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>
-</span><span id="print_all_keyboard_shortcuts-65"><a href="#print_all_keyboard_shortcuts-65"><span class="linenos">65</span></a>    
-</span><span id="print_all_keyboard_shortcuts-66"><a href="#print_all_keyboard_shortcuts-66"><span class="linenos">66</span></a>    <span class="c1"># (2) Print help including the above defined output file names</span>
-</span><span id="print_all_keyboard_shortcuts-67"><a href="#print_all_keyboard_shortcuts-67"><span class="linenos">67</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;============================================================&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-68"><a href="#print_all_keyboard_shortcuts-68"><span class="linenos">68</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND :: Interactive plot :: Keyboard shortcuts&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-69"><a href="#print_all_keyboard_shortcuts-69"><span class="linenos">69</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-70"><a href="#print_all_keyboard_shortcuts-70"><span class="linenos">70</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1 = add a background point (at the mouse cursor position)&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-71"><a href="#print_all_keyboard_shortcuts-71"><span class="linenos">71</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2 = delete a background point (close to the mouse cursor)&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-72"><a href="#print_all_keyboard_shortcuts-72"><span class="linenos">72</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;3 = show the plot with all background points&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-73"><a href="#print_all_keyboard_shortcuts-73"><span class="linenos">73</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;4 = show the plot with linear spline background&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-74"><a href="#print_all_keyboard_shortcuts-74"><span class="linenos">74</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;5 = show the plot with quadratic spline background&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-75"><a href="#print_all_keyboard_shortcuts-75"><span class="linenos">75</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;6 = show the plot with cubic spline background&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-76"><a href="#print_all_keyboard_shortcuts-76"><span class="linenos">76</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-77"><a href="#print_all_keyboard_shortcuts-77"><span class="linenos">77</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;a = background points :: load the previously saved&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-78"><a href="#print_all_keyboard_shortcuts-78"><span class="linenos">78</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;b = background points :: save to BKG-file&#39;</span><span class="p">)</span> 
-</span><span id="print_all_keyboard_shortcuts-79"><a href="#print_all_keyboard_shortcuts-79"><span class="linenos">79</span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(BKG-file = </span><span class="si">{</span><span class="n">BKGfile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-80"><a href="#print_all_keyboard_shortcuts-80"><span class="linenos">80</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-81"><a href="#print_all_keyboard_shortcuts-81"><span class="linenos">81</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;t = subtract current background &amp; save data to TXT-file&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-82"><a href="#print_all_keyboard_shortcuts-82"><span class="linenos">82</span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(TXT-file = </span><span class="si">{</span><span class="n">TXTfile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-83"><a href="#print_all_keyboard_shortcuts-83"><span class="linenos">83</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-84"><a href="#print_all_keyboard_shortcuts-84"><span class="linenos">84</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;s = save current plot to PNG-file:&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-85"><a href="#print_all_keyboard_shortcuts-85"><span class="linenos">85</span></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(PNG-file = </span><span class="si">{</span><span class="n">PNGfile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-86"><a href="#print_all_keyboard_shortcuts-86"><span class="linenos">86</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;(note: Matplotlib UI shortcut; filename just recommened&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-87"><a href="#print_all_keyboard_shortcuts-87"><span class="linenos">87</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-88"><a href="#print_all_keyboard_shortcuts-88"><span class="linenos">88</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Standard Matplotlib UI tools and shortcuts work as well.&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-89"><a href="#print_all_keyboard_shortcuts-89"><span class="linenos">89</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;See: https://matplotlib.org/stable/users/interactive.html&#39;</span><span class="p">)</span>
-</span><span id="print_all_keyboard_shortcuts-90"><a href="#print_all_keyboard_shortcuts-90"><span class="linenos">90</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;============================================================&#39;</span><span class="p">)</span>
+    <a class="headerlink" href="#InteractivePlot"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="InteractivePlot-152"><a href="#InteractivePlot-152"><span class="linenos">152</span></a><span class="k">class</span><span class="w"> </span><span class="nc">InteractivePlot</span><span class="p">:</span>
+</span><span id="InteractivePlot-153"><a href="#InteractivePlot-153"><span class="linenos">153</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-154"><a href="#InteractivePlot-154"><span class="linenos">154</span></a><span class="sd">    Class with help functions.</span>
+</span><span id="InteractivePlot-155"><a href="#InteractivePlot-155"><span class="linenos">155</span></a><span class="sd">    </span>
+</span><span id="InteractivePlot-156"><a href="#InteractivePlot-156"><span class="linenos">156</span></a><span class="sd">    * The functions print simple textual help.</span>
+</span><span id="InteractivePlot-157"><a href="#InteractivePlot-157"><span class="linenos">157</span></a><span class="sd">    * Here: help to bground.iplot = InteractivePlot bkgr subtraction method.</span>
+</span><span id="InteractivePlot-158"><a href="#InteractivePlot-158"><span class="linenos">158</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-159"><a href="#InteractivePlot-159"><span class="linenos">159</span></a>    
+</span><span id="InteractivePlot-160"><a href="#InteractivePlot-160"><span class="linenos">160</span></a>    
+</span><span id="InteractivePlot-161"><a href="#InteractivePlot-161"><span class="linenos">161</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="InteractivePlot-162"><a href="#InteractivePlot-162"><span class="linenos">162</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-163"><a href="#InteractivePlot-163"><span class="linenos">163</span></a><span class="sd">        BGROUND printed help :: InteractivePlot :: How it works</span>
+</span><span id="InteractivePlot-164"><a href="#InteractivePlot-164"><span class="linenos">164</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-165"><a href="#InteractivePlot-165"><span class="linenos">165</span></a>        
+</span><span id="InteractivePlot-166"><a href="#InteractivePlot-166"><span class="linenos">166</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-167"><a href="#InteractivePlot-167"><span class="linenos">167</span></a><span class="s1">        ===============================================================</span>
+</span><span id="InteractivePlot-168"><a href="#InteractivePlot-168"><span class="linenos">168</span></a><span class="s1">        BGROUND :: InteractivePlot :: How it works</span>
+</span><span id="InteractivePlot-169"><a href="#InteractivePlot-169"><span class="linenos">169</span></a><span class="s1">        ---------------------------------------------------------------</span>
+</span><span id="InteractivePlot-170"><a href="#InteractivePlot-170"><span class="linenos">170</span></a><span class="s1">        * BGROUND opens Matplotlib interactive plot</span>
+</span><span id="InteractivePlot-171"><a href="#InteractivePlot-171"><span class="linenos">171</span></a><span class="s1">        * the user defines backround points with mouse and keyboard</span>
+</span><span id="InteractivePlot-172"><a href="#InteractivePlot-172"><span class="linenos">172</span></a><span class="s1">        * mouse actions/events are Matplotlib UI defaults</span>
+</span><span id="InteractivePlot-173"><a href="#InteractivePlot-173"><span class="linenos">173</span></a><span class="s1">        * keyboard shortcuts/actions/events are defined by the program</span>
+</span><span id="InteractivePlot-174"><a href="#InteractivePlot-174"><span class="linenos">174</span></a><span class="s1">          - keys for background definition: 1,2,3,4,5,6</span>
+</span><span id="InteractivePlot-175"><a href="#InteractivePlot-175"><span class="linenos">175</span></a><span class="s1">          - keys for saving the results   : a,b,t,s</span>
+</span><span id="InteractivePlot-176"><a href="#InteractivePlot-176"><span class="linenos">176</span></a><span class="s1">          - basic help is printed when the interactive plot opens</span>
+</span><span id="InteractivePlot-177"><a href="#InteractivePlot-177"><span class="linenos">177</span></a><span class="s1">        --------------------------------------------------------------</span>
+</span><span id="InteractivePlot-178"><a href="#InteractivePlot-178"><span class="linenos">178</span></a><span class="s1">        Complete help on keyboard shortcuts with detailed explanation:</span>
+</span><span id="InteractivePlot-179"><a href="#InteractivePlot-179"><span class="linenos">179</span></a><span class="s1">        &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="InteractivePlot-180"><a href="#InteractivePlot-180"><span class="linenos">180</span></a><span class="s1">        &gt;&gt;&gt; bkg.InteractivePlot.Help.keyboard_shortcuts()</span>
+</span><span id="InteractivePlot-181"><a href="#InteractivePlot-181"><span class="linenos">181</span></a><span class="s1">        --------------------------------------------------------------</span>
+</span><span id="InteractivePlot-182"><a href="#InteractivePlot-182"><span class="linenos">182</span></a><span class="s1">        Alternative access to help from EDIFF package:</span>
+</span><span id="InteractivePlot-183"><a href="#InteractivePlot-183"><span class="linenos">183</span></a><span class="s1">        &gt;&gt;&gt; import ediff as ed</span>
+</span><span id="InteractivePlot-184"><a href="#InteractivePlot-184"><span class="linenos">184</span></a><span class="s1">        &gt;&gt;&gt; ed.bkg.InteractivePlot.Help.keyboard_shortcuts()</span>
+</span><span id="InteractivePlot-185"><a href="#InteractivePlot-185"><span class="linenos">185</span></a><span class="s1">        ===============================================================</span>
+</span><span id="InteractivePlot-186"><a href="#InteractivePlot-186"><span class="linenos">186</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-187"><a href="#InteractivePlot-187"><span class="linenos">187</span></a>        
+</span><span id="InteractivePlot-188"><a href="#InteractivePlot-188"><span class="linenos">188</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span><span id="InteractivePlot-189"><a href="#InteractivePlot-189"><span class="linenos">189</span></a>    
+</span><span id="InteractivePlot-190"><a href="#InteractivePlot-190"><span class="linenos">190</span></a>    
+</span><span id="InteractivePlot-191"><a href="#InteractivePlot-191"><span class="linenos">191</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">keyboard_shortcuts</span><span class="p">(</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span><span class="p">):</span>
+</span><span id="InteractivePlot-192"><a href="#InteractivePlot-192"><span class="linenos">192</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-193"><a href="#InteractivePlot-193"><span class="linenos">193</span></a><span class="sd">        BGROUND printed help :: InteractivePlot :: Keyboard shortcuts</span>
+</span><span id="InteractivePlot-194"><a href="#InteractivePlot-194"><span class="linenos">194</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-195"><a href="#InteractivePlot-195"><span class="linenos">195</span></a>        
+</span><span id="InteractivePlot-196"><a href="#InteractivePlot-196"><span class="linenos">196</span></a>        <span class="c1"># (1) Define output file names</span>
+</span><span id="InteractivePlot-197"><a href="#InteractivePlot-197"><span class="linenos">197</span></a>        <span class="c1"># (objective: all should have correct extensions</span>
+</span><span id="InteractivePlot-198"><a href="#InteractivePlot-198"><span class="linenos">198</span></a>        <span class="c1"># (but we want to avoid double TXT extension for the main TXT file</span>
+</span><span id="InteractivePlot-199"><a href="#InteractivePlot-199"><span class="linenos">199</span></a>        <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">output_file</span>
+</span><span id="InteractivePlot-200"><a href="#InteractivePlot-200"><span class="linenos">200</span></a>        <span class="n">BKGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.bkg&#39;</span>
+</span><span id="InteractivePlot-201"><a href="#InteractivePlot-201"><span class="linenos">201</span></a>        <span class="n">PNGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+</span><span id="InteractivePlot-202"><a href="#InteractivePlot-202"><span class="linenos">202</span></a>        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">TXTfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">)):</span> <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">TXTfile</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>
+</span><span id="InteractivePlot-203"><a href="#InteractivePlot-203"><span class="linenos">203</span></a>        
+</span><span id="InteractivePlot-204"><a href="#InteractivePlot-204"><span class="linenos">204</span></a>        <span class="c1"># (2) Print help including the above defined output file names</span>
+</span><span id="InteractivePlot-205"><a href="#InteractivePlot-205"><span class="linenos">205</span></a>        
+</span><span id="InteractivePlot-206"><a href="#InteractivePlot-206"><span class="linenos">206</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-207"><a href="#InteractivePlot-207"><span class="linenos">207</span></a><span class="s1">        ============================================================</span>
+</span><span id="InteractivePlot-208"><a href="#InteractivePlot-208"><span class="linenos">208</span></a><span class="s1">        BGROUND :: Interactive plot :: Keyboard shortcuts</span>
+</span><span id="InteractivePlot-209"><a href="#InteractivePlot-209"><span class="linenos">209</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="InteractivePlot-210"><a href="#InteractivePlot-210"><span class="linenos">210</span></a><span class="s1">        1 = add a background point (at the mouse cursor position)</span>
+</span><span id="InteractivePlot-211"><a href="#InteractivePlot-211"><span class="linenos">211</span></a><span class="s1">        2 = delete a background point (close to the mouse cursor)</span>
+</span><span id="InteractivePlot-212"><a href="#InteractivePlot-212"><span class="linenos">212</span></a><span class="s1">        3 = show the plot with all background points</span>
+</span><span id="InteractivePlot-213"><a href="#InteractivePlot-213"><span class="linenos">213</span></a><span class="s1">        4 = show the plot with linear spline background</span>
+</span><span id="InteractivePlot-214"><a href="#InteractivePlot-214"><span class="linenos">214</span></a><span class="s1">        5 = show the plot with quadratic spline background</span>
+</span><span id="InteractivePlot-215"><a href="#InteractivePlot-215"><span class="linenos">215</span></a><span class="s1">        6 = show the plot with cubic spline background</span>
+</span><span id="InteractivePlot-216"><a href="#InteractivePlot-216"><span class="linenos">216</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="InteractivePlot-217"><a href="#InteractivePlot-217"><span class="linenos">217</span></a><span class="s1">        a = background points :: load the previously saved</span>
+</span><span id="InteractivePlot-218"><a href="#InteractivePlot-218"><span class="linenos">218</span></a><span class="s1">        b = background points :: save to BKG-file&#39;</span>
+</span><span id="InteractivePlot-219"><a href="#InteractivePlot-219"><span class="linenos">219</span></a><span class="s1">        (BKG-file = </span><span class="si">{</span><span class="n">BKGfile</span><span class="si">}</span>
+</span><span id="InteractivePlot-220"><a href="#InteractivePlot-220"><span class="linenos">220</span></a><span class="s1">        --------</span>
+</span><span id="InteractivePlot-221"><a href="#InteractivePlot-221"><span class="linenos">221</span></a><span class="s1">        t = subtract current background &amp; save data to TXT-file</span>
+</span><span id="InteractivePlot-222"><a href="#InteractivePlot-222"><span class="linenos">222</span></a><span class="s1">        (TXT-file = </span><span class="si">{</span><span class="n">TXTfile</span><span class="si">}</span>
+</span><span id="InteractivePlot-223"><a href="#InteractivePlot-223"><span class="linenos">223</span></a><span class="s1">        --------</span>
+</span><span id="InteractivePlot-224"><a href="#InteractivePlot-224"><span class="linenos">224</span></a><span class="s1">        s = save current plot to PNG-file:</span>
+</span><span id="InteractivePlot-225"><a href="#InteractivePlot-225"><span class="linenos">225</span></a><span class="s1">        (PNG-file = </span><span class="si">{</span><span class="n">PNGfile</span><span class="si">}</span>
+</span><span id="InteractivePlot-226"><a href="#InteractivePlot-226"><span class="linenos">226</span></a><span class="s1">        (note: Matplotlib UI shortcut; filename just recommened</span>
+</span><span id="InteractivePlot-227"><a href="#InteractivePlot-227"><span class="linenos">227</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="InteractivePlot-228"><a href="#InteractivePlot-228"><span class="linenos">228</span></a><span class="s1">        Standard Matplotlib UI tools and shortcuts work as well.</span>
+</span><span id="InteractivePlot-229"><a href="#InteractivePlot-229"><span class="linenos">229</span></a><span class="s1">        See: https://matplotlib.org/stable/users/interactive.html</span>
+</span><span id="InteractivePlot-230"><a href="#InteractivePlot-230"><span class="linenos">230</span></a><span class="s1">        ============================================================</span>
+</span><span id="InteractivePlot-231"><a href="#InteractivePlot-231"><span class="linenos">231</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot-232"><a href="#InteractivePlot-232"><span class="linenos">232</span></a>        
+</span><span id="InteractivePlot-233"><a href="#InteractivePlot-233"><span class="linenos">233</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Print help - BGROUND :: Interactive plot :: Keyboard shortcuts</p>
+            <div class="docstring"><p>Class with help functions.</p>
+
+<ul>
+<li>The functions print simple textual help.</li>
+<li>Here: help to <a href="iplot.html">bground.iplot</a> = InteractivePlot bkgr subtraction method.</li>
+</ul>
 </div>
 
 
+                            <div id="InteractivePlot.how_it_works" class="classattr">
+                                        <input id="InteractivePlot.how_it_works-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">how_it_works</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="InteractivePlot.how_it_works-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#InteractivePlot.how_it_works"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="InteractivePlot.how_it_works-161"><a href="#InteractivePlot.how_it_works-161"><span class="linenos">161</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="InteractivePlot.how_it_works-162"><a href="#InteractivePlot.how_it_works-162"><span class="linenos">162</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.how_it_works-163"><a href="#InteractivePlot.how_it_works-163"><span class="linenos">163</span></a><span class="sd">        BGROUND printed help :: InteractivePlot :: How it works</span>
+</span><span id="InteractivePlot.how_it_works-164"><a href="#InteractivePlot.how_it_works-164"><span class="linenos">164</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.how_it_works-165"><a href="#InteractivePlot.how_it_works-165"><span class="linenos">165</span></a>        
+</span><span id="InteractivePlot.how_it_works-166"><a href="#InteractivePlot.how_it_works-166"><span class="linenos">166</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.how_it_works-167"><a href="#InteractivePlot.how_it_works-167"><span class="linenos">167</span></a><span class="s1">        ===============================================================</span>
+</span><span id="InteractivePlot.how_it_works-168"><a href="#InteractivePlot.how_it_works-168"><span class="linenos">168</span></a><span class="s1">        BGROUND :: InteractivePlot :: How it works</span>
+</span><span id="InteractivePlot.how_it_works-169"><a href="#InteractivePlot.how_it_works-169"><span class="linenos">169</span></a><span class="s1">        ---------------------------------------------------------------</span>
+</span><span id="InteractivePlot.how_it_works-170"><a href="#InteractivePlot.how_it_works-170"><span class="linenos">170</span></a><span class="s1">        * BGROUND opens Matplotlib interactive plot</span>
+</span><span id="InteractivePlot.how_it_works-171"><a href="#InteractivePlot.how_it_works-171"><span class="linenos">171</span></a><span class="s1">        * the user defines backround points with mouse and keyboard</span>
+</span><span id="InteractivePlot.how_it_works-172"><a href="#InteractivePlot.how_it_works-172"><span class="linenos">172</span></a><span class="s1">        * mouse actions/events are Matplotlib UI defaults</span>
+</span><span id="InteractivePlot.how_it_works-173"><a href="#InteractivePlot.how_it_works-173"><span class="linenos">173</span></a><span class="s1">        * keyboard shortcuts/actions/events are defined by the program</span>
+</span><span id="InteractivePlot.how_it_works-174"><a href="#InteractivePlot.how_it_works-174"><span class="linenos">174</span></a><span class="s1">          - keys for background definition: 1,2,3,4,5,6</span>
+</span><span id="InteractivePlot.how_it_works-175"><a href="#InteractivePlot.how_it_works-175"><span class="linenos">175</span></a><span class="s1">          - keys for saving the results   : a,b,t,s</span>
+</span><span id="InteractivePlot.how_it_works-176"><a href="#InteractivePlot.how_it_works-176"><span class="linenos">176</span></a><span class="s1">          - basic help is printed when the interactive plot opens</span>
+</span><span id="InteractivePlot.how_it_works-177"><a href="#InteractivePlot.how_it_works-177"><span class="linenos">177</span></a><span class="s1">        --------------------------------------------------------------</span>
+</span><span id="InteractivePlot.how_it_works-178"><a href="#InteractivePlot.how_it_works-178"><span class="linenos">178</span></a><span class="s1">        Complete help on keyboard shortcuts with detailed explanation:</span>
+</span><span id="InteractivePlot.how_it_works-179"><a href="#InteractivePlot.how_it_works-179"><span class="linenos">179</span></a><span class="s1">        &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="InteractivePlot.how_it_works-180"><a href="#InteractivePlot.how_it_works-180"><span class="linenos">180</span></a><span class="s1">        &gt;&gt;&gt; bkg.InteractivePlot.Help.keyboard_shortcuts()</span>
+</span><span id="InteractivePlot.how_it_works-181"><a href="#InteractivePlot.how_it_works-181"><span class="linenos">181</span></a><span class="s1">        --------------------------------------------------------------</span>
+</span><span id="InteractivePlot.how_it_works-182"><a href="#InteractivePlot.how_it_works-182"><span class="linenos">182</span></a><span class="s1">        Alternative access to help from EDIFF package:</span>
+</span><span id="InteractivePlot.how_it_works-183"><a href="#InteractivePlot.how_it_works-183"><span class="linenos">183</span></a><span class="s1">        &gt;&gt;&gt; import ediff as ed</span>
+</span><span id="InteractivePlot.how_it_works-184"><a href="#InteractivePlot.how_it_works-184"><span class="linenos">184</span></a><span class="s1">        &gt;&gt;&gt; ed.bkg.InteractivePlot.Help.keyboard_shortcuts()</span>
+</span><span id="InteractivePlot.how_it_works-185"><a href="#InteractivePlot.how_it_works-185"><span class="linenos">185</span></a><span class="s1">        ===============================================================</span>
+</span><span id="InteractivePlot.how_it_works-186"><a href="#InteractivePlot.how_it_works-186"><span class="linenos">186</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.how_it_works-187"><a href="#InteractivePlot.how_it_works-187"><span class="linenos">187</span></a>        
+</span><span id="InteractivePlot.how_it_works-188"><a href="#InteractivePlot.how_it_works-188"><span class="linenos">188</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>BGROUND printed help :: InteractivePlot :: How it works</p>
+</div>
+
+
+                            </div>
+                            <div id="InteractivePlot.keyboard_shortcuts" class="classattr">
+                                        <input id="InteractivePlot.keyboard_shortcuts-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">keyboard_shortcuts</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="InteractivePlot.keyboard_shortcuts-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#InteractivePlot.keyboard_shortcuts"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="InteractivePlot.keyboard_shortcuts-191"><a href="#InteractivePlot.keyboard_shortcuts-191"><span class="linenos">191</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">keyboard_shortcuts</span><span class="p">(</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;some_file&#39;</span><span class="p">):</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-192"><a href="#InteractivePlot.keyboard_shortcuts-192"><span class="linenos">192</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-193"><a href="#InteractivePlot.keyboard_shortcuts-193"><span class="linenos">193</span></a><span class="sd">        BGROUND printed help :: InteractivePlot :: Keyboard shortcuts</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-194"><a href="#InteractivePlot.keyboard_shortcuts-194"><span class="linenos">194</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-195"><a href="#InteractivePlot.keyboard_shortcuts-195"><span class="linenos">195</span></a>        
+</span><span id="InteractivePlot.keyboard_shortcuts-196"><a href="#InteractivePlot.keyboard_shortcuts-196"><span class="linenos">196</span></a>        <span class="c1"># (1) Define output file names</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-197"><a href="#InteractivePlot.keyboard_shortcuts-197"><span class="linenos">197</span></a>        <span class="c1"># (objective: all should have correct extensions</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-198"><a href="#InteractivePlot.keyboard_shortcuts-198"><span class="linenos">198</span></a>        <span class="c1"># (but we want to avoid double TXT extension for the main TXT file</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-199"><a href="#InteractivePlot.keyboard_shortcuts-199"><span class="linenos">199</span></a>        <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">output_file</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-200"><a href="#InteractivePlot.keyboard_shortcuts-200"><span class="linenos">200</span></a>        <span class="n">BKGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.bkg&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-201"><a href="#InteractivePlot.keyboard_shortcuts-201"><span class="linenos">201</span></a>        <span class="n">PNGfile</span> <span class="o">=</span> <span class="n">output_file</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-202"><a href="#InteractivePlot.keyboard_shortcuts-202"><span class="linenos">202</span></a>        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">TXTfile</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.txt&#39;</span><span class="p">)):</span> <span class="n">TXTfile</span> <span class="o">=</span> <span class="n">TXTfile</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-203"><a href="#InteractivePlot.keyboard_shortcuts-203"><span class="linenos">203</span></a>        
+</span><span id="InteractivePlot.keyboard_shortcuts-204"><a href="#InteractivePlot.keyboard_shortcuts-204"><span class="linenos">204</span></a>        <span class="c1"># (2) Print help including the above defined output file names</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-205"><a href="#InteractivePlot.keyboard_shortcuts-205"><span class="linenos">205</span></a>        
+</span><span id="InteractivePlot.keyboard_shortcuts-206"><a href="#InteractivePlot.keyboard_shortcuts-206"><span class="linenos">206</span></a>        <span class="n">help_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-207"><a href="#InteractivePlot.keyboard_shortcuts-207"><span class="linenos">207</span></a><span class="s1">        ============================================================</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-208"><a href="#InteractivePlot.keyboard_shortcuts-208"><span class="linenos">208</span></a><span class="s1">        BGROUND :: Interactive plot :: Keyboard shortcuts</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-209"><a href="#InteractivePlot.keyboard_shortcuts-209"><span class="linenos">209</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-210"><a href="#InteractivePlot.keyboard_shortcuts-210"><span class="linenos">210</span></a><span class="s1">        1 = add a background point (at the mouse cursor position)</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-211"><a href="#InteractivePlot.keyboard_shortcuts-211"><span class="linenos">211</span></a><span class="s1">        2 = delete a background point (close to the mouse cursor)</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-212"><a href="#InteractivePlot.keyboard_shortcuts-212"><span class="linenos">212</span></a><span class="s1">        3 = show the plot with all background points</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-213"><a href="#InteractivePlot.keyboard_shortcuts-213"><span class="linenos">213</span></a><span class="s1">        4 = show the plot with linear spline background</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-214"><a href="#InteractivePlot.keyboard_shortcuts-214"><span class="linenos">214</span></a><span class="s1">        5 = show the plot with quadratic spline background</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-215"><a href="#InteractivePlot.keyboard_shortcuts-215"><span class="linenos">215</span></a><span class="s1">        6 = show the plot with cubic spline background</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-216"><a href="#InteractivePlot.keyboard_shortcuts-216"><span class="linenos">216</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-217"><a href="#InteractivePlot.keyboard_shortcuts-217"><span class="linenos">217</span></a><span class="s1">        a = background points :: load the previously saved</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-218"><a href="#InteractivePlot.keyboard_shortcuts-218"><span class="linenos">218</span></a><span class="s1">        b = background points :: save to BKG-file&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-219"><a href="#InteractivePlot.keyboard_shortcuts-219"><span class="linenos">219</span></a><span class="s1">        (BKG-file = </span><span class="si">{</span><span class="n">BKGfile</span><span class="si">}</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-220"><a href="#InteractivePlot.keyboard_shortcuts-220"><span class="linenos">220</span></a><span class="s1">        --------</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-221"><a href="#InteractivePlot.keyboard_shortcuts-221"><span class="linenos">221</span></a><span class="s1">        t = subtract current background &amp; save data to TXT-file</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-222"><a href="#InteractivePlot.keyboard_shortcuts-222"><span class="linenos">222</span></a><span class="s1">        (TXT-file = </span><span class="si">{</span><span class="n">TXTfile</span><span class="si">}</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-223"><a href="#InteractivePlot.keyboard_shortcuts-223"><span class="linenos">223</span></a><span class="s1">        --------</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-224"><a href="#InteractivePlot.keyboard_shortcuts-224"><span class="linenos">224</span></a><span class="s1">        s = save current plot to PNG-file:</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-225"><a href="#InteractivePlot.keyboard_shortcuts-225"><span class="linenos">225</span></a><span class="s1">        (PNG-file = </span><span class="si">{</span><span class="n">PNGfile</span><span class="si">}</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-226"><a href="#InteractivePlot.keyboard_shortcuts-226"><span class="linenos">226</span></a><span class="s1">        (note: Matplotlib UI shortcut; filename just recommened</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-227"><a href="#InteractivePlot.keyboard_shortcuts-227"><span class="linenos">227</span></a><span class="s1">        ------------------------------------------------------------</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-228"><a href="#InteractivePlot.keyboard_shortcuts-228"><span class="linenos">228</span></a><span class="s1">        Standard Matplotlib UI tools and shortcuts work as well.</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-229"><a href="#InteractivePlot.keyboard_shortcuts-229"><span class="linenos">229</span></a><span class="s1">        See: https://matplotlib.org/stable/users/interactive.html</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-230"><a href="#InteractivePlot.keyboard_shortcuts-230"><span class="linenos">230</span></a><span class="s1">        ============================================================</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-231"><a href="#InteractivePlot.keyboard_shortcuts-231"><span class="linenos">231</span></a><span class="s1">        &#39;&#39;&#39;</span>
+</span><span id="InteractivePlot.keyboard_shortcuts-232"><a href="#InteractivePlot.keyboard_shortcuts-232"><span class="linenos">232</span></a>        
+</span><span id="InteractivePlot.keyboard_shortcuts-233"><a href="#InteractivePlot.keyboard_shortcuts-233"><span class="linenos">233</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">intelligent_dedent</span><span class="p">(</span><span class="n">help_text</span><span class="p">))</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>BGROUND printed help :: InteractivePlot :: Keyboard shortcuts</p>
+</div>
+
+
+                            </div>
                 </section>
-                <section id="print_info_about_additional_help_on_www">
-                            <input id="print_info_about_additional_help_on_www-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
+                <section id="WaveletMethod">
+                            <input id="WaveletMethod-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
             
-        <span class="def">def</span>
-        <span class="name">print_info_about_additional_help_on_www</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+    <span class="def">class</span>
+    <span class="name">WaveletMethod</span>:
 
-                <label class="view-source-button" for="print_info_about_additional_help_on_www-view-source"><span>View Source</span></label>
+                <label class="view-source-button" for="WaveletMethod-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#print_info_about_additional_help_on_www"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="print_info_about_additional_help_on_www-93"><a href="#print_info_about_additional_help_on_www-93"><span class="linenos"> 93</span></a><span class="k">def</span><span class="w"> </span><span class="nf">print_info_about_additional_help_on_www</span><span class="p">():</span>
-</span><span id="print_info_about_additional_help_on_www-94"><a href="#print_info_about_additional_help_on_www-94"><span class="linenos"> 94</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="print_info_about_additional_help_on_www-95"><a href="#print_info_about_additional_help_on_www-95"><span class="linenos"> 95</span></a><span class="sd">    Print help - BGROUND package :: Additional help on www</span>
-</span><span id="print_info_about_additional_help_on_www-96"><a href="#print_info_about_additional_help_on_www-96"><span class="linenos"> 96</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="print_info_about_additional_help_on_www-97"><a href="#print_info_about_additional_help_on_www-97"><span class="linenos"> 97</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-98"><a href="#print_info_about_additional_help_on_www-98"><span class="linenos"> 98</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BGROUND package :: Additional help on www&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-99"><a href="#print_info_about_additional_help_on_www-99"><span class="linenos"> 99</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------------------------&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-100"><a href="#print_info_about_additional_help_on_www-100"><span class="linenos">100</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* PyPI    : https://pypi.org/project/bground&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-101"><a href="#print_info_about_additional_help_on_www-101"><span class="linenos">101</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* GitHub  : https://github.com/mirekslouf/bground&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-102"><a href="#print_info_about_additional_help_on_www-102"><span class="linenos">102</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - pages : https://mirekslouf.github.io/bground&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-103"><a href="#print_info_about_additional_help_on_www-103"><span class="linenos">103</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  - docum : https://mirekslouf.github.io/bground/docs&#39;</span><span class="p">)</span>
-</span><span id="print_info_about_additional_help_on_www-104"><a href="#print_info_about_additional_help_on_www-104"><span class="linenos">104</span></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;=============================================================&#39;</span><span class="p">)</span>
+    <a class="headerlink" href="#WaveletMethod"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod-236"><a href="#WaveletMethod-236"><span class="linenos">236</span></a><span class="k">class</span><span class="w"> </span><span class="nc">WaveletMethod</span><span class="p">:</span>
+</span><span id="WaveletMethod-237"><a href="#WaveletMethod-237"><span class="linenos">237</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-238"><a href="#WaveletMethod-238"><span class="linenos">238</span></a><span class="sd">    Class with help functions.</span>
+</span><span id="WaveletMethod-239"><a href="#WaveletMethod-239"><span class="linenos">239</span></a><span class="sd">    </span>
+</span><span id="WaveletMethod-240"><a href="#WaveletMethod-240"><span class="linenos">240</span></a><span class="sd">    * The functions print simple textual help.</span>
+</span><span id="WaveletMethod-241"><a href="#WaveletMethod-241"><span class="linenos">241</span></a><span class="sd">    * Here: help to bground.wvlet = WaveletMethod of background subtraction.</span>
+</span><span id="WaveletMethod-242"><a href="#WaveletMethod-242"><span class="linenos">242</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-243"><a href="#WaveletMethod-243"><span class="linenos">243</span></a>     
+</span><span id="WaveletMethod-244"><a href="#WaveletMethod-244"><span class="linenos">244</span></a>    
+</span><span id="WaveletMethod-245"><a href="#WaveletMethod-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="WaveletMethod-246"><a href="#WaveletMethod-246"><span class="linenos">246</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-247"><a href="#WaveletMethod-247"><span class="linenos">247</span></a><span class="sd">        BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="WaveletMethod-248"><a href="#WaveletMethod-248"><span class="linenos">248</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-249"><a href="#WaveletMethod-249"><span class="linenos">249</span></a>        
+</span><span id="WaveletMethod-250"><a href="#WaveletMethod-250"><span class="linenos">250</span></a>        <span class="c1"># TODO: brief text explanation</span>
+</span><span id="WaveletMethod-251"><a href="#WaveletMethod-251"><span class="linenos">251</span></a>        <span class="c1"># (analogy of the same method in InterativePlot class above</span>
+</span><span id="WaveletMethod-252"><a href="#WaveletMethod-252"><span class="linenos">252</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not implemented yet ...&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Print help - BGROUND package :: Additional help on www</p>
+            <div class="docstring"><p>Class with help functions.</p>
+
+<ul>
+<li>The functions print simple textual help.</li>
+<li>Here: help to <a href="wvlet.html">bground.wvlet</a> = WaveletMethod of background subtraction.</li>
+</ul>
 </div>
 
 
+                            <div id="WaveletMethod.how_it_works" class="classattr">
+                                        <input id="WaveletMethod.how_it_works-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">how_it_works</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="WaveletMethod.how_it_works-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#WaveletMethod.how_it_works"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.how_it_works-245"><a href="#WaveletMethod.how_it_works-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="WaveletMethod.how_it_works-246"><a href="#WaveletMethod.how_it_works-246"><span class="linenos">246</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.how_it_works-247"><a href="#WaveletMethod.how_it_works-247"><span class="linenos">247</span></a><span class="sd">        BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="WaveletMethod.how_it_works-248"><a href="#WaveletMethod.how_it_works-248"><span class="linenos">248</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.how_it_works-249"><a href="#WaveletMethod.how_it_works-249"><span class="linenos">249</span></a>        
+</span><span id="WaveletMethod.how_it_works-250"><a href="#WaveletMethod.how_it_works-250"><span class="linenos">250</span></a>        <span class="c1"># TODO: brief text explanation</span>
+</span><span id="WaveletMethod.how_it_works-251"><a href="#WaveletMethod.how_it_works-251"><span class="linenos">251</span></a>        <span class="c1"># (analogy of the same method in InterativePlot class above</span>
+</span><span id="WaveletMethod.how_it_works-252"><a href="#WaveletMethod.how_it_works-252"><span class="linenos">252</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not implemented yet ...&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>BGROUND printed help :: WaveletMethod :: How it works</p>
+</div>
+
+
+                            </div>
                 </section>
     </main>
 <script>
