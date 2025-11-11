@@ -24,11 +24,8 @@ Installation
 Quick start
 -----------
 * Look at the
-  [worked example](https://www.dropbox.com/scl/fi/l3rripp1pjby50law3jbr/01_bground.nb.pdf?rlkey=x8p2dx4eaea3qepm94y485kk7&st=k27iewfw&dl=0)
+  [worked example](https://drive.google.com/file/d/15kHdMp8PUv8rna-qFwVENhjYGRXsxmHE/view?usp=sharing)
   to see how BGROUND works.
-* Download
-  [complete examples with data](https://www.dropbox.com/scl/fo/08ougjp96dnwr1wqqm7be/AIStLY7i0yb80Yq3xKn1blw?rlkey=806nl015x93qte85feldycsxu&dl=0)
-  and try BGROUND yourself.
 
 Documentation, help and examples
 --------------------------------
