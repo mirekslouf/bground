@@ -1,24 +1,3 @@
-"""
-Module: spectra_trim
----------------------
-Spectrum trimming utility for pre-processing.
-
-* Purpose: automatic trim of a spectrum prior to baseline correction.
-* Key feature: starts trimming from global maximum, preserves main peaks, leaves out singal-less baseline.
-* Parameterized rounds allow different levels of trimming aggressiveness.
-
-Input:
-    ?
-Output:
-    ?
-
-Technical notes:
-    - Multiple trimming rounds defined from low to hard.
-    - Threshold is percentile of the signal (95%) scaled by pct factor.
-    - Ensures a minimum length (number of points) of trimmed spectrum.
-    - Adds baseline tolerance margin before/after main signal to avoid losing edge points.
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 
