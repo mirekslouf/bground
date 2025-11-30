@@ -1,7 +1,7 @@
 """
 Module: baseline_correction
 ---------------------
-Baseline correction for 1D SAED spectra.
+Automatic baseline correction for trimmed 1D SAED spectra.
 
 * Automatic method using iterative exponential fitting.
 * Post-processing removes noise and ensures corrected spectrum
