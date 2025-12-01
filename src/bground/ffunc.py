@@ -1,3 +1,4 @@
+"""
 Module: bground.ffunc
 ---------------------
 Backbround subtraction by fitting the background with a function.
