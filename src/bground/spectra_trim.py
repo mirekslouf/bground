@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 # =============================================================================
 # --- Load data ---
-?
 
 # Handle 1D vs 2D data
 if data.ndim == 1:
