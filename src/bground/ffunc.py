@@ -1,8 +1,10 @@
+# =============================================================================
 """
 Module: bground.ffunc
 ---------------------
 Backbround subtraction by fitting the background with a function.
 """
+# =============================================================================
 
 import numpy as np
 from scipy.optimize import curve_fit
@@ -15,142 +17,142 @@ def trim_data(data, xrange=None, baseline_tol=10, messages=False):
     Parameters
     ----------
     data : 2D numpy.array
-        XYdata = dimensional array with two rows;
-        the array is typically read from a file with two columns.
+        XYdata = dimensional array with two rows.
+        Typically read from a file with two columns.
         The first row/column = X-data.
-        The second row/column = Y-data = intensity/signal
-        from which the bacgkround should be subtracted.
+        The second row/column = Y-data = intensity/signal.
+        Background will be subtracted from this row.
+    xrange : tuple or None
+        Manual trimming range (Xmin, Xmax). Overrides auto-trimming.
     baseline_tol : int
-        Number of points to extend trimming window before and after signal
+        Number of points to extend trimming window before and after detected signal region.
+    messages : bool
+        If True, prints which trim level was applied.
 
     Returns
     -------
-    data : 2D-numpy.array
-        XYdata with trimmed = uninteresting regiouns cut off.
+    data : 2D numpy.array
+        XYdata with trimmed regions cut off.
     """
 
     trimmed = None
     trim_level_used = None
 
     # (1) Left cut (specific for diffraction patterns) ------------------------
-    # (this step should be made optional => additional argument
-    # (start from the first global maximum
-    
+    # Start from the first global maximum.
     imax = np.argmax(data[1])
-    data = data[:,imax:]
-    
+    data = data[:, imax:]
+
     # (2) Define levels of trimming -------------------------------------------
-    # (trial-and-error parametrs, from the lowest to the hardest
-    # (the following code applies all trimming levels)
-    
+    # Trial-and-error parameters, from the lowest to the hardest.
     trim_levels = [
         ("low",    dict(min_len=12, pct=10)),
         ("medium", dict(min_len=8,  pct=30)),
-        ("hard",   dict(min_len=4,  pct=50))]
+        ("hard",   dict(min_len=4,  pct=50))
+    ]
 
     # (3) Start spectrum trimming ---------------------------------------------
-    # (test all above-defined levels
-    
     # (3a) Manual trimming - user defined xrange
     if xrange is not None:
-        xmin,xmax = xrange
-        data = data[:,(xmin<=data[0])&(data[0]<=xmax)]
+        xmin, xmax = xrange
+        data = data[:, (xmin <= data[0]) & (data[0] <= xmax)]
         trimmed = True
-    # (3b) Auto-trimming - estimate and remove uninteresting regons
+
+    # (3b) Auto-trimming - estimate and remove uninteresting regions
     else:
         for name, params in trim_levels:
             pct = params['pct']
             min_len = params['min_len']
-        
-            # Threshold based on 95th percentile scaled by pct
+
+            # Threshold based on 95th percentile scaled by pct.
             threshold = np.percentile(data[1], 95) * pct / 100
             mask = data[1] > threshold
             indices = np.where(mask)[0]
-        
+
             if len(indices) >= min_len:
                 start = max(indices[0] - baseline_tol, 0)
-                end   = min(indices[-1] + baseline_tol, len(data[1])-1)
-                data  = data[:,start:end+1]
+                end   = min(indices[-1] + baseline_tol, len(data[1]) - 1)
+                data = data[:, start:end + 1]
                 trim_level_used = name
                 if messages:
                     print(f'Trim level used: {trim_level_used}')
                 trimmed = True
                 break
-  
+
     # (4) Return trimmed data -------------------------------------------------
-    
     if trimmed is None:
         raise ValueError("Trimming failed, try stronger parameters.")
-        return(None)
     else:
-        return(data)
+        return data
 
-def subtract_background(data, iter_max=20, threshold_factor=1.2, window=10, margin=1e-6):
+
+# =============================================================================
+def subtract_background(data, iter_max=20, threshold_factor=1.2,
+                        margin=1e-6, remove_fake_peak=True):
     """
-    Background subtraction by fitting.
+    Background subtraction using iterative exponential fitting.
 
     Parameters
     ----------
     data : 2D numpy.array
-        XYdata = [x, y] array
+        XYdata = dimensional array with two rows.
+        First row = X-data, second row = Y-data.
     iter_max : int
-        Maximum number of iterations for masking
+        Maximum number of refinement iterations.
     threshold_factor : float
-        Factor to detect peaks above baseline
-    window : int
-        Window for first stable peak detection
+        Factor controlling masking threshold relative to fitted baseline.
     margin : float
-        Small offset for numerical stability
+        Threshold for detecting a fake initial peak.
+    remove_fake_peak : bool
+        If True, removes artificial initial peak if present.
 
     Returns
     -------
-    data_subtracted : 2D numpy.array
-        XYdata with baseline subtracted
+    data : 2D numpy.array
+        XYdata with background subtracted and initial fake-peak removal.
     """
-    x = data[0]
-    data1_masked = data[1].copy()
-    
-    def exp_func(x, a, b, c):
-        return a * np.exp(-b * x) + c
 
-    # --- detect steep drop at start ---
-    N_check = min(30, len(data[1]))
-    dy = np.diff(data[1][:N_check])
-    start_anchor_idx = np.argmin(dy) + 1
+    data_masked = data.copy()
+    data_masked[1] = data[1].copy()
 
-    # --- iterative fit ---
+    def exp_func(data_x, a, b, c):
+        return a * np.exp(-b * data_x) + c
+
+    # Stable initial fit region -----------------------------------------------
+    start_idx = np.argmin(np.diff(data[1][:min(30, len(data[1]))])) + 1
+
+    # Iterative fit & masking ------------------------------------------------
     for _ in range(iter_max):
         popt, _ = curve_fit(
-            exp_func, x[start_anchor_idx:], data1_masked[start_anchor_idx:],
-            p0=[data[1][start_anchor_idx]-data[1][-1], 0.01, data[1][-1]], maxfev=20000
+            exp_func,
+            data[0][start_idx:], data_masked[1][start_idx:],
+            p0=[data[1][start_idx] - data[1][-1], 0.01, data[1][-1]],
+            maxfev=20000
         )
-        baseline_fit = exp_func(x, *popt)
-        baseline_fit = np.minimum(baseline_fit, data[1])
+        baseline = exp_func(data[0], *popt)
+        baseline = np.minimum.accumulate(np.minimum(baseline, data[1]))
+        mask = data[1] > baseline * threshold_factor
+        data_masked[1][mask] = baseline[mask]
 
-        # ensure monotonic baseline
-        for i in range(1, len(baseline_fit)):
-            if baseline_fit[i] > baseline_fit[i-1]:
-                baseline_fit[i] = baseline_fit[i-1]
+    data_subtracted = data[1] - baseline
 
-        mask = data[1] > baseline_fit * threshold_factor
-        data1_masked[mask] = baseline_fit[mask]
+    # Suppression of fake initial peak ----------------------------------------
+    if remove_fake_peak:
 
-    # --- subtract baseline ---
-    data1_subtracted = data[1] - baseline_fit
+        def suppress_initial_peak(data_in, margin):
+            data_copy = data_in.copy()
+            i = 0
+            while i < len(data_copy[1]) and data_copy[1][i] <= margin:
+                i += 1
+            start = i
+            while i < len(data_copy[1]) and data_copy[1][i] > margin:
+                i += 1
+            end = i
+            if start == 0 and end < len(data_copy[1]):
+                data_copy[1][start:end] = 0
+            return data_copy
 
-    # --- zero before first stable peak ---
-    i = 0
-    while i < len(data[1]) - window:
-        if all(data[1][i+j] > baseline_fit[i+j] + margin for j in range(window)):
-            break
-        data1_subtracted[i] = 0
-        i += 1
+        data_masked = suppress_initial_peak(np.vstack([data[0], data_subtracted]), margin)
+        data_subtracted = data_masked[1]
 
-    # --- plateau start mask ---
-    N_plateau_start = 5
-    for i in range(N_plateau_start-1, -1, -1):
-        if all(data[1][i+j] > baseline_fit[i+j] for j in range(window) if i+j < len(data[1])):
-            data1_subtracted[:i+1] = 0
-            break
-
-    return np.vstack([x, data1_subtracted])
+    return np.vstack([data[0], data_subtracted])
