@@ -22,7 +22,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from bground import bdata, bfunc
+from bground.points import bdata 
+from bground.points import bfunc
 import warnings; warnings.filterwarnings("ignore")
 
 # =============================================================================

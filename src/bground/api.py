@@ -39,8 +39,8 @@ More examples for the individual bkgr subtraction methods:
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import bground.bdata, bground.bfunc, bground.help
-import bground.iplot, bground.wvlet
+import bground.points.bdata, bground.points.bfunc, bground.points.help
+import bground.points.iplot
 
 
 def set_plot_parameters(

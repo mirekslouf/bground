@@ -5,24 +5,20 @@ Package: BGROUND
 ----------------
 Semi-automatic background subtraction.
 
-* The package can subtract background in 1D-data = X,Y-data.
-* The X,Y-data are typically saved in a file containing two (or more) columns.
+* The package can subtract background in 1D-data = XY-data.
+* The XY-data are typically saved in a file containing two (or more) columns.
 
 Sub-modules of bground package:
 
 * bground.api = package API, which can be used as a simple UI = user interface
-* bground.bdata = classes/data structures for background definition
-* bground.bfunc = functions and utilities for final background removal
-* bground.help = supplementary functions, which can print help to the package
-* bground.iplot = semi-automatic bkg subtraction with an interactive plot
-* bground.wvlet = automatic background subtraction using wavelet transform
+* bground.points = define background by means of points on XY-curve
 
 Usage of bground package:
 
 * See the initial example at the top of bground.api documentation.
 '''
 
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.
