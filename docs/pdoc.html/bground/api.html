@@ -99,6 +99,12 @@
 
             </li>
             <li>
+                    <a class="class" href="#BaseLines">BaseLines</a>
+                            <ul class="memberlist">
+                </ul>
+
+            </li>
+            <li>
                     <a class="class" href="#WaveletMethod">WaveletMethod</a>
                             <ul class="memberlist">
                         <li>
@@ -784,84 +790,104 @@
 </span><span id="L-600"><a href="#L-600"><span class="linenos">600</span></a>
 </span><span id="L-601"><a href="#L-601"><span class="linenos">601</span></a><span class="k">class</span><span class="w"> </span><span class="nc">RestoreFromPoints</span><span class="p">():</span>
 </span><span id="L-602"><a href="#L-602"><span class="linenos">602</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-603"><a href="#L-603"><span class="linenos">603</span></a><span class="sd">    TODO: This is an empty class; the method is under developlment ....</span>
+</span><span id="L-603"><a href="#L-603"><span class="linenos">603</span></a><span class="sd">    TODO: This is an empty class; the method is under developlment ...</span>
 </span><span id="L-604"><a href="#L-604"><span class="linenos">604</span></a><span class="sd">    &#39;&#39;&#39;</span>
 </span><span id="L-605"><a href="#L-605"><span class="linenos">605</span></a>    <span class="k">pass</span>
 </span><span id="L-606"><a href="#L-606"><span class="linenos">606</span></a>
 </span><span id="L-607"><a href="#L-607"><span class="linenos">607</span></a>
-</span><span id="L-608"><a href="#L-608"><span class="linenos">608</span></a><span class="k">class</span><span class="w"> </span><span class="nc">WaveletMethod</span><span class="p">:</span>
+</span><span id="L-608"><a href="#L-608"><span class="linenos">608</span></a><span class="k">class</span><span class="w"> </span><span class="nc">BaseLines</span><span class="p">():</span>
 </span><span id="L-609"><a href="#L-609"><span class="linenos">609</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-610"><a href="#L-610"><span class="linenos">610</span></a><span class="sd">    TODO: This is an empty class; the method is under development ...</span>
-</span><span id="L-611"><a href="#L-611"><span class="linenos">611</span></a><span class="sd">   </span>
-</span><span id="L-612"><a href="#L-612"><span class="linenos">612</span></a><span class="sd">    WaveletMethod of backround subtraction.</span>
-</span><span id="L-613"><a href="#L-613"><span class="linenos">613</span></a>
-</span><span id="L-614"><a href="#L-614"><span class="linenos">614</span></a><span class="sd">    * Define the input parameters and run the method.</span>
-</span><span id="L-615"><a href="#L-615"><span class="linenos">615</span></a><span class="sd">    * The method is fully automated - it subtracts bkgr and saves the results.</span>
-</span><span id="L-616"><a href="#L-616"><span class="linenos">616</span></a><span class="sd">        </span>
-</span><span id="L-617"><a href="#L-617"><span class="linenos">617</span></a><span class="sd">    Example:</span>
-</span><span id="L-618"><a href="#L-618"><span class="linenos">618</span></a><span class="sd">        </span>
-</span><span id="L-619"><a href="#L-619"><span class="linenos">619</span></a><span class="sd">    &gt;&gt;&gt; # Automated background subtraction with WaveletMethod</span>
-</span><span id="L-620"><a href="#L-620"><span class="linenos">620</span></a><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="L-621"><a href="#L-621"><span class="linenos">621</span></a><span class="sd">    &gt;&gt;&gt; # Import API of BGROUND package</span>
-</span><span id="L-622"><a href="#L-622"><span class="linenos">622</span></a><span class="sd">    &gt;&gt;&gt; import bground.api as bkg</span>
-</span><span id="L-623"><a href="#L-623"><span class="linenos">623</span></a><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="L-624"><a href="#L-624"><span class="linenos">624</span></a><span class="sd">    &gt;&gt;&gt; # Define I/O files</span>
-</span><span id="L-625"><a href="#L-625"><span class="linenos">625</span></a><span class="sd">    &gt;&gt;&gt; IN  = &#39;ed1_raw.txt&#39;</span>
-</span><span id="L-626"><a href="#L-626"><span class="linenos">626</span></a><span class="sd">    &gt;&gt;&gt; OUT = &#39;ed2_bcorr.txt&#39;</span>
-</span><span id="L-627"><a href="#L-627"><span class="linenos">627</span></a><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="L-628"><a href="#L-628"><span class="linenos">628</span></a><span class="sd">    &gt;&gt;&gt; # Define data, plot parameters and background subtraction method</span>
-</span><span id="L-629"><a href="#L-629"><span class="linenos">629</span></a><span class="sd">    &gt;&gt;&gt; DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)</span>
-</span><span id="L-630"><a href="#L-630"><span class="linenos">630</span></a><span class="sd">    &gt;&gt;&gt; PPAR = bkg.PlotParams(OUT,&#39;Pix&#39;,&#39;Intensity&#39;,xlim=[0,200],ylim=[0,180])</span>
-</span><span id="L-631"><a href="#L-631"><span class="linenos">631</span></a><span class="sd">    &gt;&gt;&gt; SMET = bkg.WaveletMethod(DATA, PPAR, ...)</span>
-</span><span id="L-632"><a href="#L-632"><span class="linenos">632</span></a><span class="sd">    &gt;&gt;&gt; </span>
-</span><span id="L-633"><a href="#L-633"><span class="linenos">633</span></a><span class="sd">    &gt;&gt;&gt; # Run the WaveletMethod</span>
-</span><span id="L-634"><a href="#L-634"><span class="linenos">634</span></a><span class="sd">    &gt;&gt;&gt; # (ouput files will be saved automatically at the end of processing </span>
-</span><span id="L-635"><a href="#L-635"><span class="linenos">635</span></a><span class="sd">    &gt;&gt;&gt; SMET.run()</span>
-</span><span id="L-636"><a href="#L-636"><span class="linenos">636</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-637"><a href="#L-637"><span class="linenos">637</span></a>    
-</span><span id="L-638"><a href="#L-638"><span class="linenos">638</span></a>
-</span><span id="L-639"><a href="#L-639"><span class="linenos">639</span></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Help</span><span class="p">():</span>
-</span><span id="L-640"><a href="#L-640"><span class="linenos">640</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-641"><a href="#L-641"><span class="linenos">641</span></a><span class="sd">        Help functions to WaveletMethod of background subtraction.</span>
-</span><span id="L-642"><a href="#L-642"><span class="linenos">642</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="L-643"><a href="#L-643"><span class="linenos">643</span></a>
-</span><span id="L-644"><a href="#L-644"><span class="linenos">644</span></a>    
-</span><span id="L-645"><a href="#L-645"><span class="linenos">645</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
-</span><span id="L-646"><a href="#L-646"><span class="linenos">646</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-647"><a href="#L-647"><span class="linenos">647</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
-</span><span id="L-648"><a href="#L-648"><span class="linenos">648</span></a><span class="sd">            </span>
-</span><span id="L-649"><a href="#L-649"><span class="linenos">649</span></a><span class="sd">            Returns</span>
-</span><span id="L-650"><a href="#L-650"><span class="linenos">650</span></a><span class="sd">            -------</span>
-</span><span id="L-651"><a href="#L-651"><span class="linenos">651</span></a><span class="sd">            None</span>
-</span><span id="L-652"><a href="#L-652"><span class="linenos">652</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="L-653"><a href="#L-653"><span class="linenos">653</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="L-654"><a href="#L-654"><span class="linenos">654</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
-</span><span id="L-655"><a href="#L-655"><span class="linenos">655</span></a>            
-</span><span id="L-656"><a href="#L-656"><span class="linenos">656</span></a>        
-</span><span id="L-657"><a href="#L-657"><span class="linenos">657</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
-</span><span id="L-658"><a href="#L-658"><span class="linenos">658</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-659"><a href="#L-659"><span class="linenos">659</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
-</span><span id="L-660"><a href="#L-660"><span class="linenos">660</span></a><span class="sd">            </span>
-</span><span id="L-661"><a href="#L-661"><span class="linenos">661</span></a><span class="sd">            Returns</span>
-</span><span id="L-662"><a href="#L-662"><span class="linenos">662</span></a><span class="sd">            -------</span>
-</span><span id="L-663"><a href="#L-663"><span class="linenos">663</span></a><span class="sd">            None</span>
-</span><span id="L-664"><a href="#L-664"><span class="linenos">664</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="L-665"><a href="#L-665"><span class="linenos">665</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="L-666"><a href="#L-666"><span class="linenos">666</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
-</span><span id="L-667"><a href="#L-667"><span class="linenos">667</span></a>        
-</span><span id="L-668"><a href="#L-668"><span class="linenos">668</span></a>            
-</span><span id="L-669"><a href="#L-669"><span class="linenos">669</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
-</span><span id="L-670"><a href="#L-670"><span class="linenos">670</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-671"><a href="#L-671"><span class="linenos">671</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
-</span><span id="L-672"><a href="#L-672"><span class="linenos">672</span></a><span class="sd">    </span>
-</span><span id="L-673"><a href="#L-673"><span class="linenos">673</span></a><span class="sd">            Returns</span>
-</span><span id="L-674"><a href="#L-674"><span class="linenos">674</span></a><span class="sd">            -------</span>
-</span><span id="L-675"><a href="#L-675"><span class="linenos">675</span></a><span class="sd">            None</span>
-</span><span id="L-676"><a href="#L-676"><span class="linenos">676</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="L-677"><a href="#L-677"><span class="linenos">677</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="L-678"><a href="#L-678"><span class="linenos">678</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
-</span><span id="L-679"><a href="#L-679"><span class="linenos">679</span></a>            
-</span><span id="L-680"><a href="#L-680"><span class="linenos">680</span></a>            
+</span><span id="L-610"><a href="#L-610"><span class="linenos">610</span></a><span class="sd">    TODO: This is an empty class; the method(s) are under developlment ...</span>
+</span><span id="L-611"><a href="#L-611"><span class="linenos">611</span></a><span class="sd">    </span>
+</span><span id="L-612"><a href="#L-612"><span class="linenos">612</span></a><span class="sd">    Technical notes</span>
+</span><span id="L-613"><a href="#L-613"><span class="linenos">613</span></a><span class="sd">    ---------------</span>
+</span><span id="L-614"><a href="#L-614"><span class="linenos">614</span></a><span class="sd">    </span>
+</span><span id="L-615"><a href="#L-615"><span class="linenos">615</span></a><span class="sd">    * task for Jakub David</span>
+</span><span id="L-616"><a href="#L-616"><span class="linenos">616</span></a><span class="sd">    * methods from pybaselines</span>
+</span><span id="L-617"><a href="#L-617"><span class="linenos">617</span></a><span class="sd">        - https://pypi.org/project/pybaselines/</span>
+</span><span id="L-618"><a href="#L-618"><span class="linenos">618</span></a><span class="sd">    * wrap #1 =&gt; idiff.bkg1d.blines</span>
+</span><span id="L-619"><a href="#L-619"><span class="linenos">619</span></a><span class="sd">        - (1) our input, (2) call (3) our output</span>
+</span><span id="L-620"><a href="#L-620"><span class="linenos">620</span></a><span class="sd">    * wrap #2 =&gt; bground.blines package</span>
+</span><span id="L-621"><a href="#L-621"><span class="linenos">621</span></a><span class="sd">        - this should be very simple - just import</span>
+</span><span id="L-622"><a href="#L-622"><span class="linenos">622</span></a><span class="sd">    * wrap #3 =&gt; this class </span>
+</span><span id="L-623"><a href="#L-623"><span class="linenos">623</span></a><span class="sd">        - this is just a final wrapper, for convenience</span>
+</span><span id="L-624"><a href="#L-624"><span class="linenos">624</span></a><span class="sd">        - sample usage: bground.blines</span>
+</span><span id="L-625"><a href="#L-625"><span class="linenos">625</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-626"><a href="#L-626"><span class="linenos">626</span></a>    
+</span><span id="L-627"><a href="#L-627"><span class="linenos">627</span></a>
+</span><span id="L-628"><a href="#L-628"><span class="linenos">628</span></a><span class="k">class</span><span class="w"> </span><span class="nc">WaveletMethod</span><span class="p">:</span>
+</span><span id="L-629"><a href="#L-629"><span class="linenos">629</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-630"><a href="#L-630"><span class="linenos">630</span></a><span class="sd">    TODO: This is an empty class; the method is under development ...</span>
+</span><span id="L-631"><a href="#L-631"><span class="linenos">631</span></a><span class="sd">   </span>
+</span><span id="L-632"><a href="#L-632"><span class="linenos">632</span></a><span class="sd">    WaveletMethod of backround subtraction.</span>
+</span><span id="L-633"><a href="#L-633"><span class="linenos">633</span></a>
+</span><span id="L-634"><a href="#L-634"><span class="linenos">634</span></a><span class="sd">    * Define the input parameters and run the method.</span>
+</span><span id="L-635"><a href="#L-635"><span class="linenos">635</span></a><span class="sd">    * The method is fully automated - it subtracts bkgr and saves the results.</span>
+</span><span id="L-636"><a href="#L-636"><span class="linenos">636</span></a><span class="sd">        </span>
+</span><span id="L-637"><a href="#L-637"><span class="linenos">637</span></a><span class="sd">    Example:</span>
+</span><span id="L-638"><a href="#L-638"><span class="linenos">638</span></a><span class="sd">        </span>
+</span><span id="L-639"><a href="#L-639"><span class="linenos">639</span></a><span class="sd">    &gt;&gt;&gt; # Automated background subtraction with WaveletMethod</span>
+</span><span id="L-640"><a href="#L-640"><span class="linenos">640</span></a><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="L-641"><a href="#L-641"><span class="linenos">641</span></a><span class="sd">    &gt;&gt;&gt; # Import API of BGROUND package</span>
+</span><span id="L-642"><a href="#L-642"><span class="linenos">642</span></a><span class="sd">    &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="L-643"><a href="#L-643"><span class="linenos">643</span></a><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="L-644"><a href="#L-644"><span class="linenos">644</span></a><span class="sd">    &gt;&gt;&gt; # Define I/O files</span>
+</span><span id="L-645"><a href="#L-645"><span class="linenos">645</span></a><span class="sd">    &gt;&gt;&gt; IN  = &#39;ed1_raw.txt&#39;</span>
+</span><span id="L-646"><a href="#L-646"><span class="linenos">646</span></a><span class="sd">    &gt;&gt;&gt; OUT = &#39;ed2_bcorr.txt&#39;</span>
+</span><span id="L-647"><a href="#L-647"><span class="linenos">647</span></a><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="L-648"><a href="#L-648"><span class="linenos">648</span></a><span class="sd">    &gt;&gt;&gt; # Define data, plot parameters and background subtraction method</span>
+</span><span id="L-649"><a href="#L-649"><span class="linenos">649</span></a><span class="sd">    &gt;&gt;&gt; DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)</span>
+</span><span id="L-650"><a href="#L-650"><span class="linenos">650</span></a><span class="sd">    &gt;&gt;&gt; PPAR = bkg.PlotParams(OUT,&#39;Pix&#39;,&#39;Intensity&#39;,xlim=[0,200],ylim=[0,180])</span>
+</span><span id="L-651"><a href="#L-651"><span class="linenos">651</span></a><span class="sd">    &gt;&gt;&gt; SMET = bkg.WaveletMethod(DATA, PPAR, ...)</span>
+</span><span id="L-652"><a href="#L-652"><span class="linenos">652</span></a><span class="sd">    &gt;&gt;&gt; </span>
+</span><span id="L-653"><a href="#L-653"><span class="linenos">653</span></a><span class="sd">    &gt;&gt;&gt; # Run the WaveletMethod</span>
+</span><span id="L-654"><a href="#L-654"><span class="linenos">654</span></a><span class="sd">    &gt;&gt;&gt; # (ouput files will be saved automatically at the end of processing </span>
+</span><span id="L-655"><a href="#L-655"><span class="linenos">655</span></a><span class="sd">    &gt;&gt;&gt; SMET.run()</span>
+</span><span id="L-656"><a href="#L-656"><span class="linenos">656</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-657"><a href="#L-657"><span class="linenos">657</span></a>    
+</span><span id="L-658"><a href="#L-658"><span class="linenos">658</span></a>
+</span><span id="L-659"><a href="#L-659"><span class="linenos">659</span></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Help</span><span class="p">():</span>
+</span><span id="L-660"><a href="#L-660"><span class="linenos">660</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-661"><a href="#L-661"><span class="linenos">661</span></a><span class="sd">        Help functions to WaveletMethod of background subtraction.</span>
+</span><span id="L-662"><a href="#L-662"><span class="linenos">662</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-663"><a href="#L-663"><span class="linenos">663</span></a>
+</span><span id="L-664"><a href="#L-664"><span class="linenos">664</span></a>    
+</span><span id="L-665"><a href="#L-665"><span class="linenos">665</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
+</span><span id="L-666"><a href="#L-666"><span class="linenos">666</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-667"><a href="#L-667"><span class="linenos">667</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
+</span><span id="L-668"><a href="#L-668"><span class="linenos">668</span></a><span class="sd">            </span>
+</span><span id="L-669"><a href="#L-669"><span class="linenos">669</span></a><span class="sd">            Returns</span>
+</span><span id="L-670"><a href="#L-670"><span class="linenos">670</span></a><span class="sd">            -------</span>
+</span><span id="L-671"><a href="#L-671"><span class="linenos">671</span></a><span class="sd">            None</span>
+</span><span id="L-672"><a href="#L-672"><span class="linenos">672</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="L-673"><a href="#L-673"><span class="linenos">673</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="L-674"><a href="#L-674"><span class="linenos">674</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
+</span><span id="L-675"><a href="#L-675"><span class="linenos">675</span></a>            
+</span><span id="L-676"><a href="#L-676"><span class="linenos">676</span></a>        
+</span><span id="L-677"><a href="#L-677"><span class="linenos">677</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="L-678"><a href="#L-678"><span class="linenos">678</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-679"><a href="#L-679"><span class="linenos">679</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
+</span><span id="L-680"><a href="#L-680"><span class="linenos">680</span></a><span class="sd">            </span>
+</span><span id="L-681"><a href="#L-681"><span class="linenos">681</span></a><span class="sd">            Returns</span>
+</span><span id="L-682"><a href="#L-682"><span class="linenos">682</span></a><span class="sd">            -------</span>
+</span><span id="L-683"><a href="#L-683"><span class="linenos">683</span></a><span class="sd">            None</span>
+</span><span id="L-684"><a href="#L-684"><span class="linenos">684</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="L-685"><a href="#L-685"><span class="linenos">685</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="L-686"><a href="#L-686"><span class="linenos">686</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
+</span><span id="L-687"><a href="#L-687"><span class="linenos">687</span></a>        
+</span><span id="L-688"><a href="#L-688"><span class="linenos">688</span></a>            
+</span><span id="L-689"><a href="#L-689"><span class="linenos">689</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="L-690"><a href="#L-690"><span class="linenos">690</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-691"><a href="#L-691"><span class="linenos">691</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="L-692"><a href="#L-692"><span class="linenos">692</span></a><span class="sd">    </span>
+</span><span id="L-693"><a href="#L-693"><span class="linenos">693</span></a><span class="sd">            Returns</span>
+</span><span id="L-694"><a href="#L-694"><span class="linenos">694</span></a><span class="sd">            -------</span>
+</span><span id="L-695"><a href="#L-695"><span class="linenos">695</span></a><span class="sd">            None</span>
+</span><span id="L-696"><a href="#L-696"><span class="linenos">696</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="L-697"><a href="#L-697"><span class="linenos">697</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="L-698"><a href="#L-698"><span class="linenos">698</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
+</span><span id="L-699"><a href="#L-699"><span class="linenos">699</span></a>            
+</span><span id="L-700"><a href="#L-700"><span class="linenos">700</span></a>            
 </span></pre></div>
 
 
@@ -2190,13 +2216,73 @@ of InteractivePlot; empty class; the method is under development ...</p>
     <a class="headerlink" href="#RestoreFromPoints"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="RestoreFromPoints-602"><a href="#RestoreFromPoints-602"><span class="linenos">602</span></a><span class="k">class</span><span class="w"> </span><span class="nc">RestoreFromPoints</span><span class="p">():</span>
 </span><span id="RestoreFromPoints-603"><a href="#RestoreFromPoints-603"><span class="linenos">603</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="RestoreFromPoints-604"><a href="#RestoreFromPoints-604"><span class="linenos">604</span></a><span class="sd">    TODO: This is an empty class; the method is under developlment ....</span>
+</span><span id="RestoreFromPoints-604"><a href="#RestoreFromPoints-604"><span class="linenos">604</span></a><span class="sd">    TODO: This is an empty class; the method is under developlment ...</span>
 </span><span id="RestoreFromPoints-605"><a href="#RestoreFromPoints-605"><span class="linenos">605</span></a><span class="sd">    &#39;&#39;&#39;</span>
 </span><span id="RestoreFromPoints-606"><a href="#RestoreFromPoints-606"><span class="linenos">606</span></a>    <span class="k">pass</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>TODO: This is an empty class; the method is under developlment ....</p>
+            <div class="docstring"><p>TODO: This is an empty class; the method is under developlment ...</p>
+</div>
+
+
+                </section>
+                <section id="BaseLines">
+                            <input id="BaseLines-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">BaseLines</span>:
+
+                <label class="view-source-button" for="BaseLines-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#BaseLines"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="BaseLines-609"><a href="#BaseLines-609"><span class="linenos">609</span></a><span class="k">class</span><span class="w"> </span><span class="nc">BaseLines</span><span class="p">():</span>
+</span><span id="BaseLines-610"><a href="#BaseLines-610"><span class="linenos">610</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="BaseLines-611"><a href="#BaseLines-611"><span class="linenos">611</span></a><span class="sd">    TODO: This is an empty class; the method(s) are under developlment ...</span>
+</span><span id="BaseLines-612"><a href="#BaseLines-612"><span class="linenos">612</span></a><span class="sd">    </span>
+</span><span id="BaseLines-613"><a href="#BaseLines-613"><span class="linenos">613</span></a><span class="sd">    Technical notes</span>
+</span><span id="BaseLines-614"><a href="#BaseLines-614"><span class="linenos">614</span></a><span class="sd">    ---------------</span>
+</span><span id="BaseLines-615"><a href="#BaseLines-615"><span class="linenos">615</span></a><span class="sd">    </span>
+</span><span id="BaseLines-616"><a href="#BaseLines-616"><span class="linenos">616</span></a><span class="sd">    * task for Jakub David</span>
+</span><span id="BaseLines-617"><a href="#BaseLines-617"><span class="linenos">617</span></a><span class="sd">    * methods from pybaselines</span>
+</span><span id="BaseLines-618"><a href="#BaseLines-618"><span class="linenos">618</span></a><span class="sd">        - https://pypi.org/project/pybaselines/</span>
+</span><span id="BaseLines-619"><a href="#BaseLines-619"><span class="linenos">619</span></a><span class="sd">    * wrap #1 =&gt; idiff.bkg1d.blines</span>
+</span><span id="BaseLines-620"><a href="#BaseLines-620"><span class="linenos">620</span></a><span class="sd">        - (1) our input, (2) call (3) our output</span>
+</span><span id="BaseLines-621"><a href="#BaseLines-621"><span class="linenos">621</span></a><span class="sd">    * wrap #2 =&gt; bground.blines package</span>
+</span><span id="BaseLines-622"><a href="#BaseLines-622"><span class="linenos">622</span></a><span class="sd">        - this should be very simple - just import</span>
+</span><span id="BaseLines-623"><a href="#BaseLines-623"><span class="linenos">623</span></a><span class="sd">    * wrap #3 =&gt; this class </span>
+</span><span id="BaseLines-624"><a href="#BaseLines-624"><span class="linenos">624</span></a><span class="sd">        - this is just a final wrapper, for convenience</span>
+</span><span id="BaseLines-625"><a href="#BaseLines-625"><span class="linenos">625</span></a><span class="sd">        - sample usage: bground.blines</span>
+</span><span id="BaseLines-626"><a href="#BaseLines-626"><span class="linenos">626</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>TODO: This is an empty class; the method(s) are under developlment ...</p>
+
+<h6 id="technical-notes">Technical notes</h6>
+
+<ul>
+<li>task for Jakub David</li>
+<li>methods from pybaselines
+<ul>
+<li><a href="https://pypi.org/project/pybaselines/"><a href="https://pypi.org/project/pybaselines/">https://pypi.org/project/pybaselines/</a></a></li>
+</ul></li>
+<li>wrap #1 =&gt; idiff.bkg1d.blines
+<ul>
+<li>(1) our input, (2) call (3) our output</li>
+</ul></li>
+<li>wrap #2 =&gt; <a href="blines.html">bground.blines</a> package
+<ul>
+<li>this should be very simple - just import</li>
+</ul></li>
+<li>wrap #3 =&gt; this class 
+<ul>
+<li>this is just a final wrapper, for convenience</li>
+<li>sample usage: <a href="blines.html">bground.blines</a></li>
+</ul></li>
+</ul>
 </div>
 
 
@@ -2212,77 +2298,77 @@ of InteractivePlot; empty class; the method is under development ...</p>
 
     </div>
     <a class="headerlink" href="#WaveletMethod"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod-609"><a href="#WaveletMethod-609"><span class="linenos">609</span></a><span class="k">class</span><span class="w"> </span><span class="nc">WaveletMethod</span><span class="p">:</span>
-</span><span id="WaveletMethod-610"><a href="#WaveletMethod-610"><span class="linenos">610</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-611"><a href="#WaveletMethod-611"><span class="linenos">611</span></a><span class="sd">    TODO: This is an empty class; the method is under development ...</span>
-</span><span id="WaveletMethod-612"><a href="#WaveletMethod-612"><span class="linenos">612</span></a><span class="sd">   </span>
-</span><span id="WaveletMethod-613"><a href="#WaveletMethod-613"><span class="linenos">613</span></a><span class="sd">    WaveletMethod of backround subtraction.</span>
-</span><span id="WaveletMethod-614"><a href="#WaveletMethod-614"><span class="linenos">614</span></a>
-</span><span id="WaveletMethod-615"><a href="#WaveletMethod-615"><span class="linenos">615</span></a><span class="sd">    * Define the input parameters and run the method.</span>
-</span><span id="WaveletMethod-616"><a href="#WaveletMethod-616"><span class="linenos">616</span></a><span class="sd">    * The method is fully automated - it subtracts bkgr and saves the results.</span>
-</span><span id="WaveletMethod-617"><a href="#WaveletMethod-617"><span class="linenos">617</span></a><span class="sd">        </span>
-</span><span id="WaveletMethod-618"><a href="#WaveletMethod-618"><span class="linenos">618</span></a><span class="sd">    Example:</span>
-</span><span id="WaveletMethod-619"><a href="#WaveletMethod-619"><span class="linenos">619</span></a><span class="sd">        </span>
-</span><span id="WaveletMethod-620"><a href="#WaveletMethod-620"><span class="linenos">620</span></a><span class="sd">    &gt;&gt;&gt; # Automated background subtraction with WaveletMethod</span>
-</span><span id="WaveletMethod-621"><a href="#WaveletMethod-621"><span class="linenos">621</span></a><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="WaveletMethod-622"><a href="#WaveletMethod-622"><span class="linenos">622</span></a><span class="sd">    &gt;&gt;&gt; # Import API of BGROUND package</span>
-</span><span id="WaveletMethod-623"><a href="#WaveletMethod-623"><span class="linenos">623</span></a><span class="sd">    &gt;&gt;&gt; import bground.api as bkg</span>
-</span><span id="WaveletMethod-624"><a href="#WaveletMethod-624"><span class="linenos">624</span></a><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="WaveletMethod-625"><a href="#WaveletMethod-625"><span class="linenos">625</span></a><span class="sd">    &gt;&gt;&gt; # Define I/O files</span>
-</span><span id="WaveletMethod-626"><a href="#WaveletMethod-626"><span class="linenos">626</span></a><span class="sd">    &gt;&gt;&gt; IN  = &#39;ed1_raw.txt&#39;</span>
-</span><span id="WaveletMethod-627"><a href="#WaveletMethod-627"><span class="linenos">627</span></a><span class="sd">    &gt;&gt;&gt; OUT = &#39;ed2_bcorr.txt&#39;</span>
-</span><span id="WaveletMethod-628"><a href="#WaveletMethod-628"><span class="linenos">628</span></a><span class="sd">    &gt;&gt;&gt;</span>
-</span><span id="WaveletMethod-629"><a href="#WaveletMethod-629"><span class="linenos">629</span></a><span class="sd">    &gt;&gt;&gt; # Define data, plot parameters and background subtraction method</span>
-</span><span id="WaveletMethod-630"><a href="#WaveletMethod-630"><span class="linenos">630</span></a><span class="sd">    &gt;&gt;&gt; DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)</span>
-</span><span id="WaveletMethod-631"><a href="#WaveletMethod-631"><span class="linenos">631</span></a><span class="sd">    &gt;&gt;&gt; PPAR = bkg.PlotParams(OUT,&#39;Pix&#39;,&#39;Intensity&#39;,xlim=[0,200],ylim=[0,180])</span>
-</span><span id="WaveletMethod-632"><a href="#WaveletMethod-632"><span class="linenos">632</span></a><span class="sd">    &gt;&gt;&gt; SMET = bkg.WaveletMethod(DATA, PPAR, ...)</span>
-</span><span id="WaveletMethod-633"><a href="#WaveletMethod-633"><span class="linenos">633</span></a><span class="sd">    &gt;&gt;&gt; </span>
-</span><span id="WaveletMethod-634"><a href="#WaveletMethod-634"><span class="linenos">634</span></a><span class="sd">    &gt;&gt;&gt; # Run the WaveletMethod</span>
-</span><span id="WaveletMethod-635"><a href="#WaveletMethod-635"><span class="linenos">635</span></a><span class="sd">    &gt;&gt;&gt; # (ouput files will be saved automatically at the end of processing </span>
-</span><span id="WaveletMethod-636"><a href="#WaveletMethod-636"><span class="linenos">636</span></a><span class="sd">    &gt;&gt;&gt; SMET.run()</span>
-</span><span id="WaveletMethod-637"><a href="#WaveletMethod-637"><span class="linenos">637</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-638"><a href="#WaveletMethod-638"><span class="linenos">638</span></a>    
-</span><span id="WaveletMethod-639"><a href="#WaveletMethod-639"><span class="linenos">639</span></a>
-</span><span id="WaveletMethod-640"><a href="#WaveletMethod-640"><span class="linenos">640</span></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Help</span><span class="p">():</span>
-</span><span id="WaveletMethod-641"><a href="#WaveletMethod-641"><span class="linenos">641</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-642"><a href="#WaveletMethod-642"><span class="linenos">642</span></a><span class="sd">        Help functions to WaveletMethod of background subtraction.</span>
-</span><span id="WaveletMethod-643"><a href="#WaveletMethod-643"><span class="linenos">643</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-644"><a href="#WaveletMethod-644"><span class="linenos">644</span></a>
-</span><span id="WaveletMethod-645"><a href="#WaveletMethod-645"><span class="linenos">645</span></a>    
-</span><span id="WaveletMethod-646"><a href="#WaveletMethod-646"><span class="linenos">646</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
-</span><span id="WaveletMethod-647"><a href="#WaveletMethod-647"><span class="linenos">647</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-648"><a href="#WaveletMethod-648"><span class="linenos">648</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
-</span><span id="WaveletMethod-649"><a href="#WaveletMethod-649"><span class="linenos">649</span></a><span class="sd">            </span>
-</span><span id="WaveletMethod-650"><a href="#WaveletMethod-650"><span class="linenos">650</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod-651"><a href="#WaveletMethod-651"><span class="linenos">651</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod-652"><a href="#WaveletMethod-652"><span class="linenos">652</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod-653"><a href="#WaveletMethod-653"><span class="linenos">653</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod-654"><a href="#WaveletMethod-654"><span class="linenos">654</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-655"><a href="#WaveletMethod-655"><span class="linenos">655</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
-</span><span id="WaveletMethod-656"><a href="#WaveletMethod-656"><span class="linenos">656</span></a>            
-</span><span id="WaveletMethod-657"><a href="#WaveletMethod-657"><span class="linenos">657</span></a>        
-</span><span id="WaveletMethod-658"><a href="#WaveletMethod-658"><span class="linenos">658</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
-</span><span id="WaveletMethod-659"><a href="#WaveletMethod-659"><span class="linenos">659</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-660"><a href="#WaveletMethod-660"><span class="linenos">660</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
-</span><span id="WaveletMethod-661"><a href="#WaveletMethod-661"><span class="linenos">661</span></a><span class="sd">            </span>
-</span><span id="WaveletMethod-662"><a href="#WaveletMethod-662"><span class="linenos">662</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod-663"><a href="#WaveletMethod-663"><span class="linenos">663</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod-664"><a href="#WaveletMethod-664"><span class="linenos">664</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod-665"><a href="#WaveletMethod-665"><span class="linenos">665</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod-666"><a href="#WaveletMethod-666"><span class="linenos">666</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-667"><a href="#WaveletMethod-667"><span class="linenos">667</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
-</span><span id="WaveletMethod-668"><a href="#WaveletMethod-668"><span class="linenos">668</span></a>        
-</span><span id="WaveletMethod-669"><a href="#WaveletMethod-669"><span class="linenos">669</span></a>            
-</span><span id="WaveletMethod-670"><a href="#WaveletMethod-670"><span class="linenos">670</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
-</span><span id="WaveletMethod-671"><a href="#WaveletMethod-671"><span class="linenos">671</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-672"><a href="#WaveletMethod-672"><span class="linenos">672</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
-</span><span id="WaveletMethod-673"><a href="#WaveletMethod-673"><span class="linenos">673</span></a><span class="sd">    </span>
-</span><span id="WaveletMethod-674"><a href="#WaveletMethod-674"><span class="linenos">674</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod-675"><a href="#WaveletMethod-675"><span class="linenos">675</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod-676"><a href="#WaveletMethod-676"><span class="linenos">676</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod-677"><a href="#WaveletMethod-677"><span class="linenos">677</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod-678"><a href="#WaveletMethod-678"><span class="linenos">678</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod-679"><a href="#WaveletMethod-679"><span class="linenos">679</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod-629"><a href="#WaveletMethod-629"><span class="linenos">629</span></a><span class="k">class</span><span class="w"> </span><span class="nc">WaveletMethod</span><span class="p">:</span>
+</span><span id="WaveletMethod-630"><a href="#WaveletMethod-630"><span class="linenos">630</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-631"><a href="#WaveletMethod-631"><span class="linenos">631</span></a><span class="sd">    TODO: This is an empty class; the method is under development ...</span>
+</span><span id="WaveletMethod-632"><a href="#WaveletMethod-632"><span class="linenos">632</span></a><span class="sd">   </span>
+</span><span id="WaveletMethod-633"><a href="#WaveletMethod-633"><span class="linenos">633</span></a><span class="sd">    WaveletMethod of backround subtraction.</span>
+</span><span id="WaveletMethod-634"><a href="#WaveletMethod-634"><span class="linenos">634</span></a>
+</span><span id="WaveletMethod-635"><a href="#WaveletMethod-635"><span class="linenos">635</span></a><span class="sd">    * Define the input parameters and run the method.</span>
+</span><span id="WaveletMethod-636"><a href="#WaveletMethod-636"><span class="linenos">636</span></a><span class="sd">    * The method is fully automated - it subtracts bkgr and saves the results.</span>
+</span><span id="WaveletMethod-637"><a href="#WaveletMethod-637"><span class="linenos">637</span></a><span class="sd">        </span>
+</span><span id="WaveletMethod-638"><a href="#WaveletMethod-638"><span class="linenos">638</span></a><span class="sd">    Example:</span>
+</span><span id="WaveletMethod-639"><a href="#WaveletMethod-639"><span class="linenos">639</span></a><span class="sd">        </span>
+</span><span id="WaveletMethod-640"><a href="#WaveletMethod-640"><span class="linenos">640</span></a><span class="sd">    &gt;&gt;&gt; # Automated background subtraction with WaveletMethod</span>
+</span><span id="WaveletMethod-641"><a href="#WaveletMethod-641"><span class="linenos">641</span></a><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="WaveletMethod-642"><a href="#WaveletMethod-642"><span class="linenos">642</span></a><span class="sd">    &gt;&gt;&gt; # Import API of BGROUND package</span>
+</span><span id="WaveletMethod-643"><a href="#WaveletMethod-643"><span class="linenos">643</span></a><span class="sd">    &gt;&gt;&gt; import bground.api as bkg</span>
+</span><span id="WaveletMethod-644"><a href="#WaveletMethod-644"><span class="linenos">644</span></a><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="WaveletMethod-645"><a href="#WaveletMethod-645"><span class="linenos">645</span></a><span class="sd">    &gt;&gt;&gt; # Define I/O files</span>
+</span><span id="WaveletMethod-646"><a href="#WaveletMethod-646"><span class="linenos">646</span></a><span class="sd">    &gt;&gt;&gt; IN  = &#39;ed1_raw.txt&#39;</span>
+</span><span id="WaveletMethod-647"><a href="#WaveletMethod-647"><span class="linenos">647</span></a><span class="sd">    &gt;&gt;&gt; OUT = &#39;ed2_bcorr.txt&#39;</span>
+</span><span id="WaveletMethod-648"><a href="#WaveletMethod-648"><span class="linenos">648</span></a><span class="sd">    &gt;&gt;&gt;</span>
+</span><span id="WaveletMethod-649"><a href="#WaveletMethod-649"><span class="linenos">649</span></a><span class="sd">    &gt;&gt;&gt; # Define data, plot parameters and background subtraction method</span>
+</span><span id="WaveletMethod-650"><a href="#WaveletMethod-650"><span class="linenos">650</span></a><span class="sd">    &gt;&gt;&gt; DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)</span>
+</span><span id="WaveletMethod-651"><a href="#WaveletMethod-651"><span class="linenos">651</span></a><span class="sd">    &gt;&gt;&gt; PPAR = bkg.PlotParams(OUT,&#39;Pix&#39;,&#39;Intensity&#39;,xlim=[0,200],ylim=[0,180])</span>
+</span><span id="WaveletMethod-652"><a href="#WaveletMethod-652"><span class="linenos">652</span></a><span class="sd">    &gt;&gt;&gt; SMET = bkg.WaveletMethod(DATA, PPAR, ...)</span>
+</span><span id="WaveletMethod-653"><a href="#WaveletMethod-653"><span class="linenos">653</span></a><span class="sd">    &gt;&gt;&gt; </span>
+</span><span id="WaveletMethod-654"><a href="#WaveletMethod-654"><span class="linenos">654</span></a><span class="sd">    &gt;&gt;&gt; # Run the WaveletMethod</span>
+</span><span id="WaveletMethod-655"><a href="#WaveletMethod-655"><span class="linenos">655</span></a><span class="sd">    &gt;&gt;&gt; # (ouput files will be saved automatically at the end of processing </span>
+</span><span id="WaveletMethod-656"><a href="#WaveletMethod-656"><span class="linenos">656</span></a><span class="sd">    &gt;&gt;&gt; SMET.run()</span>
+</span><span id="WaveletMethod-657"><a href="#WaveletMethod-657"><span class="linenos">657</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-658"><a href="#WaveletMethod-658"><span class="linenos">658</span></a>    
+</span><span id="WaveletMethod-659"><a href="#WaveletMethod-659"><span class="linenos">659</span></a>
+</span><span id="WaveletMethod-660"><a href="#WaveletMethod-660"><span class="linenos">660</span></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Help</span><span class="p">():</span>
+</span><span id="WaveletMethod-661"><a href="#WaveletMethod-661"><span class="linenos">661</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-662"><a href="#WaveletMethod-662"><span class="linenos">662</span></a><span class="sd">        Help functions to WaveletMethod of background subtraction.</span>
+</span><span id="WaveletMethod-663"><a href="#WaveletMethod-663"><span class="linenos">663</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-664"><a href="#WaveletMethod-664"><span class="linenos">664</span></a>
+</span><span id="WaveletMethod-665"><a href="#WaveletMethod-665"><span class="linenos">665</span></a>    
+</span><span id="WaveletMethod-666"><a href="#WaveletMethod-666"><span class="linenos">666</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
+</span><span id="WaveletMethod-667"><a href="#WaveletMethod-667"><span class="linenos">667</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-668"><a href="#WaveletMethod-668"><span class="linenos">668</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
+</span><span id="WaveletMethod-669"><a href="#WaveletMethod-669"><span class="linenos">669</span></a><span class="sd">            </span>
+</span><span id="WaveletMethod-670"><a href="#WaveletMethod-670"><span class="linenos">670</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod-671"><a href="#WaveletMethod-671"><span class="linenos">671</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod-672"><a href="#WaveletMethod-672"><span class="linenos">672</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod-673"><a href="#WaveletMethod-673"><span class="linenos">673</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod-674"><a href="#WaveletMethod-674"><span class="linenos">674</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-675"><a href="#WaveletMethod-675"><span class="linenos">675</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
+</span><span id="WaveletMethod-676"><a href="#WaveletMethod-676"><span class="linenos">676</span></a>            
+</span><span id="WaveletMethod-677"><a href="#WaveletMethod-677"><span class="linenos">677</span></a>        
+</span><span id="WaveletMethod-678"><a href="#WaveletMethod-678"><span class="linenos">678</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="WaveletMethod-679"><a href="#WaveletMethod-679"><span class="linenos">679</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-680"><a href="#WaveletMethod-680"><span class="linenos">680</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
+</span><span id="WaveletMethod-681"><a href="#WaveletMethod-681"><span class="linenos">681</span></a><span class="sd">            </span>
+</span><span id="WaveletMethod-682"><a href="#WaveletMethod-682"><span class="linenos">682</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod-683"><a href="#WaveletMethod-683"><span class="linenos">683</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod-684"><a href="#WaveletMethod-684"><span class="linenos">684</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod-685"><a href="#WaveletMethod-685"><span class="linenos">685</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod-686"><a href="#WaveletMethod-686"><span class="linenos">686</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-687"><a href="#WaveletMethod-687"><span class="linenos">687</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
+</span><span id="WaveletMethod-688"><a href="#WaveletMethod-688"><span class="linenos">688</span></a>        
+</span><span id="WaveletMethod-689"><a href="#WaveletMethod-689"><span class="linenos">689</span></a>            
+</span><span id="WaveletMethod-690"><a href="#WaveletMethod-690"><span class="linenos">690</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="WaveletMethod-691"><a href="#WaveletMethod-691"><span class="linenos">691</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-692"><a href="#WaveletMethod-692"><span class="linenos">692</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="WaveletMethod-693"><a href="#WaveletMethod-693"><span class="linenos">693</span></a><span class="sd">    </span>
+</span><span id="WaveletMethod-694"><a href="#WaveletMethod-694"><span class="linenos">694</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod-695"><a href="#WaveletMethod-695"><span class="linenos">695</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod-696"><a href="#WaveletMethod-696"><span class="linenos">696</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod-697"><a href="#WaveletMethod-697"><span class="linenos">697</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod-698"><a href="#WaveletMethod-698"><span class="linenos">698</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod-699"><a href="#WaveletMethod-699"><span class="linenos">699</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -2332,46 +2418,46 @@ of InteractivePlot; empty class; the method is under development ...</p>
 
     </div>
     <a class="headerlink" href="#WaveletMethod.Help"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help-640"><a href="#WaveletMethod.Help-640"><span class="linenos">640</span></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Help</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help-641"><a href="#WaveletMethod.Help-641"><span class="linenos">641</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-642"><a href="#WaveletMethod.Help-642"><span class="linenos">642</span></a><span class="sd">        Help functions to WaveletMethod of background subtraction.</span>
-</span><span id="WaveletMethod.Help-643"><a href="#WaveletMethod.Help-643"><span class="linenos">643</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-644"><a href="#WaveletMethod.Help-644"><span class="linenos">644</span></a>
-</span><span id="WaveletMethod.Help-645"><a href="#WaveletMethod.Help-645"><span class="linenos">645</span></a>    
-</span><span id="WaveletMethod.Help-646"><a href="#WaveletMethod.Help-646"><span class="linenos">646</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help-647"><a href="#WaveletMethod.Help-647"><span class="linenos">647</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-648"><a href="#WaveletMethod.Help-648"><span class="linenos">648</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
-</span><span id="WaveletMethod.Help-649"><a href="#WaveletMethod.Help-649"><span class="linenos">649</span></a><span class="sd">            </span>
-</span><span id="WaveletMethod.Help-650"><a href="#WaveletMethod.Help-650"><span class="linenos">650</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod.Help-651"><a href="#WaveletMethod.Help-651"><span class="linenos">651</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod.Help-652"><a href="#WaveletMethod.Help-652"><span class="linenos">652</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod.Help-653"><a href="#WaveletMethod.Help-653"><span class="linenos">653</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod.Help-654"><a href="#WaveletMethod.Help-654"><span class="linenos">654</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-655"><a href="#WaveletMethod.Help-655"><span class="linenos">655</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
-</span><span id="WaveletMethod.Help-656"><a href="#WaveletMethod.Help-656"><span class="linenos">656</span></a>            
-</span><span id="WaveletMethod.Help-657"><a href="#WaveletMethod.Help-657"><span class="linenos">657</span></a>        
-</span><span id="WaveletMethod.Help-658"><a href="#WaveletMethod.Help-658"><span class="linenos">658</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help-659"><a href="#WaveletMethod.Help-659"><span class="linenos">659</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-660"><a href="#WaveletMethod.Help-660"><span class="linenos">660</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
-</span><span id="WaveletMethod.Help-661"><a href="#WaveletMethod.Help-661"><span class="linenos">661</span></a><span class="sd">            </span>
-</span><span id="WaveletMethod.Help-662"><a href="#WaveletMethod.Help-662"><span class="linenos">662</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod.Help-663"><a href="#WaveletMethod.Help-663"><span class="linenos">663</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod.Help-664"><a href="#WaveletMethod.Help-664"><span class="linenos">664</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod.Help-665"><a href="#WaveletMethod.Help-665"><span class="linenos">665</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod.Help-666"><a href="#WaveletMethod.Help-666"><span class="linenos">666</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-667"><a href="#WaveletMethod.Help-667"><span class="linenos">667</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
-</span><span id="WaveletMethod.Help-668"><a href="#WaveletMethod.Help-668"><span class="linenos">668</span></a>        
-</span><span id="WaveletMethod.Help-669"><a href="#WaveletMethod.Help-669"><span class="linenos">669</span></a>            
-</span><span id="WaveletMethod.Help-670"><a href="#WaveletMethod.Help-670"><span class="linenos">670</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help-671"><a href="#WaveletMethod.Help-671"><span class="linenos">671</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-672"><a href="#WaveletMethod.Help-672"><span class="linenos">672</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
-</span><span id="WaveletMethod.Help-673"><a href="#WaveletMethod.Help-673"><span class="linenos">673</span></a><span class="sd">    </span>
-</span><span id="WaveletMethod.Help-674"><a href="#WaveletMethod.Help-674"><span class="linenos">674</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod.Help-675"><a href="#WaveletMethod.Help-675"><span class="linenos">675</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod.Help-676"><a href="#WaveletMethod.Help-676"><span class="linenos">676</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod.Help-677"><a href="#WaveletMethod.Help-677"><span class="linenos">677</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod.Help-678"><a href="#WaveletMethod.Help-678"><span class="linenos">678</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help-679"><a href="#WaveletMethod.Help-679"><span class="linenos">679</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help-660"><a href="#WaveletMethod.Help-660"><span class="linenos">660</span></a>    <span class="k">class</span><span class="w"> </span><span class="nc">Help</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help-661"><a href="#WaveletMethod.Help-661"><span class="linenos">661</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-662"><a href="#WaveletMethod.Help-662"><span class="linenos">662</span></a><span class="sd">        Help functions to WaveletMethod of background subtraction.</span>
+</span><span id="WaveletMethod.Help-663"><a href="#WaveletMethod.Help-663"><span class="linenos">663</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-664"><a href="#WaveletMethod.Help-664"><span class="linenos">664</span></a>
+</span><span id="WaveletMethod.Help-665"><a href="#WaveletMethod.Help-665"><span class="linenos">665</span></a>    
+</span><span id="WaveletMethod.Help-666"><a href="#WaveletMethod.Help-666"><span class="linenos">666</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help-667"><a href="#WaveletMethod.Help-667"><span class="linenos">667</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-668"><a href="#WaveletMethod.Help-668"><span class="linenos">668</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
+</span><span id="WaveletMethod.Help-669"><a href="#WaveletMethod.Help-669"><span class="linenos">669</span></a><span class="sd">            </span>
+</span><span id="WaveletMethod.Help-670"><a href="#WaveletMethod.Help-670"><span class="linenos">670</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod.Help-671"><a href="#WaveletMethod.Help-671"><span class="linenos">671</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod.Help-672"><a href="#WaveletMethod.Help-672"><span class="linenos">672</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod.Help-673"><a href="#WaveletMethod.Help-673"><span class="linenos">673</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod.Help-674"><a href="#WaveletMethod.Help-674"><span class="linenos">674</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-675"><a href="#WaveletMethod.Help-675"><span class="linenos">675</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
+</span><span id="WaveletMethod.Help-676"><a href="#WaveletMethod.Help-676"><span class="linenos">676</span></a>            
+</span><span id="WaveletMethod.Help-677"><a href="#WaveletMethod.Help-677"><span class="linenos">677</span></a>        
+</span><span id="WaveletMethod.Help-678"><a href="#WaveletMethod.Help-678"><span class="linenos">678</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help-679"><a href="#WaveletMethod.Help-679"><span class="linenos">679</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-680"><a href="#WaveletMethod.Help-680"><span class="linenos">680</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
+</span><span id="WaveletMethod.Help-681"><a href="#WaveletMethod.Help-681"><span class="linenos">681</span></a><span class="sd">            </span>
+</span><span id="WaveletMethod.Help-682"><a href="#WaveletMethod.Help-682"><span class="linenos">682</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod.Help-683"><a href="#WaveletMethod.Help-683"><span class="linenos">683</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod.Help-684"><a href="#WaveletMethod.Help-684"><span class="linenos">684</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod.Help-685"><a href="#WaveletMethod.Help-685"><span class="linenos">685</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod.Help-686"><a href="#WaveletMethod.Help-686"><span class="linenos">686</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-687"><a href="#WaveletMethod.Help-687"><span class="linenos">687</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
+</span><span id="WaveletMethod.Help-688"><a href="#WaveletMethod.Help-688"><span class="linenos">688</span></a>        
+</span><span id="WaveletMethod.Help-689"><a href="#WaveletMethod.Help-689"><span class="linenos">689</span></a>            
+</span><span id="WaveletMethod.Help-690"><a href="#WaveletMethod.Help-690"><span class="linenos">690</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help-691"><a href="#WaveletMethod.Help-691"><span class="linenos">691</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-692"><a href="#WaveletMethod.Help-692"><span class="linenos">692</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="WaveletMethod.Help-693"><a href="#WaveletMethod.Help-693"><span class="linenos">693</span></a><span class="sd">    </span>
+</span><span id="WaveletMethod.Help-694"><a href="#WaveletMethod.Help-694"><span class="linenos">694</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod.Help-695"><a href="#WaveletMethod.Help-695"><span class="linenos">695</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod.Help-696"><a href="#WaveletMethod.Help-696"><span class="linenos">696</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod.Help-697"><a href="#WaveletMethod.Help-697"><span class="linenos">697</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod.Help-698"><a href="#WaveletMethod.Help-698"><span class="linenos">698</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help-699"><a href="#WaveletMethod.Help-699"><span class="linenos">699</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -2390,16 +2476,16 @@ of InteractivePlot; empty class; the method is under development ...</p>
 
     </div>
     <a class="headerlink" href="#WaveletMethod.Help.intro"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help.intro-646"><a href="#WaveletMethod.Help.intro-646"><span class="linenos">646</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help.intro-647"><a href="#WaveletMethod.Help.intro-647"><span class="linenos">647</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help.intro-648"><a href="#WaveletMethod.Help.intro-648"><span class="linenos">648</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
-</span><span id="WaveletMethod.Help.intro-649"><a href="#WaveletMethod.Help.intro-649"><span class="linenos">649</span></a><span class="sd">            </span>
-</span><span id="WaveletMethod.Help.intro-650"><a href="#WaveletMethod.Help.intro-650"><span class="linenos">650</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod.Help.intro-651"><a href="#WaveletMethod.Help.intro-651"><span class="linenos">651</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod.Help.intro-652"><a href="#WaveletMethod.Help.intro-652"><span class="linenos">652</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod.Help.intro-653"><a href="#WaveletMethod.Help.intro-653"><span class="linenos">653</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod.Help.intro-654"><a href="#WaveletMethod.Help.intro-654"><span class="linenos">654</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help.intro-655"><a href="#WaveletMethod.Help.intro-655"><span class="linenos">655</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help.intro-666"><a href="#WaveletMethod.Help.intro-666"><span class="linenos">666</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">intro</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help.intro-667"><a href="#WaveletMethod.Help.intro-667"><span class="linenos">667</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help.intro-668"><a href="#WaveletMethod.Help.intro-668"><span class="linenos">668</span></a><span class="sd">            BGROUND printed help :: Brief introduction</span>
+</span><span id="WaveletMethod.Help.intro-669"><a href="#WaveletMethod.Help.intro-669"><span class="linenos">669</span></a><span class="sd">            </span>
+</span><span id="WaveletMethod.Help.intro-670"><a href="#WaveletMethod.Help.intro-670"><span class="linenos">670</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod.Help.intro-671"><a href="#WaveletMethod.Help.intro-671"><span class="linenos">671</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod.Help.intro-672"><a href="#WaveletMethod.Help.intro-672"><span class="linenos">672</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod.Help.intro-673"><a href="#WaveletMethod.Help.intro-673"><span class="linenos">673</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod.Help.intro-674"><a href="#WaveletMethod.Help.intro-674"><span class="linenos">674</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help.intro-675"><a href="#WaveletMethod.Help.intro-675"><span class="linenos">675</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">brief_intro</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -2425,16 +2511,16 @@ of InteractivePlot; empty class; the method is under development ...</p>
 
     </div>
     <a class="headerlink" href="#WaveletMethod.Help.more_help"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help.more_help-658"><a href="#WaveletMethod.Help.more_help-658"><span class="linenos">658</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help.more_help-659"><a href="#WaveletMethod.Help.more_help-659"><span class="linenos">659</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help.more_help-660"><a href="#WaveletMethod.Help.more_help-660"><span class="linenos">660</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
-</span><span id="WaveletMethod.Help.more_help-661"><a href="#WaveletMethod.Help.more_help-661"><span class="linenos">661</span></a><span class="sd">            </span>
-</span><span id="WaveletMethod.Help.more_help-662"><a href="#WaveletMethod.Help.more_help-662"><span class="linenos">662</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod.Help.more_help-663"><a href="#WaveletMethod.Help.more_help-663"><span class="linenos">663</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod.Help.more_help-664"><a href="#WaveletMethod.Help.more_help-664"><span class="linenos">664</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod.Help.more_help-665"><a href="#WaveletMethod.Help.more_help-665"><span class="linenos">665</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod.Help.more_help-666"><a href="#WaveletMethod.Help.more_help-666"><span class="linenos">666</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help.more_help-667"><a href="#WaveletMethod.Help.more_help-667"><span class="linenos">667</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help.more_help-678"><a href="#WaveletMethod.Help.more_help-678"><span class="linenos">678</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">more_help</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help.more_help-679"><a href="#WaveletMethod.Help.more_help-679"><span class="linenos">679</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help.more_help-680"><a href="#WaveletMethod.Help.more_help-680"><span class="linenos">680</span></a><span class="sd">            BGROUND printed help :: Where to find more help</span>
+</span><span id="WaveletMethod.Help.more_help-681"><a href="#WaveletMethod.Help.more_help-681"><span class="linenos">681</span></a><span class="sd">            </span>
+</span><span id="WaveletMethod.Help.more_help-682"><a href="#WaveletMethod.Help.more_help-682"><span class="linenos">682</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod.Help.more_help-683"><a href="#WaveletMethod.Help.more_help-683"><span class="linenos">683</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod.Help.more_help-684"><a href="#WaveletMethod.Help.more_help-684"><span class="linenos">684</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod.Help.more_help-685"><a href="#WaveletMethod.Help.more_help-685"><span class="linenos">685</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod.Help.more_help-686"><a href="#WaveletMethod.Help.more_help-686"><span class="linenos">686</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help.more_help-687"><a href="#WaveletMethod.Help.more_help-687"><span class="linenos">687</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">GeneralHelp</span><span class="o">.</span><span class="n">more_help</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -2460,16 +2546,16 @@ of InteractivePlot; empty class; the method is under development ...</p>
 
     </div>
     <a class="headerlink" href="#WaveletMethod.Help.how_it_works"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help.how_it_works-670"><a href="#WaveletMethod.Help.how_it_works-670"><span class="linenos">670</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
-</span><span id="WaveletMethod.Help.how_it_works-671"><a href="#WaveletMethod.Help.how_it_works-671"><span class="linenos">671</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help.how_it_works-672"><a href="#WaveletMethod.Help.how_it_works-672"><span class="linenos">672</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
-</span><span id="WaveletMethod.Help.how_it_works-673"><a href="#WaveletMethod.Help.how_it_works-673"><span class="linenos">673</span></a><span class="sd">    </span>
-</span><span id="WaveletMethod.Help.how_it_works-674"><a href="#WaveletMethod.Help.how_it_works-674"><span class="linenos">674</span></a><span class="sd">            Returns</span>
-</span><span id="WaveletMethod.Help.how_it_works-675"><a href="#WaveletMethod.Help.how_it_works-675"><span class="linenos">675</span></a><span class="sd">            -------</span>
-</span><span id="WaveletMethod.Help.how_it_works-676"><a href="#WaveletMethod.Help.how_it_works-676"><span class="linenos">676</span></a><span class="sd">            None</span>
-</span><span id="WaveletMethod.Help.how_it_works-677"><a href="#WaveletMethod.Help.how_it_works-677"><span class="linenos">677</span></a><span class="sd">                The result is the help text printed on stdout.</span>
-</span><span id="WaveletMethod.Help.how_it_works-678"><a href="#WaveletMethod.Help.how_it_works-678"><span class="linenos">678</span></a><span class="sd">            &#39;&#39;&#39;</span>
-</span><span id="WaveletMethod.Help.how_it_works-679"><a href="#WaveletMethod.Help.how_it_works-679"><span class="linenos">679</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="WaveletMethod.Help.how_it_works-690"><a href="#WaveletMethod.Help.how_it_works-690"><span class="linenos">690</span></a>        <span class="k">def</span><span class="w"> </span><span class="nf">how_it_works</span><span class="p">():</span>
+</span><span id="WaveletMethod.Help.how_it_works-691"><a href="#WaveletMethod.Help.how_it_works-691"><span class="linenos">691</span></a><span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help.how_it_works-692"><a href="#WaveletMethod.Help.how_it_works-692"><span class="linenos">692</span></a><span class="sd">            BGROUND printed help :: WaveletMethod :: How it works</span>
+</span><span id="WaveletMethod.Help.how_it_works-693"><a href="#WaveletMethod.Help.how_it_works-693"><span class="linenos">693</span></a><span class="sd">    </span>
+</span><span id="WaveletMethod.Help.how_it_works-694"><a href="#WaveletMethod.Help.how_it_works-694"><span class="linenos">694</span></a><span class="sd">            Returns</span>
+</span><span id="WaveletMethod.Help.how_it_works-695"><a href="#WaveletMethod.Help.how_it_works-695"><span class="linenos">695</span></a><span class="sd">            -------</span>
+</span><span id="WaveletMethod.Help.how_it_works-696"><a href="#WaveletMethod.Help.how_it_works-696"><span class="linenos">696</span></a><span class="sd">            None</span>
+</span><span id="WaveletMethod.Help.how_it_works-697"><a href="#WaveletMethod.Help.how_it_works-697"><span class="linenos">697</span></a><span class="sd">                The result is the help text printed on stdout.</span>
+</span><span id="WaveletMethod.Help.how_it_works-698"><a href="#WaveletMethod.Help.how_it_works-698"><span class="linenos">698</span></a><span class="sd">            &#39;&#39;&#39;</span>
+</span><span id="WaveletMethod.Help.how_it_works-699"><a href="#WaveletMethod.Help.how_it_works-699"><span class="linenos">699</span></a>            <span class="n">bground</span><span class="o">.</span><span class="n">help</span><span class="o">.</span><span class="n">WaveletMethod</span><span class="o">.</span><span class="n">how_it_works</span><span class="p">()</span>
 </span></pre></div>
 
 

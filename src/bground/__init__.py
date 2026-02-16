@@ -8,17 +8,18 @@ Semi-automatic background subtraction.
 * The package can subtract background in 1D-data = XY-data.
 * The XY-data are typically saved in a file containing two (or more) columns.
 
-Sub-modules of bground package:
+Sub-packages of bground package:
 
 * bground.api = package API, which can be used as a simple UI = user interface
-* bground.points = define background by means of points on XY-curve
+* bground.points = interactive method: background defined by points on XY-curve
+* bground.blines = automatic method: fit background curve/line by various funcs 
 
 Usage of bground package:
 
-* See the initial example at the top of bground.api documentation.
+* See the initial examples at the top of each sub-package.
 '''
 
-__version__ = '1.1.4'
+__version__ = '1.1.5'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

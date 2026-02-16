@@ -600,10 +600,30 @@ class RunInteractivePlot():
 
 class RestoreFromPoints():
     '''
-    TODO: This is an empty class; the method is under developlment ....
+    TODO: This is an empty class; the method is under developlment ...
     '''
     pass
 
+
+class BaseLines():
+    '''
+    TODO: This is an empty class; the method(s) are under developlment ...
+    
+    Technical notes
+    ---------------
+    
+    * task for Jakub David
+    * methods from pybaselines
+        - https://pypi.org/project/pybaselines/
+    * wrap #1 => idiff.bkg1d.blines
+        - (1) our input, (2) call (3) our output
+    * wrap #2 => bground.blines package
+        - this should be very simple - just import
+    * wrap #3 => this class 
+        - this is just a final wrapper, for convenience
+        - sample usage: bground.blines
+    '''
+    
 
 class WaveletMethod:
     '''
