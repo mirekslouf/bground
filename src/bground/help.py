@@ -98,7 +98,7 @@ class GeneralHelp:
     '''
     
     
-    def brief_intro():
+    def intro():
         '''
         BGROUND printed help :: Brief introduction
         '''

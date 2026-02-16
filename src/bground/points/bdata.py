@@ -91,30 +91,30 @@ class XYbackground:
     User-defined background.
     '''
     
-    def __init__(self, basename, 
+    def __init__(self, bname, 
+                 btype = 'linear',
                  points = XYpoints([],[]), 
-                 curve = XYcurve([],[]),
-                 btype = 'linear'):
+                 curve = XYcurve([],[])):
         '''
         Initialize background.
 
         Parameters
         ----------
-        basename : str
-            Basename of output file = filename without extension.
+        bname : str
+            {bname} = filename of output file *without extension*.
             The extension will be added automatically according to context.
-        points : bdata.XYpoints object
-            Coordinates of user-defined backround points.
-        curve  : bdata.XYcurve object
-            Backround curve = X,Y of all points of the calculated background.
         btype : string; default is 'linear' 
             Background interpolation type
             = interpolation during backround calculation.
             Implemented interpolation types: 'linear', 'quadratic', 'cubic'.
+        points : bdata.XYpoints object
+            Coordinates of user-defined backround points.
+        curve  : bdata.XYcurve object
+            Backround curve = X,Y of all points of the calculated background.
             
         Returns
         -------
-        None; the result is the initialized object: bdata.bkg.
+        XYbackground object.
         
         Technical notes
         ---------------
@@ -126,7 +126,8 @@ class XYbackground:
           with empty objects XYpoints and XYcurve as well.
         * At the moment, I regard this as a Python mystery.
         '''
-        self.basename = basename
-        self.points   = points
-        self.curve    = curve 
-        self.btype    = btype
+        self.bname  = bname
+        self.btype  = btype
+        self.points = points
+        self.curve  = curve 
+        

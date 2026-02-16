@@ -22,28 +22,27 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from bground.points import bdata 
 from bground.points import bfunc
 import warnings; warnings.filterwarnings("ignore")
 
 # =============================================================================
 # Level 1: Create plot with events
 
-def interactive_plot(data, bkgr, ppar):
+def interactive_plot(data, bkgr, outparams, profile=None):
     '''
-    Create plot from input data.
-    
-    This is a plot window, which will be made interactive later.
-    In the rest of the program, the plot will be the program interface.
+    Create interactive plot from input {data}.
+
+    * The basic interactivity is set here ('keypress_event', 'close_event').
+    * The individual events are specified in the following funs of the module.
 
     Parameters
     ----------
     data : 2D numpy array
-        Data for plotting; columns [X,Y].
+        Data for plotting; two columns [X,Y].
     bkgr : bground.bdata.XYbackground object
         An object storing data for the background calculation.
-    ppar : bground.ui.PlotParameters object
-        An object with data for interactive plot + name of output file
+    outparams : bground.api.OutParams object
+        An object with data for interactive plot + name of output file(s).
     
     Returns
     -------
@@ -52,9 +51,13 @@ def interactive_plot(data, bkgr, ppar):
         
     Technical notes
     ---------------
-    The arguments/objects for this function (data, bkgr, ppar)
-    are usually defined by means of a simple OO-interface
-    before this function is called.
+    * The arguments/objects for this function (data, bkgr, outparams)
+      are usually defined by means of a simple OO interface
+      before this function is called.
+    * The {outparams} argument is renamed to {ppar} arguments in the following
+      functions. The reasons are partially historical and logical 
+      (output_parameters = mostly plot_parameters),
+      partially it is for convenience (shorter name better in event calls).
     '''
     
     # (0) Initialize
@@ -71,10 +74,10 @@ def interactive_plot(data, bkgr, ppar):
     # Plot XY data
     ax.plot(X,Y, 'b-')
     # Set the remaining plot parameters
-    ax.set_xlim(ppar.xlim)
-    ax.set_ylim(ppar.ylim)
-    ax.set_xlabel(ppar.xlabel)
-    ax.set_ylabel(ppar.ylabel)
+    ax.set_xlim(outparams.xlim)
+    ax.set_ylim(outparams.ylim)
+    ax.set_xlabel(outparams.xlabel)
+    ax.set_ylabel(outparams.ylabel)
     
     # (3) Connect the plot with event(s)
     #   => link fig.canvas event(s) to a callback function(s).
@@ -89,11 +92,12 @@ def interactive_plot(data, bkgr, ppar):
     
     # (3a) Connect plot with key_press_event (= when a key is pressed)
     fig.canvas.mpl_connect('key_press_event',
-        lambda event: on_keypress(event, fig, ax, data, bkgr, ppar))
+        lambda event: on_keypress(event, 
+                                  fig, ax, data, bkgr, outparams, profile))
     
     # (3b) Connect plot with close_event (= when the window is closed)
     fig.canvas.mpl_connect('close_event',
-        lambda event: on_close(event, ppar))
+        lambda event: on_close(event, outparams))
     
     # (4) Optimize the plot layout
     plt.tight_layout()
@@ -106,12 +110,12 @@ def interactive_plot(data, bkgr, ppar):
 # =============================================================================
 # Level 2: Callback functions for all events
 
-def on_keypress(event, fig, ax, data, bkgr, ppar):
+def on_keypress(event, fig, ax, data, bkgr, ppar, profile):
     '''
     Definition of key_press_events for a plot.
     
-    The callback function, which defines all keypress events.
-    The functions for the individual keypress events are defined below.
+    * The callback function, which defines all keypress events.
+    * The functions for the individual keypress events are defined below.
     '''
     # Step 3 in defining interactive plot
     # = defining individual functions for specific pressed keys.
@@ -131,16 +135,17 @@ def on_keypress(event, fig, ax, data, bkgr, ppar):
         # Reason: to ignore nonsense actions...
         # ...such as delete/draw points if no points are defined
         try:
-            if   key == '1': add_bkg_point(plt,data,bkgr,ppar,xm,ym)
-            elif key == '2': del_bkg_point_close_to_mouse(plt,bkgr,ppar,xm,ym)
-            elif key == '3': replot_with_bkg_points(plt,data,bkgr,ppar)
-            elif key == '4': replot_with_bkg(plt,data,bkgr,ppar,'linear')
-            elif key == '5': replot_with_bkg(plt,data,bkgr,ppar,'quadratic')
-            elif key == '6': replot_with_bkg(plt,data,bkgr,ppar,'cubic')
-            elif key == 'a': load_bkg_points(plt,data,bkgr,ppar)
+            if   key == '1': add_bkg_point(ax,data,bkgr,ppar,xm,ym)
+            elif key == '2': del_bkg_point_close_to_mouse(ax,bkgr,ppar,xm,ym)
+            elif key == '3': replot_with_bkg_points(ax,data,bkgr,ppar)
+            elif key == '4': replot_with_bkg(ax,data,bkgr,ppar,'linear')
+            elif key == '5': replot_with_bkg(ax,data,bkgr,ppar,'quadratic')
+            elif key == '6': replot_with_bkg(ax,data,bkgr,ppar,'cubic')
+            elif key == 'a': load_bkg_points(ax,data,bkgr,ppar)
             elif key == 'b': save_bkg_points(bkgr,ppar)
-            elif key == 't': subtract_bkg_and_save(plt, data, bkgr, ppar)
             elif key == 's': save_PNG_image(ppar) 
+            elif key == 't': subtract_bkg_and_save(data,bkgr,ppar)
+            elif key == 'u': subtract_bkg_and_udate(data,bkgr,ppar,profile)
             elif ppar.messages: print() # for any other key just empty line
         except Exception:
             pass
@@ -150,10 +155,10 @@ def on_close(event, ppar):
     '''
     Definition of on_close event of the plot.
     
-    The simple callback function, which runs
-    when the interactive plot window is closed.
-    The function just prints some concluding remarks
-    and information about the output files.
+    * The simple callback function, which runs
+      when the interactive plot window is closed.
+    * The function prints concluding remarks
+      and information about the output files.
     '''
     out_file1 = ppar.output_file
     out_file2 = ppar.output_file + '.bkg'
@@ -171,29 +176,29 @@ def on_close(event, ppar):
 # =============================================================================
 # Level 3: Functions for individual keypress events       
 
-def add_bkg_point(plt, data, bkgr, ppar, xm, ym):
+def add_bkg_point(ax, data, bkgr, ppar, xm, ym):
     '''
     Function for keypress = '1'.
     
-    Add background point at current mouse position.
-    More precisely: add a background point at the the XY-curve,
-    whose X-coordinate is the closest to the mouse X-coordinate.
+    * Add background point at current mouse position.
+    * More precisely: add a background point at the the XY-curve,
+      whose X-coordinate is the closest to the mouse X-coordinate.
     '''
     idx = find_nearest(data[0],xm)
     xm,ym = (data[0,idx],data[1,idx])
     bkgr.points.add_point(xm,ym)
-    plt.plot(xm,ym,'r+')
+    ax.plot(xm,ym,'r+')
     plt.draw()
     if ppar.messages: print('background point added.')
     
 
-def del_bkg_point_close_to_mouse(plt, bkgr, ppar, xm, ym):
+def del_bkg_point_close_to_mouse(ax, bkgr, ppar, xm, ym):
     '''
     Function for keypress = '2'.
     
-    Remove the background point close to mouse cursor position.
-    More precisely: remove the background point from the XY-curve,
-    whose X-coordinate is the closest to the mouse cursor X-coordinate.
+    * Remove the background point close to mouse cursor position.
+    * More precisely: remove the background point from the XY-curve,
+      whose X-coordinate is the closest to the mouse cursor X-coordinate.
     '''
     # a) Sort bkg points (sorted array is necessary for the next step)
     bfunc.sort_bkg_points(bkgr)
@@ -203,48 +208,48 @@ def del_bkg_point_close_to_mouse(plt, bkgr, ppar, xm, ym):
     xr = bkgr.points.X.pop(idx)
     yr = bkgr.points.Y.pop(idx)
     # d) Redraw removed element with background color
-    plt.plot(xr,yr, 'w+')
+    ax.plot(xr,yr, 'w+')
     # e) Redraw plot
     plt.draw()
     # f) Print message to stdout.
     if ppar.messages: print('background point deleted.')
 
 
-def replot_with_bkg_points(plt, data, bkgr, ppar, points_reloaded=False):
+def replot_with_bkg_points(ax, data, bkgr, ppar, points_reloaded=False):
     '''
     Function for keypress = '3'.
     
-    Re-draw plot with backround points.
-    Additional keyword parameter (points_reloaded=False),
-    is employed if the function is called from load_bkg_points function.
-    The load_bkg_points function uses its own short message
-    and sets points_reloaded=True to avoid additional confusing messaging.
+    * Re-draw plot with backround points.
+    * Additional keyword parameter (points_reloaded=False),
+      is employed if the function is called from load_bkg_points function.
+    * The load_bkg_points function uses its own short message
+      and sets points_reloaded=True to avoid additional confusing messages.
     '''
     clear_plot()
-    plt.plot(data[0],data[1],'b-')
-    plt.plot(bkgr.points.X,bkgr.points.Y,'r+')
+    ax.plot(data[0],data[1],'b-')
+    ax.plot(bkgr.points.X,bkgr.points.Y,'r+')
     plt.draw()
     if ppar.messages == True and points_reloaded == False:
-        # 
+        # Print message to stdout.
         print('backround points re-drawn.')
 
-def replot_with_bkg(plt, data, bkgr, ppar, btype):
+def replot_with_bkg(ax, data, bkgr, ppar, btype):
     '''
     Function for keypress = '4,5,6'.
     
-    Re-draw plot with backround points and background curve.
-    Type of the curve is given by parameter btype.
-    For key = 4/5/6 the function called with btype = linear/quadratic/cubic.
+    * Re-draw plot with backround points and background curve.
+    * Type of the curve is given by parameter btype.
+    * For key = 4/5/6 the function called with btype = linear/quadratic/cubic.
     '''
     # Sort background points + calculate background
     bfunc.sort_bkg_points(bkgr)
     bkgr.btype = btype
-    bfunc.calculate_background(data, bkgr)
+    bfunc.calculate_baseline(data, bkgr)
     # Clear plot + re-draw it with the background points
     clear_plot()
-    plt.plot(data[0],data[1],'b-')
-    plt.plot(bkgr.points.X,bkgr.points.Y,'r+')
-    plt.plot(bkgr.curve.X,bkgr.curve.Y,'r:')
+    ax.plot(data[0],data[1],'b-')
+    ax.plot(bkgr.points.X,bkgr.points.Y,'r+')
+    ax.plot(bkgr.curve.X,bkgr.curve.Y,'r:')
     plt.draw()
     # Print a brief message on stdout if requested
     if ppar.messages:
@@ -256,37 +261,34 @@ def replot_with_bkg(plt, data, bkgr, ppar, btype):
             print('cubic background displayed.')
 
 
-def load_bkg_points(plt, data, bkgr, ppar):
+def load_bkg_points(ax, data, bkgr, ppar):
     '''
     Function for keypress = 'a'.
 
-    Load background points from previously saved file.
-    Assumption: the file has been saved with save_bkg_points function,
-    which means that its name is fixed and known (bkgr.basename + '.bkg').
+    * Load background points from previously saved file.
+    * Assumption: the file has been saved with save_bkg_points function,
+      which means that its name is fixed and known (bkgr.bname + '.bkg').
     '''
     # a) get input file with previously saved background points
-    # (the filename is fixed to [output_file_name].bkg
-    # (reason: inserting a name during an interactive plot session is a hassle
-    # (solution: manual renaming of the BKG-file before running this program
-    input_filename = bkgr.basename + '.bkg'
+    # (the filename is fixed to {bname}.bkg
+    # (the {bname} is stored in {bkg_object} = here {bkgr} argument
+    # (reason: to insert a name during an interactive plot session is a hassle
+    input_filename = bkgr.bname + '.bkg'
     # b) read input file to DataFrame
-    df = pd.read_csv(input_filename, sep=r'\s+')
-    # c) initialize bkg object by means of above-read DataFrame
-    bkgr.points = bdata.XYpoints(X = list(df.X), Y = list(df.Y))
-    bkgr.btype='linear'
-    # d) print message if requested
+    bfunc.load_bkg_points(bkgr)
+    # c) print message if requested
     if ppar.messages:
         print(f'background points read from: [{input_filename}].')
-    # e) replot with currently loaded background
-    replot_with_bkg_points(plt, data, bkgr, ppar, points_reloaded=True)
+    # d) replot with currently loaded background
+    replot_with_bkg_points(ax, data, bkgr, ppar, points_reloaded=True)
 
 
 def save_bkg_points(bkgr, ppar):
     '''
     Function for keypress = 'b'.
     
-    Save background points to file.
-    The output file name is bkgr.basename + extension 'bkg'.
+    * Save background points to file.
+    * The output file name is bkgr.bname + extension 'bkg'.
     '''
     # Treat the special case when the user presses 'b'
     # but there are no background points defined at the moment.
@@ -295,15 +297,11 @@ def save_bkg_points(bkgr, ppar):
         return()
     # Standard processing of event 'b' = saving of the background points.
     bfunc.sort_bkg_points(bkgr)
-    output_filename = bkgr.basename + '.bkg'
-    df = bkg_to_df(bkgr)
-    with open(output_filename, 'w') as f:
-        f.write(df.to_string())
-        if ppar.messages:
-            print(f'background points saved to: [{output_filename}]')
+    bfunc.save_bkg_points(bkgr)
+    print(f'background points saved to: [{bkgr.bname+".bkg"}]')
     
 
-def subtract_bkg_and_save(plt, data, bkgr, ppar):
+def subtract_bkg_and_save(data, bkgr, ppar):
     '''
     Function for keypress 't'.
     
@@ -315,28 +313,50 @@ def subtract_bkg_and_save(plt, data, bkgr, ppar):
     '''
     # Subtract recently defined background and save results
     # (a) Recalculate background
-    bfunc.calculate_background(data,bkgr)
+    bfunc.calculate_baseline(data, bkgr)
     # (b) Subtract background
-    data = bfunc.subtract_background(data,bkgr)
-    # (c) Save background-corrected data to TXT-file
-    # (we will use ppar object properties for this
-    # (ppar.output_file = output file name, ppar.xlabel = label of X-data...
-    output_filename = ppar.output_file
-    if not(output_filename.lower().endswith('.txt')):
-        output_filename = output_filename + '.txt'
-    file_header = (
-        f'Columns: {ppar.xlabel}, {ppar.ylabel}, ' +
-        f'background-corrected-{ppar.ylabel}\n' +
-        f'Background correction type: {bkgr.btype}')
-    np.savetxt(
-        output_filename, 
-        np.transpose(data),
-        fmt=('%8.3f','%11.3e','%11.3e'),
-        header=file_header)
+    data = bfunc.calculate_bkg_data(data, bkgr)
+    # (c) Save the data after background subtraction to a TXT-file
+    # ...TXT file name => ppar.output_file (+ .txt extension if not included)
+    out_file = ppar.output_file
+    if not(out_file.lower().endswith('.txt')):
+        out_file = out_file + '.txt'
+    # ...save the file and print the message if requested
+    bfunc.save_bkg_data(data, bkgr, out_file)
     if ppar.messages:
-        print(f'backround-corrected data saved to: [{output_filename}]')
+        print(f'backround-corrected data saved to: [{out_file}]')
 
 
+def subtract_bkg_and_udate(data, bkgr, ppar, profile):
+    '''
+    Function for keypress 'u'.
+    
+    This is the final function which:
+    
+    * Recalculates recently defined background
+    * Calculates background-corrected data = subtracts bkg from data
+    * UPDATE the results in the data object
+      if it is an ediff.io.Profile object from our EDIFF package.
+    '''
+    # Check if we have the relevant Profile variable.
+    if profile is not None:
+        # Subtract recently defined background and save results
+        # (a) Recalculate background
+        bfunc.calculate_baseline(data, bkgr)
+        # (b) Subtract background => udate data object
+        data = bfunc.calculate_bkg_data(data, bkgr)
+        # (c) Update and return data
+        profile['Ibkg'] = data[2]
+        profile['I']    = data[3]
+        print(profile)
+        # Print the message if requested.
+        if ppar.messages:
+            print('profile object updated - bkg-corrected data added.')
+    else:
+        if ppar.messages:
+            print('no profile to update.')
+            
+            
 def save_PNG_image(ppar):
     '''
     Function for keypress 's'.
@@ -344,7 +364,7 @@ def save_PNG_image(ppar):
     Special case - 's' is Matplotlib UI shortcut,
     which saves PNG image of the current (interactive) plot.
     
-    As key_press_event 's' was NOT disconnected from the plot,
+    As the {key_press_event} ~ 's' was NOT disconnected from the plot,
     the following two things are going to happen:
     
     * At first, the default event (saving as PNG) will take place.
@@ -401,8 +421,8 @@ def print_brief_help(ppar):
     print('    1,2 = add/delete a background point close to the mouse cursor')
     print('    3,4,5,6 = show bkg points + linear/quadratic/cubic background')
     print('(2) Save the results + close the window when you are done:')
-    print('    b = save the background points as a BKG-file (a = restore)')
-    print('    t = subtract the background & save the result as a TXT-file')
+    print('    a,b = read/save background points from/to BKG-file')
+    print('    s,t,u = save background data in PNG-file/TXT-file/ELD-object')
     print('(3) Detailed help, complete documentation, and worked examples:')
     print('    https://mirekslouf.github.io/bground/docs')
     # Add an extra empty line if short messages to stdoud should be printed.

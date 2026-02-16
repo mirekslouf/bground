@@ -18,7 +18,7 @@ Usage of bground package:
 * See the initial example at the top of bground.api documentation.
 '''
 
-__version__ = '1.1.2'
+__version__ = '1.1.4'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

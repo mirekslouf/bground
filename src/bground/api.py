@@ -20,27 +20,46 @@ Short example:
 >>> OUTPUT = 'ed2_bcorr.txt'
 >>>
 >>> # Define data, plot parameters and background subtraction method
->>> DATA = bkg.InputData(INPUT, usecols=[0,1], unpack=True)
->>> PPAR = bkg.PlotParams(OUTPUT,'Pixel','Intensity',xlim=[0,200],ylim=[0,180])
->>> SMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
+>>> DATA = bkg.InputData(INPUT)
+>>> PARS = bkg.OutputParams(OUTPUT,'Pixels','Intensity',xlim=200,ylim=180)
+>>> BMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
 >>>
->>> # Run the InteractivePlot method
->>> # (a new window with an interactive plot will be opened
->>> # (follow the instructions in stdout to define and subtract bkgr
->>> SMET.run()
+>>> # Run the selected BMET = Background subtraction METhod 
+>>> # (here: interactive plot = define bkgr manually + subtract automatically
+>>> # (follow the instructions in stdout + newly opened window showing XY-data 
+>>> BMET.run()
 
 More examples for the individual bkgr subtraction methods:
 
-* Semi-automated background subtraction: bground.api.InteractivePlot
-* Automated background subtraction: bground.api.WaveletMethod
+* Semi-automated/interactive bkgr subtraction: bground.api.InteractivePlot
+* Restore background from saved bkgr points: bground.api.RestoreFromPoints
+* Other, fully-automated methods - under development
 '''
 
 
+# Bground components
+import bground.help
+# {points} sub-package
+import bground.points.bdata 
+import bground.points.bfunc
+import bground.points.iplot
+
+# Reading and analyzing input data
 import numpy as np
+import pandas as pd
+from pathlib import Path
+
+# Plotting
 import matplotlib
 import matplotlib.pyplot as plt
-import bground.points.bdata, bground.points.bfunc, bground.points.help
-import bground.points.iplot
+
+
+def fast_intro(level=1):
+    print('* BGROUND = background subtraction for XY-data')
+    print('* XY-data = file (or object) with two cols = X-data, Y-data')
+    print('* Background is subtracted with multiple methods = sub-packages.')
+    print('* Each sub-package contains basic help - see the documentation:')
+    print('* https://mirekslouf.github.io/bground/docs/pdoc.html/bground.html')
 
 
 def set_plot_parameters(
@@ -93,67 +112,102 @@ def set_plot_parameters(
 
 class InputData:
     '''
-    The input data = input file.
+    Class defining {InputData} for {InteractivePlot}.
     
-    * InputData class is a simple wrapper to `numpy.loadtxt` function.
-    * All arguments from the object initialization go to this function.
-    * The exception is the auto-set of `unpack=True` if *unpack* not defined.
-    
-    The usage of InputData class is shown in the example above.
-    
+    * Input data can be: file, np.array, pd.DataFrame, ediff.io.Profile.
+    * The usage of InputData class is shown in the example above.
     * The rest of the documentation => detailed comments in the source code.
     '''
     
-    def __init__(self, input_file, **kwargs):
+    def __init__(self, input_data, **kwargs):
         # Initialization of InputData object.
         # No docstring: just class description above + comments below.
         
-        # Brief description:
-        # * The purpose of this object = to define and read the input XY-data.
-        # * Basically, it is just a wrapper around the numpy.loadtxt function.
+        # Call read_input_data method with **kwargs:
+        # The method reads input data and returns:
+        #  - self.name = name of the data, filename or variable name
+        #  - self.data = numpy array with two rows ~ X-data, Y-data
+        # The input_data may be:
+        #  - text file containing several columns
+        #    (then **kwargs are passed to pd.read_csv
+        #  - numpy array
+        #    (user responsibility: array contains just two rows ~ X,Y
+        #  - pandas DataFrame
+        #    (user responsibility: DataFrame contains just two cols ~ X,Y)
+        #  - data saved in Profile object from ediff package
+        #    (program responsibility: df['pixel'] ~ X, df['Iraw'] ~ Y
+        self.name, self.data, self.profile = \
+            self.read_input_data(input_data, **kwargs)
         
-        # Name of the input file, which contains XY-data
-        self.input_file = input_file
-        # Call read_input_File method, which calls numpy.loadtxt function
-        # with all keyword arguments (**kwargs) that were given by the user.
-        self.data = self.read_input_file(input_file, **kwargs)
-
-    
-    @staticmethod
-    def read_input_file(input_file, **kwargs):
-        # Read input file with XY-data.
+        
+    def read_input_data(self, input_data, **kwargs):
+        # Read input data with XY-data.
         # No docstring: just class description above + comments below.
         
-        # Brief description:
-        # * This function is a wrapper around numpy.loadtxt.
-        # * The exception is the auto-set of unpack=True if unpack not defined.
-        
-        # (1) If unpack argument was not given in **kwargs,
-        # set unpack=True (we expect data in columns, not in rows).
-        if not 'unpack' in kwargs.keys(): kwargs.update({'unpack':True})
-        
-        # (2) Load data using np.loadtxt.
-        # (This method is basically a wrapper of np.loadtxt,
-        # (i.e. all arguments given to this function transfer to np.loadtxt
-        # => more help on all optional aguments: GoogleSearch numpy.loadtxt
-        data = np.loadtxt(input_file, **kwargs)
-        
-        # (3) Return the result = 2xN numpy array with XY-data.
+        if isinstance(input_data, (str, Path)):
+            # The input is a file = filename given be str or PathLike var.
+            # => read the file using pd.read_csv
+            # => user's responsibility: pass suitable **kwargs
+            #    Sample kwargs: usecols=['Pix','Iraw'], comment='#'
+            #    Note: sep=r'\s+' is inserted as default, if not given.
+            name = 'File: ' + str(input_data)
+            # Set default separator to \s+
+            # (this is a convenience, as it is typical/default situation
+            if kwargs.get('sep') is None: kwargs['sep'] = r'\s+'
+            # Read the datafile to pd.DataFrame + convert it to np.array
+            data = pd.read_csv(input_data, **kwargs)
+            data = np.transpose(np.array(data))
+            profile = None
+        elif isinstance(input_data, np.ndarray):
+            # The input is a numpy array.
+            # => just assign array to data
+            # => user's responsibility: ensure that the numpy.array
+            #    contains just two rows: X-values and Y-values
+            #    (for example, pass something like: arr[[0,2]]
+            name = 'np.ndarray'
+            data = input_data
+            profile = None
+        elif type(input_data) == pd.DataFrame:
+            # The input is pandas.DataFrame
+            # => convert DataFrame to numpy.array
+            # => user's responsibility: ensure that the pandas.Dataframe
+            #    contains just two columns: X-values and Y-values
+            #    (for example, pass something like: df[['Pixel','Iraw']]
+            # * we use type(input_data)==pd.DataFrame instead of isinstance
+            #   we need to do this due the the next option = {ediff.io.Profile}
+            #   => {ediff.io.Profile} is-instance of pd.DataFrame
+            #   => we would think that {Profiles} are DataFrames 
+            name = 'pd.DataFrame'
+            data = np.transpose(np.array(input_data))
+            profile = None
+        elif input_data.__class__.__name__ == 'Profile':
+            # The input is ediff.io.Profile.
+            # (special case, input from our own, connected package ediff
+            # => convert Profile to numpy.array
+            # => array has more-or-less fixed structure
+            #    the array will contain Profile columns {Pixel} a {Iraw}
+            # * we use var.__class__.__name__ instead of type
+            #   we DO NOT KNOW ediff.io.Profile here - it is not imported
+            #   we could import this, but then bground would depend on ediff
+            name = 'ediff.io.Profile'
+            data = np.transpose(np.array(input_data[['Pixel','Iraw']]))
+            profile = input_data
+        else:
+            raise TypeError('Unknown type of input data!')
+         
+        # Return the result = 2xN numpy array with XY-data.
         # (i.e. data[0] = X-data/values, data[1] = Y-data/values)
-        return(data)
+        return(name, data, profile)
 
 
-
-class PlotParams:
+class OutputParams:
     '''
-    The interactive plot parameters + name of output file(s).
+    The name of output file(s) + plot parameters + output verbosity.
     
-    * PlotParams class defines plot parameters and output file name.
+    * Output file name(s) = file(s) with the background calculation results.
     * The plot parameters are X,Y-axis labels + X,Y-axes ranges/limits.
-    * The output file(s) contain the background, bkgr points, and bkgr plot.
-    * The file(s) are saved by the user during the interactive bkgr processing.
     
-    The usage of PlotParams class is shown in the example above.
+    The usage of OutputParams class is shown in the example above.
     
     * The rest of the documentation => detailed comments in the source code.
     '''
@@ -175,8 +229,13 @@ class PlotParams:
         self.output_file = output_file  # Name of the output file(s)
         self.xlabel = xlabel            # x-axis label of the interactive plot
         self.ylabel = ylabel            # y-axis label of the interactive plot
-        self.xlim = xlim                # [xmin,xmax] range of x-axis
-        self.ylim = ylim                # [ymin,ymax] range of y-axis
+        
+        if isinstance(xlim,list): self.xlim = xlim  # xlim = [xmin,xmax]
+        else: self.xlim = [0,xlim]                  # ...or just xmax
+        
+        if isinstance(ylim,list): self.ylim = ylim  # ylim = [ymin,ymax]
+        else: self.ylim = [0,ylim]                  # ...or just ymax
+        
         self.messages = messages        # Printing of short messages to stdout
         
         # Note: messages argument determines,
@@ -190,43 +249,12 @@ class InteractivePlot:
     InteractivePlot method of backround subtraction.
 
     * When running the method, a new window with interactive plot is opened.
-    * The user defines background points using keyboard shortcuts and mouse.
+    * The user defines background points using mouse and keyboard shortcuts.
     * The program does the rest - subtracts bkgr and shows/saves the results.
-        
-    Example:
-        
-    >>> # Semi-automated background subtraction with InteractivePlot method
-    >>> # (before running in Spyder, turn on interactive plots: %matplotlib qt
-    >>> # (after finishing, switch back to non-interactive: %matplotlib inline
-    >>>
-    >>> # Import API of BGROUND package
-    >>> import bground.api as bkg
-    >>>
-    >>> # Define I/O files
-    >>> IN  = 'ed1_raw.txt'
-    >>> OUT = 'ed2_bcorr.txt'
-    >>>
-    >>> # Define data, plot parameters and background subtraction method
-    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
-    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
-    >>> SMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
-    >>>
-    >>> # Run the InteractivePlot method
-    >>> # (a new window with an interactive plot will be opened
-    >>> # (follow the instructions in stdout to define and subtract bkgr
-    >>> # (ouput files will be saved at the end the interactive processing 
-    >>> SMET.run()
-    
-    Note - arguments when initializing InteractivePlot method:
-        
-    * The first two arguments (DATA, PPAR) are the two classes defined above.
-    * The third argument (CLI) should be True for command-line interfaces/runs.
-    * The fourth argument (messages) determines if to print messages to stdout.
-
     '''
 
     
-    def __init__(self, DATA, PPAR, CLI=False, messages=True):
+    def __init__(self, DATA, PARS, CLI=False, messages=True):
         # Initialization of InteractivePlot object.
         # No docstring: just class description above + comments below.
         
@@ -244,12 +272,13 @@ class InteractivePlot:
         # (PPAR = PlotParameters object
         # (these two objects should be defined BEFORE InteractivePlot object
         self.data = DATA
-        self.ppar = PPAR
+        self.pars = PARS
         
         # Additional property - empty XYbackground object
         # (this object is defined as a semi-empty object here
         # (the only argument we supply is the name of the output file
-        self.background = bground.bdata.XYbackground(self.ppar.output_file)
+        self.background = \
+            bground.points.bdata.XYbackground(self.pars.output_file)
             
         # Initialize specific interactive backend
         # in case Python runs in CLI = Command Line Interface,
@@ -265,7 +294,7 @@ class InteractivePlot:
         # (  => PlotParams.messages are transferred to InteractivePlot.run()
         # (  => Therefore, the info about messages is readily available.
         self.messages = messages
-        self.ppar.messages = messages
+        self.pars.messages = messages
         
     def run(self):
         '''
@@ -292,14 +321,14 @@ class InteractivePlot:
         
         # Run the interactive plot
         # (the return values seem to be necessary for current Jupyter interface
-        fig,ax = bground.iplot.interactive_plot(
-            self.data.data, self.background, self.ppar)
+        fig,ax = bground.points.iplot.interactive_plot(
+            self.data.data, self.background, self.pars, self.data.profile)
         
         # The plot appears in a new window
         # (if we use the recommended %matplotlib qt).
         # In addition to this, we print a brief help to stdout
         # (CLI in standard python, Console in Spyder, output cell in Jupyter).
-        bground.iplot.print_brief_help(self.ppar)
+        bground.points.iplot.print_brief_help(self.pars)
         
         # Optimize the layout of the returned figure.
         # (this works in all three supported interfaces: CLI, Spyder, Jupyter)
@@ -477,7 +506,7 @@ class InteractivePlot:
         # Get background object
         bkgr = self.background
         # Re-perform background subtraction
-        data_corr = bground.bfunc.subtract_background(data, bkgr)
+        data_corr = bground.points.bfunc.subtract_background(data, bkgr)
         X,Y = data_corr[0],data_corr[2]
         # Plot background-corrected XY-data
         plt.plot(X,Y, 'b-')
@@ -515,7 +544,7 @@ class InteractivePlot:
             None
                 The result is the help text printed on stdout.
             '''
-            bground.help.GeneralHelp.brief_intro()
+            bground.help.GeneralHelp.intro()
             
         
         def more_help():
@@ -561,10 +590,27 @@ class InteractivePlot:
             bground.help.InteractivePlot.keyboard_shortcuts(output_file)
 
 
+class RunInteractivePlot():
+    '''
+    TODO: This is a container for fast/one-line/user-friendly start
+    of InteractivePlot; empty class; the method is under development ...
+    '''
+    pass
+
+
+class RestoreFromPoints():
+    '''
+    TODO: This is an empty class; the method is under developlment ....
+    '''
+    pass
+
+
 class WaveletMethod:
     '''
-    WaveletMethod of backround subtraction.
+    TODO: This is an empty class; the method is under development ...
    
+    WaveletMethod of backround subtraction.
+
     * Define the input parameters and run the method.
     * The method is fully automated - it subtracts bkgr and saves the results.
         
