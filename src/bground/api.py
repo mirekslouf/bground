@@ -54,14 +54,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-def fast_intro(level=1):
-    print('* BGROUND = background subtraction for XY-data')
-    print('* XY-data = file (or object) with two cols = X-data, Y-data')
-    print('* Background is subtracted with multiple methods = sub-packages.')
-    print('* Each sub-package contains basic help - see the documentation:')
-    print('* https://mirekslouf.github.io/bground/docs/pdoc.html/bground.html')
-
-
 def set_plot_parameters(
         size=(10,5), dpi=100, fontsize=8, my_defaults=True, my_rcParams=None):
     '''
@@ -590,19 +582,17 @@ class InteractivePlot:
             bground.help.InteractivePlot.keyboard_shortcuts(output_file)
 
 
-class RunInteractivePlot():
-    '''
-    TODO: This is a container for fast/one-line/user-friendly start
-    of InteractivePlot; empty class; the method is under development ...
-    '''
-    pass
-
-
 class RestoreFromPoints():
     '''
     TODO: This is an empty class; the method is under developlment ...
     '''
     pass
+
+
+class FitFunction():
+    '''
+    TODO: This is an empty class; the method is under developlment ...
+    '''
 
 
 class BaseLines():
@@ -696,5 +686,79 @@ class WaveletMethod:
                 The result is the help text printed on stdout.
             '''
             bground.help.WaveletMethod.how_it_works()
-            
-            
+
+
+class Run():
+    '''
+    Run the individual background subtraction methods.
+    
+    * One-line funtions that run selected background subtraction method.
+    * TODO: In progress ...
+    '''
+
+
+    def InteractivePlot():
+        '''
+        Blah...
+        '''
+        pass
+    
+    
+    def RestoreFromPoints():
+        '''
+        Blah...
+        '''
+        pass
+    
+    
+    def FitFunction():
+        '''
+        Blah...
+        '''
+        pass
+
+
+    def BaseLines():
+        '''
+        Blah...
+        '''
+        pass
+        
+    
+    def WaveletMethod():
+        '''
+        Blah...
+        '''
+        pass
+    
+    
+class Help():
+    '''
+    Simple access to help functions.
+    
+    * The help functions just print basic information on stdout.
+    * TODO: in progress ...
+    '''
+  
+    def intro():
+        '''
+        BGROUND printed help :: Brief introduction
+        
+        Returns
+        -------
+        None
+            The result is the help text printed on stdout.
+        '''
+        bground.help.GeneralHelp.brief_intro()
+        
+    
+    def more_help():
+        '''
+        BGROUND printed help :: Where to find more help
+        
+        Returns
+        -------
+        None
+            The result is the help text printed on stdout.
+        '''
+        bground.help.GeneralHelp.more_help()

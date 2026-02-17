@@ -9,6 +9,7 @@ Backbround subtraction using simple/ab-initio fitting function.
 * Output: TXT file with four columns: X, Y=Iraw, Ibkg, I=(Ibkg-Iraw)
 
 Alternative input/output:
+
 * ELD = ediff.io.Profile object
 * Profile object at input  (2 cols): ELD.Pixels, ELD.Iraw
 * Profile object at output (4 cols): ELD.Pixels, ELD.Iraw, ELD.Ibkg, ELD.I

@@ -12,14 +12,15 @@ Sub-packages of bground package:
 
 * bground.api = package API, which can be used as a simple UI = user interface
 * bground.points = interactive method: background defined by points on XY-curve
-* bground.blines = automatic method: fit background curve/line by various funcs 
+* bground.ffunc  = automatic method: fit background with a simple function 
+* bground.blines = automatic method: fit background with a {pybaselines} func
 
 Usage of bground package:
 
 * See the initial examples at the top of each sub-package.
 '''
 
-__version__ = '1.1.5'
+__version__ = '1.1.6'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.
