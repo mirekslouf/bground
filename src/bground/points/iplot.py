@@ -309,7 +309,8 @@ def subtract_bkg_and_save(data, bkgr, ppar):
     
     * Recalculates recently defined background
     * Calculates background-corrected data = subtracts bkg from data
-    * Saves the results to TXT-file with 3 cols [X, Y, bkg-corrected-Y]
+    * Saves the results to TXT-file with 4 cols
+      [X, Y=Iraw, Ibkg, I=(Iraw-Ibkg)]
     '''
     # Subtract recently defined background and save results
     # (a) Recalculate background
@@ -348,7 +349,6 @@ def subtract_bkg_and_udate(data, bkgr, ppar, profile):
         # (c) Update and return data
         profile['Ibkg'] = data[2]
         profile['I']    = data[3]
-        print(profile)
         # Print the message if requested.
         if ppar.messages:
             print('profile object updated - bkg-corrected data added.')

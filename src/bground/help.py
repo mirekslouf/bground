@@ -98,7 +98,7 @@ class GeneralHelp:
     '''
     
     
-    def intro():
+    def brief_intro():
         '''
         BGROUND printed help :: Brief introduction
         '''
@@ -165,7 +165,7 @@ class InteractivePlot:
     Class with help functions.
     
     * The functions print simple textual help.
-    * Here: help to bground.iplot = InteractivePlot bkgr subtraction method.
+    * Here: help to {InteractivePlot} backgound subtraction method.
     '''
     
     
@@ -248,13 +248,70 @@ class InteractivePlot:
         
         print(intelligent_dedent(help_text))
         
+
+class RestoreFromPoints:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to {RestoreFromPoints} backgound subtraction method.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: RestoreFromPoints :: How it works
+        '''
         
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+
+
+class FitFunction:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to {FitFunctions} backgound subtraction method.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: FitFunction :: How it works
+        '''
+        
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+        
+
+class BaseLines:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to {BaseLines} backgound subtraction method.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: BaseLines :: How it works
+        '''
+        
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+
+
 class WaveletMethod:
     '''
     Class with help functions.
     
     * The functions print simple textual help.
-    * Here: help to bground.wvlet = WaveletMethod of background subtraction.
+    * Here: help to {WaveletMethod} backgound subtraction method.
     '''
      
     

@@ -20,7 +20,7 @@ Usage of bground package:
 * See the initial examples at the top of each sub-package.
 '''
 
-__version__ = '1.1.6'
+__version__ = '1.1.7'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.
