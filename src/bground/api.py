@@ -44,6 +44,8 @@ import bground.points.bdata
 import bground.points.bfunc
 import bground.points.iplot
 
+import bground.blines.blines as blines
+
 # Reading and analyzing input data
 import numpy as np
 import pandas as pd
@@ -52,6 +54,9 @@ from pathlib import Path
 # Plotting
 import matplotlib
 import matplotlib.pyplot as plt
+
+# Automatic baseline detection
+from pybaselines import Baseline
 
 
 def set_plot_parameters(
@@ -562,6 +567,39 @@ class BaseLines:
         - this is just a final wrapper, for convenience
         - sample usage: bground.blines
     '''
+    
+    def __init__(self, in_file, out_file, method = "asls", xrange=(30,250),  **kwargs):
+        self.data = InputData(in_file).data
+        self.out_file = out_file
+        self.kwargs = kwargs
+        self.xrange = xrange
+        self.method = method
+        self.x, self.y = self.data
+        
+        # necessary for save_bkg_data function
+        self.background = bground.points.bdata.XYbackground(
+            self.out_file,
+            btype="pybaselines " + method
+        )
+
+    def run(self):
+        '''Run the background subtraction.
+            The result is saved to the file specified in the constructor.
+        '''
+
+        x_xrange, y_xrange = blines.select_xrange(self.x, self.y, self.xrange)
+        baseline_fitter = Baseline(x_data=x_xrange)
+
+        if self.method == "asls":
+            baseline, _ = baseline_fitter.asls(y_xrange, **self.kwargs)
+        elif self.method == "imodpoly":
+            baseline, _ = baseline_fitter.imodpoly(y_xrange, **self.kwargs)
+        else:
+            raise ValueError(f"unknown method '{str(self.method)}'")
+
+        new_data = blines.subtract_baseline(self.x, self.y, baseline, self.xrange)
+        bground.points.bfunc.save_bkg_data(new_data, self.background, self.out_file)
+
     
 
 class WaveletMethod:
