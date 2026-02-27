@@ -7,33 +7,32 @@ Definition of API for (application programming interface) of BGROUND package.
 * The API can be employed as a simple UI within Spyder and/or Jupyter scripts.
 * The main purpose of the API - easy access to functions for bkgr subtraction.
 
-Short example:
-        
->>> # Semi-automated background subtraction with InteractivePlot method
->>> # (in Spyder, use %matplotlib qt before running this script
->>>
->>> # Import API of BGROUND package
+Simple example how to get help and run a background subtraction method:
+    
+>>> # Standard import
+>>> # (alternative: import ediff.bkg as bkg
 >>> import bground.api as bkg
+>>> 
+>>> # Simple help system
+>>> # (note: universal access by means of bground.api.Help class
+>>> bkg.Help.intro()
+>>> bkg.Help.more_help()
+>>> bkg.Help.InteractivePlot()
 >>>
->>> # Define I/O files
->>> INPUT  = 'ed1_raw.txt'
->>> OUTPUT = 'ed2_bcorr.txt'
->>>
->>> # Define data, plot parameters and background subtraction method
->>> DATA = bkg.InputData(INPUT)
->>> PARS = bkg.OutputParams(OUTPUT,'Pixels','Intensity',xlim=200,ylim=180)
->>> BMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
->>>
->>> # Run the selected BMET = Background subtraction METhod 
->>> # (here: interactive plot = define bkgr manually + subtract automatically
->>> # (follow the instructions in stdout + newly opened window showing XY-data 
->>> BMET.run()
+>>> # Run selected background subtraction method
+>>> # (note: universal access by means of bground.api.Run class
+>>> bkg.Run.InteractivePlot()
 
-More examples for the individual bkgr subtraction methods:
+More help to the individual background subtraction methods:
 
-* Semi-automated/interactive bkgr subtraction: bground.api.InteractivePlot
-* Restore background from saved bkgr points: bground.api.RestoreFromPoints
-* Other, fully-automated methods - under development
+* bground.api.InteractivePlot
+  = semi-automatatic method, universal, finished  
+* bground.api.FitFunction
+  = automatic method, simple fitting, TODO - Edvard
+* bground.api.BaseLines
+  = automatic method, advanced fitting, TOFINISH - Jakub
+* bground.api.WaveletMethod
+  = automatic method, wavelet-based fitting, TODO - Edvard
 '''
 
 
@@ -267,6 +266,40 @@ class InteractivePlot:
     * When running the method, a new window with interactive plot is opened.
     * The user defines background points using mouse and keyboard shortcuts.
     * The program does the rest - subtracts bkgr and shows/saves the results.
+            
+    Example 1 :: classical, step-by-step way
+        
+    >>> # Standard import (alternative: import ediff.bkg as bkg)
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'ed1_raw.txt'
+    >>> OUT = 'ed2_bcorr.txt'
+    >>>
+    >>> # Define input data and output/plot parameters
+    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
+    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
+    >>>
+    >>> # Initialize and run InteractivePlot subtraction method
+    >>> # (a new window with interactive plot is opened
+    >>> # (user defines background points with the mouse and keyboard
+    >>> # (ouput files are saved automatically at the end of processing 
+    >>> SMET = bkg.WaveletMethod(DATA, PPAR)
+    >>> SMET.run()
+    
+    Example 2 :: simplified, one-step approach
+    
+    >>> # Standard import (alternative: import ediff.bkg as bkg)
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'ed1_raw.txt'
+    >>> OUT = 'ed2_bcorr.txt'
+    >>>
+    >>> # Run InteractivePlot subtraction method with a single function
+    >>> # (the function initializes all objects and runs the method
+    >>> bkg.Run.InteractivePlot(IN_FILE, OUT_FILE, 
+    >>>     xlabel='Pixels', ylabel='Intensity', xlim=300, ylim=300)
     '''
 
     
@@ -551,21 +584,10 @@ class FitFunction:
 
 class BaseLines:
     '''
-    TODO: This is an empty class; the method(s) are under developlment ...
+    TODO: Jakub David ...
     
-    Technical notes
-    ---------------
-    
-    * task for Jakub David
-    * methods from pybaselines
-        - https://pypi.org/project/pybaselines/
-    * wrap #1 => idiff.bkg1d.blines
-        - (1) our input, (2) call (3) our output
-    * wrap #2 => bground.blines package
-        - this should be very simple - just import
-    * wrap #3 => this class 
-        - this is just a final wrapper, for convenience
-        - sample usage: bground.blines
+    * Move "real" code to bground.blines
+    * Keep lines <80 chars, add docstrings + testing examples to GDrive
     '''
     
     def __init__(self, in_file, out_file, method = "asls", xrange=(30,250),  **kwargs):
@@ -605,39 +627,16 @@ class BaseLines:
 class WaveletMethod:
     '''
     TODO: This is an empty class; the method is under development ...
-   
-    WaveletMethod of backround subtraction.
-
-    * Define the input parameters and run the method.
-    * The method is fully automated - it subtracts bkgr and saves the results.
-        
-    Example:
-        
-    >>> # Automated background subtraction with WaveletMethod
-    >>>
-    >>> # Import API of BGROUND package
-    >>> import bground.api as bkg
-    >>>
-    >>> # Define I/O files
-    >>> IN  = 'ed1_raw.txt'
-    >>> OUT = 'ed2_bcorr.txt'
-    >>>
-    >>> # Define data, plot parameters and background subtraction method
-    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
-    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
-    >>> SMET = bkg.WaveletMethod(DATA, PPAR, ...)
-    >>> 
-    >>> # Run the WaveletMethod
-    >>> # (ouput files will be saved automatically at the end of processing 
-    >>> SMET.run()
     '''
     
 
 class Run:
     '''
-    Run the individual background subtraction methods.
+    This class runs the background subtraction methods.
     
-    * One-line funtions that run selected background subtraction method.
+    * The class contains a function for each bkg subtraction method.
+    * The function initializes and runs selected method in one step.
+    * This is convenient in our simple API and for the OO-use in EDIFF package.
     '''
 
 
@@ -646,7 +645,7 @@ class Run:
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
             xlabel=None, ylabel=None, xlim=None, ylim=None, messages=True):
         '''
-        Run *api.InteractivePlot* method with a single function/command.
+        Run bground.api.InteractivePlot method with a single function/command.
         '''
         DATA = InputData(in_data, sep=sep, usecols=usecols,
             comment=comment, skiprows=skiprows, header=header)
@@ -658,7 +657,8 @@ class Run:
     def RestoreFromPoints():
         '''
         Run *api.RestoreFromPoints* method with a single function/command.
-        # TODO
+        
+        * TODO: Mirek (straightforward, almost done)
         '''
         pass
     
@@ -693,7 +693,8 @@ class Help():
     
     >>> import bground.api as bkg
     >>> bkg.Help.intro()
-    >>> bkg.Help.interactive_plot()
+    >>> bkg.Help.more_help()
+    >>> bkg.Help.InteractivePlot()
     '''
   
     
@@ -711,74 +712,51 @@ class Help():
         bground.help.GeneralHelp.more_help()
 
 
-    class InteractivePlot():
+    def InteractivePlot():    
         '''
-        Class with simple help functions for {InteractivePlot} method.
+        Help :: InteractivePlot method of background subtraction
         '''
-    
-        
-        def how_it_works():
-            '''
-            Help :: InteractivePlot :: how it works
-            '''
-            bground.help.InteractivePlot.how_it_works()
-        
-        
-        def keyoboard_shortcuts(out_file='outpu_file.txt'):
-            '''
-            Help :: InteractivePlot :: keyboard shortcuts
+        bground.help.InteractivePlot.how_it_works()
             
-            * The optional {out_file} argument = name of the output file.
-            * This arg is used optionally when InteractivePlot is running
-              and the name of the output file is known from context.
-            '''
-            bground.help.InteractivePlot.keyboard_shortcuts(out_file)
-    
-    
-    class RestoreFromPoints():
+    def InteractivePlot_shortcuts(out_file='bground.txt'):
         '''
-        Class with simple help functions for {RestorFromPoints} method.
+        Help :: InteractivePlot :: keyboard shortcuts
+        
+        * The optional {out_file} argument can be ingored when calling help.
+        * It is used internally/programmatically
+          when the name is known from the context.
         '''
+        # The optional {out_file} argument = name of the output file.
+        # Typically, this arg is used InteractivePlot is running
+        # and the name of the output file is known from context.
+        
+        
+        bground.help.InteractivePlot.keyboard_shortcuts(out_file)
     
     
-        def how_it_works():
-            '''
-            Help :: RestoreFromPoints :: how it works
-            '''
-            bground.help.RestoreFromPoints.how_it_works()
-    
-    
-    class FitFunction():
+    def RestoreFromPoints():    
         '''
-        Class with simple help functions for {FitFunction} method.
+        Help :: RestoreFromPoints method of background subtraction
         '''
+        bground.help.RestoreFromPoints.how_it_works()
     
-        def how_it_works():
-            '''
-            Help :: FitFunction :: how it works
-            '''
-            bground.help.FitFunctions.how_it_works()
+    
+    def FitFunction():
+        '''
+        Help :: FitFunction method of background subtraction
+        '''
+        bground.help.FitFunctions.how_it_works()
 
 
-    class BaseLines():
+    def BaseLines():
         '''
-        Class with simple help functions for {BaseLines} methods.
+        Help :: BaseLines method of background subtraction
         '''
-    
-        def how_it_works():
-            '''
-            Help :: BaseLines :: how it works
-            '''
-            bground.help.BaseLines.how_it_works()
+        bground.help.BaseLines.how_it_works()
 
 
-    class WaveletMethod():
+    def WaveletMethod():
         '''
-        Class with simple help functions for {WaveletMethod} methods.
+        Help :: WaveletMethod method of background subtraction
         '''
-    
-        def how_it_works():
-            '''
-            Help :: Wavelet :: how it works
-            '''
-            bground.help.Wavelet.how_it_works()
+        bground.help.Wavelet.how_it_works()

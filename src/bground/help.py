@@ -9,25 +9,26 @@ Help functions for bground package.
 * Three functions - intro, more_help, how_it_works - available for all methods.
 
 >>> # Typical access to printed help from bground
->>> # (the help accessed via bground.api
+>>> # (the help via bground.api
 >>> import bground.api as bkg
->>> bkg.InteractivePlot.Help.intro()
->>> bkg.InteractivePlot.Help.more_help()
->>> bkg.InteractivePlot.Help.how_it_works()
+>>> bkg.Help.intro()
+>>> bkg.Help.more_help()
+>>> bkg.Help.InteractivePlot()
 
 >>> # Typical access to printed help from ediff
 >>> # (bground is usually used within ediff package
 >>> # (bground.api is auto-imported as ediff.bkg or ed.bkg
 >>> import ediff as ed
->>> ed.bkg.InteractivePlot.Help.intro()
->>> ed.bkg.InteractivePlot.Help.more_help()
->>> ed.bkg.InteractivePlot.Help.how_it_works()
+>>> ed.bkg.Help.intro()
+>>> ed.bkg.Help.more_help()
+>>> ed.bkg.Help.InteractivePlot()
 '''
 
 
 # At the beginning of this module, we define intelligent_detent method.
 # It performs intelligent de-dentation of multiline Python strings.
 # This method is used in all help functions below.
+
 
 import re
 
