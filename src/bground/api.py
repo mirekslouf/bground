@@ -43,7 +43,7 @@ import bground.points.bdata
 import bground.points.bfunc
 import bground.points.iplot
 
-import bground.blines.blines as blines
+import bground.blines.blines
 
 # Reading and analyzing input data
 import numpy as np
@@ -53,9 +53,6 @@ from pathlib import Path
 # Plotting
 import matplotlib
 import matplotlib.pyplot as plt
-
-# Automatic baseline detection
-from pybaselines import Baseline
 
 
 def set_plot_parameters(
@@ -584,14 +581,52 @@ class FitFunction:
 
 class BaseLines:
     '''
-    TODO: Jakub David ...
-    
-    * Move "real" code to bground.blines
-    * Keep lines <80 chars, add docstrings + testing examples to GDrive
+    BaseLines method of backround subtraction.
+
+    This method uses algorithms from pybaselines for automatic baseline 
+    detection. The result is saved to a file.
+
+    Example
+
+    >>> # Standard import
+    >>> import bground.api as bkg
+    >>> 
+    >>> # (1) Define input and output file
+    >>> IN  = 'ed1_raw.txt'  # input file,  2cols: X, Yraw
+    >>> OUT = 'ed2_bkg.txt'  # output file, 4cols: X, Yraw, Ybkg, Y=Yraw-Ybkg
+    >>>
+    >>> # (2) Call the method, subtract background, and save results.
+    >>> BMET = bkg.BaseLines(
+    >>>     IN, OUT, method='method', xrange=(30,250), **kwargs)
+    >>> BMET.run()
+
     '''
     
     def __init__(self, in_file, out_file, method = "asls", xrange=(30,250), 
                  **kwargs):
+        '''
+        Initialize BaseLines.
+
+        Parameters
+        ----------
+        in_file : str
+            input file
+        out_file : str
+            output file
+        method : str, optional, by default "asls"
+            Algorithm for pybaselines for baseline detection.
+            Currently supported algorithms:
+                "asls",
+                "imodpoly"
+            
+            Please refer to 
+            https://pybaselines.readthedocs.io/en/latest/algorithms/index.html
+            for more details
+            
+        xrange : tuple, optional, by default (30,250)
+            A range on the x axis, where the baseline should be subtracted..
+            The range is inclusive.
+        '''
         self.data = InputData(in_file).data
         self.out_file = out_file
         self.kwargs = kwargs
@@ -610,20 +645,10 @@ class BaseLines:
             The result is saved to the file specified in the constructor.
         '''
 
-        x_xrange, y_xrange = blines.select_xrange(self.x, self.y, self.xrange)
-        baseline_fitter = Baseline(x_data=x_xrange)
-
-        if self.method == "asls":
-            baseline, _ = baseline_fitter.asls(y_xrange, **self.kwargs)
-        elif self.method == "imodpoly":
-            baseline, _ = baseline_fitter.imodpoly(y_xrange, **self.kwargs)
-        else:
-            raise ValueError(f"unknown method '{str(self.method)}'")
-
-        new_data = \
-            blines.subtract_baseline(self.x, self.y, baseline, self.xrange)
-        bground.points.bfunc.save_bkg_data(new_data, self.background, 
-                                           self.out_file)
+        result = bground.blines.blines.calculate_baseline(
+            self.x, self.y, self.method, self.xrange, **self.kwargs)
+        bground.points.bfunc.save_bkg_data(
+            result, self.background, self.out_file)
 
     
 
