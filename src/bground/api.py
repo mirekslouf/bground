@@ -7,33 +7,32 @@ Definition of API for (application programming interface) of BGROUND package.
 * The API can be employed as a simple UI within Spyder and/or Jupyter scripts.
 * The main purpose of the API - easy access to functions for bkgr subtraction.
 
-Short example:
-        
->>> # Semi-automated background subtraction with InteractivePlot method
->>> # (in Spyder, use %matplotlib qt before running this script
->>>
->>> # Import API of BGROUND package
+Simple example how to get help and run a background subtraction method:
+    
+>>> # Standard import
+>>> # (alternative: import ediff.bkg as bkg
 >>> import bground.api as bkg
+>>> 
+>>> # Simple help system
+>>> # (note: universal access by means of bground.api.Help class
+>>> bkg.Help.intro()
+>>> bkg.Help.more_help()
+>>> bkg.Help.InteractivePlot()
 >>>
->>> # Define I/O files
->>> INPUT  = 'ed1_raw.txt'
->>> OUTPUT = 'ed2_bcorr.txt'
->>>
->>> # Define data, plot parameters and background subtraction method
->>> DATA = bkg.InputData(INPUT)
->>> PARS = bkg.OutputParams(OUTPUT,'Pixels','Intensity',xlim=200,ylim=180)
->>> BMET = bkg.InteractivePlot(DATA, PPAR, CLI=False)
->>>
->>> # Run the selected BMET = Background subtraction METhod 
->>> # (here: interactive plot = define bkgr manually + subtract automatically
->>> # (follow the instructions in stdout + newly opened window showing XY-data 
->>> BMET.run()
+>>> # Run selected background subtraction method
+>>> # (note: universal access by means of bground.api.Run class
+>>> bkg.Run.InteractivePlot()
 
-More examples for the individual bkgr subtraction methods:
+More help to the individual background subtraction methods:
 
-* Semi-automated/interactive bkgr subtraction: bground.api.InteractivePlot
-* Restore background from saved bkgr points: bground.api.RestoreFromPoints
-* Other, fully-automated methods - under development
+* bground.api.InteractivePlot
+  = semi-automatatic method, universal, finished  
+* bground.api.FitFunction
+  = automatic method, simple fitting, TODO - Edvard
+* bground.api.BaseLines
+  = automatic method, advanced fitting, TOFINISH - Jakub
+* bground.api.WaveletMethod
+  = automatic method, wavelet-based fitting, TODO - Edvard
 '''
 
 
@@ -137,23 +136,42 @@ class InputData:
             self.read_input_data(input_data, **kwargs)
         
         
-    def read_input_data(self, input_data, **kwargs):
+    def read_input_data(self, input_data, **kwargs): 
         # Read input data with XY-data.
         # No docstring: just class description above + comments below.
-        
+        # * The optional arguments (comment, sep, usecols)
+        #   are passed to pandas.read_csv if the input_data ~ filename.
+    
         if isinstance(input_data, (str, Path)):
             # The input is a file = filename given be str or PathLike var.
             # => read the file using pd.read_csv
-            # => user's responsibility: pass suitable **kwargs
-            #    Sample kwargs: usecols=['Pix','Iraw'], comment='#'
-            #    Note: sep=r'\s+' is inserted as default, if not given.
-            name = 'File: ' + str(input_data)
-            # Set default separator to \s+
-            # (this is a convenience, as it is typical/default situation
-            if kwargs.get('sep') is None: kwargs['sep'] = r'\s+'
-            # Read the datafile to pd.DataFrame + convert it to np.array
-            data = pd.read_csv(input_data, **kwargs)
-            data = np.transpose(np.array(data))
+            # => user's responsibility: modify optional args as needed
+            #    the optional arguments are: comment, sep, usecols
+            #    these arguments are passed to pd.read_csv
+            # (a) set name = filename
+            name = str(input_data)
+            # (b) get **kwargs for pd.read_csv OR set reasonable defaults
+            # ... comments may be present
+            my_comment  = kwargs.get('comment') or '#'
+            # ... header should be None if there are no column headers!
+            my_header   = kwargs.get('header') or 'infer'
+            # ... skiprows can be defined for completness and flexibility
+            my_skiprows = kwargs.get('skiprows') or 0
+            # ... separator can be defined, defalt is any whitespace
+            my_sep      = kwargs.get('sep') or r'\s+'
+            # ... usecols may be defined, default is the first two columns
+            my_usecols  = kwargs.get('usecols') or [0,1]
+            # ... columns may be re-defined OR default column names are used
+            my_columns  = kwargs.get('columns') or None
+            # (c) read the file with pd.read_csv and the **kwargs from above 
+            df = pd.read_csv(input_data, 
+                comment=my_comment, header=my_header, skiprows=my_skiprows, 
+                sep=my_sep, usecols=my_usecols)
+            if my_columns is not None: df.columns = my_columns
+            # (d) convert pd.DataFrame to np.ndarray
+            #     and transpose the array (columns should be the 1st index)
+            data = np.transpose(np.array(df))
+            # (e) set that the data are NOT the special ed.io.Profile
             profile = None
         elif isinstance(input_data, np.ndarray):
             # The input is a numpy array.
@@ -177,17 +195,17 @@ class InputData:
             name = 'pd.DataFrame'
             data = np.transpose(np.array(input_data))
             profile = None
-        elif input_data.__class__.__name__ == 'Profile':
+        elif input_data.__class__.__name__ == 'Diffractogram1D':
             # The input is ediff.io.Profile.
             # (special case, input from our own, connected package ediff
             # => convert Profile to numpy.array
-            # => array has more-or-less fixed structure
-            #    the array will contain Profile columns {Pixel} a {Iraw}
+            # => the Profile has more-or-less fixed structure
+            #    the array is created from Profile columns {Pixel} a {Iraw}
             # * we use var.__class__.__name__ instead of type
             #   we DO NOT KNOW ediff.io.Profile here - it is not imported
             #   we could import this, but then bground would depend on ediff
-            name = 'ediff.io.Profile'
-            data = np.transpose(np.array(input_data[['Pixel','Iraw']]))
+            name = 'ediff.io.Diffractogram1D'
+            data = np.transpose(np.array(input_data[['Pixels','Iraw']]))
             profile = input_data
         else:
             raise TypeError('Unknown type of input data!')
@@ -248,10 +266,44 @@ class InteractivePlot:
     * When running the method, a new window with interactive plot is opened.
     * The user defines background points using mouse and keyboard shortcuts.
     * The program does the rest - subtracts bkgr and shows/saves the results.
+            
+    Example 1 :: classical, step-by-step way
+        
+    >>> # Standard import (alternative: import ediff.bkg as bkg)
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'ed1_raw.txt'
+    >>> OUT = 'ed2_bcorr.txt'
+    >>>
+    >>> # Define input data and output/plot parameters
+    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
+    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
+    >>>
+    >>> # Initialize and run InteractivePlot subtraction method
+    >>> # (a new window with interactive plot is opened
+    >>> # (user defines background points with the mouse and keyboard
+    >>> # (ouput files are saved automatically at the end of processing 
+    >>> SMET = bkg.WaveletMethod(DATA, PPAR)
+    >>> SMET.run()
+    
+    Example 2 :: simplified, one-step approach
+    
+    >>> # Standard import (alternative: import ediff.bkg as bkg)
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'ed1_raw.txt'
+    >>> OUT = 'ed2_bcorr.txt'
+    >>>
+    >>> # Run InteractivePlot subtraction method with a single function
+    >>> # (the function initializes all objects and runs the method
+    >>> bkg.Run.InteractivePlot(IN_FILE, OUT_FILE, 
+    >>>     xlabel='Pixels', ylabel='Intensity', xlim=300, ylim=300)
     '''
 
     
-    def __init__(self, DATA, PARS, CLI=False, messages=True):
+    def __init__(self, DATA, PARS, CLI=False):
         # Initialization of InteractivePlot object.
         # No docstring: just class description above + comments below.
         
@@ -283,15 +335,6 @@ class InteractivePlot:
         if CLI == True:
             matplotlib.use('QtAgg')
 
-        # Messages property
-        # (If messages=True, short messages are printed on stdout
-        # (during the interactive plot processing after each keypress event.
-        # (The property is saved to
-        # (both InteractivePlot object and PlotParams object.
-        # (  => PlotParams.messages are transferred to InteractivePlot.run()
-        # (  => Therefore, the info about messages is readily available.
-        self.messages = messages
-        self.pars.messages = messages
         
     def run(self):
         '''
@@ -524,99 +567,27 @@ class InteractivePlot:
         # Show the final plot
         plt.tight_layout()
         plt.show()
+    
 
-    
-    class Help():
-        '''
-        Help functions to InteractivePlot method of background subtraction.
-        '''
-        
-    
-        def intro():
-            '''
-            BGROUND printed help :: Brief introduction
-            
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.GeneralHelp.intro()
-            
-        
-        def more_help():
-            '''
-            BGROUND printed help :: Where to find more help
-            
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.GeneralHelp.more_help()
-    
-        
-        def how_it_works():
-            '''
-            BGROUND printed help :: InteractivePlot :: How it works
-    
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.InteractivePlot.how_it_works()
-    
-            
-        def keyboard_shortcuts(output_file='output_file.txt'):
-            '''
-            BGROUND printed help :: Interactive plot :: Keyboard shortcuts
-    
-            Parameters
-            ----------
-            output_file : str, optional
-                Name of real (or fictive) output file.
-                The name is used just in the help text.
-                It is possible to keep the default = 'output_file.txt'
-    
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.InteractivePlot.keyboard_shortcuts(output_file)
-
-
-class RestoreFromPoints():
+class RestoreFromPoints:
     '''
     TODO: This is an empty class; the method is under developlment ...
     '''
     pass
 
 
-class FitFunction():
+class FitFunction:
     '''
     TODO: This is an empty class; the method is under developlment ...
     '''
 
 
-class BaseLines():
+class BaseLines:
     '''
-    TODO: This is an empty class; the method(s) are under developlment ...
+    TODO: Jakub David ...
     
-    Technical notes
-    ---------------
-    
-    * task for Jakub David
-    * methods from pybaselines
-        - https://pypi.org/project/pybaselines/
-    * wrap #1 => idiff.bkg1d.blines
-        - (1) our input, (2) call (3) our output
-    * wrap #2 => bground.blines package
-        - this should be very simple - just import
-    * wrap #3 => this class 
-        - this is just a final wrapper, for convenience
-        - sample usage: bground.blines
+    * Move "real" code to bground.blines
+    * Keep lines <80 chars, add docstrings + testing examples to GDrive
     '''
     
     def __init__(self, in_file, out_file, method = "asls", xrange=(30,250), 
@@ -659,95 +630,38 @@ class BaseLines():
 class WaveletMethod:
     '''
     TODO: This is an empty class; the method is under development ...
-   
-    WaveletMethod of backround subtraction.
-
-    * Define the input parameters and run the method.
-    * The method is fully automated - it subtracts bkgr and saves the results.
-        
-    Example:
-        
-    >>> # Automated background subtraction with WaveletMethod
-    >>>
-    >>> # Import API of BGROUND package
-    >>> import bground.api as bkg
-    >>>
-    >>> # Define I/O files
-    >>> IN  = 'ed1_raw.txt'
-    >>> OUT = 'ed2_bcorr.txt'
-    >>>
-    >>> # Define data, plot parameters and background subtraction method
-    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
-    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
-    >>> SMET = bkg.WaveletMethod(DATA, PPAR, ...)
-    >>> 
-    >>> # Run the WaveletMethod
-    >>> # (ouput files will be saved automatically at the end of processing 
-    >>> SMET.run()
     '''
     
 
-    class Help():
-        '''
-        Help functions to WaveletMethod of background subtraction.
-        '''
-
-    
-        def intro():
-            '''
-            BGROUND printed help :: Brief introduction
-            
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.GeneralHelp.brief_intro()
-            
-        
-        def more_help():
-            '''
-            BGROUND printed help :: Where to find more help
-            
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.GeneralHelp.more_help()
-        
-            
-        def how_it_works():
-            '''
-            BGROUND printed help :: WaveletMethod :: How it works
-    
-            Returns
-            -------
-            None
-                The result is the help text printed on stdout.
-            '''
-            bground.help.WaveletMethod.how_it_works()
-
-
-class Run():
+class Run:
     '''
-    Run the individual background subtraction methods.
+    This class runs the background subtraction methods.
     
-    * One-line funtions that run selected background subtraction method.
-    * TODO: In progress ...
+    * The class contains a function for each bkg subtraction method.
+    * The function initializes and runs selected method in one step.
+    * This is convenient in our simple API and for the OO-use in EDIFF package.
     '''
 
 
-    def InteractivePlot():
+    def InteractivePlot(
+            in_data, out_file='bground.txt', 
+            comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
+            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=True):
         '''
-        Blah...
+        Run bground.api.InteractivePlot method with a single function/command.
         '''
-        pass
-    
+        DATA = InputData(in_data, sep=sep, usecols=usecols,
+            comment=comment, skiprows=skiprows, header=header)
+        PARS = OutputParams(out_file, xlabel, ylabel, xlim, ylim, messages)
+        BMET = InteractivePlot(DATA, PARS, CLI=False)
+        BMET.run()
+        
     
     def RestoreFromPoints():
         '''
-        Blah...
+        Run *api.RestoreFromPoints* method with a single function/command.
+        
+        * TODO: Mirek (straightforward, almost done)
         '''
         pass
     
@@ -775,31 +689,77 @@ class Run():
     
 class Help():
     '''
-    Simple access to help functions.
+    Class providing simple access to help functions.
     
     * The help functions just print basic information on stdout.
-    * TODO: in progress ...
+    * The help funcs are in bground.help module and can be called from here.
+    
+    >>> import bground.api as bkg
+    >>> bkg.Help.intro()
+    >>> bkg.Help.more_help()
+    >>> bkg.Help.InteractivePlot()
     '''
   
+    
     def intro():
         '''
-        BGROUND printed help :: Brief introduction
-        
-        Returns
-        -------
-        None
-            The result is the help text printed on stdout.
+        Help :: general :: brief introduction 
         '''
         bground.help.GeneralHelp.brief_intro()
         
     
     def more_help():
         '''
-        BGROUND printed help :: Where to find more help
-        
-        Returns
-        -------
-        None
-            The result is the help text printed on stdout.
+        Help :: general :: where to get more information
         '''
         bground.help.GeneralHelp.more_help()
+
+
+    def InteractivePlot():    
+        '''
+        Help :: InteractivePlot method of background subtraction
+        '''
+        bground.help.InteractivePlot.how_it_works()
+            
+    def InteractivePlot_shortcuts(out_file='bground.txt'):
+        '''
+        Help :: InteractivePlot :: keyboard shortcuts
+        
+        * The optional {out_file} argument can be ingored when calling help.
+        * It is used internally/programmatically
+          when the name is known from the context.
+        '''
+        # The optional {out_file} argument = name of the output file.
+        # Typically, this arg is used InteractivePlot is running
+        # and the name of the output file is known from context.
+        
+        
+        bground.help.InteractivePlot.keyboard_shortcuts(out_file)
+    
+    
+    def RestoreFromPoints():    
+        '''
+        Help :: RestoreFromPoints method of background subtraction
+        '''
+        bground.help.RestoreFromPoints.how_it_works()
+    
+    
+    def FitFunction():
+        '''
+        Help :: FitFunction method of background subtraction
+        '''
+        bground.help.FitFunctions.how_it_works()
+
+
+    def BaseLines():
+        '''
+        Help :: BaseLines method of background subtraction
+        '''
+        bground.help.BaseLines.how_it_works()
+
+
+    def WaveletMethod():
+        '''
+        Help :: WaveletMethod method of background subtraction
+        '''
+        bground.help.Wavelet.how_it_works()

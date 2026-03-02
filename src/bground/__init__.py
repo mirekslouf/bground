@@ -8,19 +8,24 @@ Semi-automatic background subtraction.
 * The package can subtract background in 1D-data = XY-data.
 * The XY-data are typically saved in a file containing two (or more) columns.
 
-Sub-packages of bground package:
+Key modules of bground package:
 
-* bground.api = package API, which can be used as a simple UI = user interface
-* bground.points = interactive method: background defined by points on XY-curve
+* bground.api = API ~ UI = user interface to run our bkg subtraction methods
+* bground.help = simple help, which explains how to our bkg subtraction methods
+
+Sub-packages with the individual bground subtraction methods:
+
+* bground.points = semi-automatic method: bkg defined by points on XY-curve
 * bground.ffunc  = automatic method: fit background with a simple function 
-* bground.blines = automatic method: fit background with a {pybaselines} func
+* bground.blines = automatic method: fit background with a {pybaselines} funcs
+* bground.wvlet  = automatic method: fit background using wavelet method(s)
 
 Usage of bground package:
 
 * See the initial examples at the top of each sub-package.
 '''
 
-__version__ = '1.1.6'
+__version__ = '1.1.8'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

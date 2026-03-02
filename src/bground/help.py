@@ -9,25 +9,26 @@ Help functions for bground package.
 * Three functions - intro, more_help, how_it_works - available for all methods.
 
 >>> # Typical access to printed help from bground
->>> # (the help accessed via bground.api
+>>> # (the help via bground.api
 >>> import bground.api as bkg
->>> bkg.InteractivePlot.Help.intro()
->>> bkg.InteractivePlot.Help.more_help()
->>> bkg.InteractivePlot.Help.how_it_works()
+>>> bkg.Help.intro()
+>>> bkg.Help.more_help()
+>>> bkg.Help.InteractivePlot()
 
 >>> # Typical access to printed help from ediff
 >>> # (bground is usually used within ediff package
 >>> # (bground.api is auto-imported as ediff.bkg or ed.bkg
 >>> import ediff as ed
->>> ed.bkg.InteractivePlot.Help.intro()
->>> ed.bkg.InteractivePlot.Help.more_help()
->>> ed.bkg.InteractivePlot.Help.how_it_works()
+>>> ed.bkg.Help.intro()
+>>> ed.bkg.Help.more_help()
+>>> ed.bkg.Help.InteractivePlot()
 '''
 
 
 # At the beginning of this module, we define intelligent_detent method.
 # It performs intelligent de-dentation of multiline Python strings.
 # This method is used in all help functions below.
+
 
 import re
 
@@ -98,7 +99,7 @@ class GeneralHelp:
     '''
     
     
-    def intro():
+    def brief_intro():
         '''
         BGROUND printed help :: Brief introduction
         '''
@@ -165,7 +166,7 @@ class InteractivePlot:
     Class with help functions.
     
     * The functions print simple textual help.
-    * Here: help to bground.iplot = InteractivePlot bkgr subtraction method.
+    * Here: help to {InteractivePlot} backgound subtraction method.
     '''
     
     
@@ -248,13 +249,70 @@ class InteractivePlot:
         
         print(intelligent_dedent(help_text))
         
+
+class RestoreFromPoints:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to {RestoreFromPoints} backgound subtraction method.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: RestoreFromPoints :: How it works
+        '''
         
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+
+
+class FitFunction:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to {FitFunctions} backgound subtraction method.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: FitFunction :: How it works
+        '''
+        
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+        
+
+class BaseLines:
+    '''
+    Class with help functions.
+    
+    * The functions print simple textual help.
+    * Here: help to {BaseLines} backgound subtraction method.
+    '''
+     
+    
+    def how_it_works():
+        '''
+        BGROUND printed help :: BaseLines :: How it works
+        '''
+        
+        # TODO: brief text explanation
+        # (analogy of the same method in InterativePlot class above
+        print("Not implemented yet ...")
+
+
 class WaveletMethod:
     '''
     Class with help functions.
     
     * The functions print simple textual help.
-    * Here: help to bground.wvlet = WaveletMethod of background subtraction.
+    * Here: help to {WaveletMethod} backgound subtraction method.
     '''
      
     
