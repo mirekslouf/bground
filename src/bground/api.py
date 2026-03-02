@@ -619,7 +619,8 @@ class BaseLines():
         - sample usage: bground.blines
     '''
     
-    def __init__(self, in_file, out_file, method = "asls", xrange=(30,250),  **kwargs):
+    def __init__(self, in_file, out_file, method = "asls", xrange=(30,250), 
+                 **kwargs):
         self.data = InputData(in_file).data
         self.out_file = out_file
         self.kwargs = kwargs
@@ -648,8 +649,10 @@ class BaseLines():
         else:
             raise ValueError(f"unknown method '{str(self.method)}'")
 
-        new_data = blines.subtract_baseline(self.x, self.y, baseline, self.xrange)
-        bground.points.bfunc.save_bkg_data(new_data, self.background, self.out_file)
+        new_data = \
+            blines.subtract_baseline(self.x, self.y, baseline, self.xrange)
+        bground.points.bfunc.save_bkg_data(new_data, self.background, 
+                                           self.out_file)
 
     
 

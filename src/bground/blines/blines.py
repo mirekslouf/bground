@@ -39,7 +39,8 @@ def select_xrange(x: np.ndarray, y: np.ndarray, xrange: tuple[int, int]):
     mask = (x >= start) & (x <= end)
     return x[mask], y[mask]
 
-def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray, xrange: tuple[int, int]):
+def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray, 
+                      xrange: tuple[int, int]):
     '''Subtract baseline from XY-data.
 
     Parameters
