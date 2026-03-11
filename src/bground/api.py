@@ -586,7 +586,7 @@ class BaseLines:
     This method uses algorithms from pybaselines for automatic baseline 
     detection. The result is saved to a file.
 
-    Example
+    Example 1 :: method with default parameters
 
     >>> # Standard import
     >>> import bground.api as bkg
@@ -596,14 +596,30 @@ class BaseLines:
     >>> OUT = 'ed2_bkg.txt'  # output file, 4cols: X, Yraw, Ybkg, Y=Yraw-Ybkg
     >>>
     >>> # (2) Call the method, subtract background, and save results.
+    >>> BMET = bkg.BaseLines(IN, OUT, method='peak_filling', xrange=(30,250))
+    >>> BMET.run()
+
+
+    Example 2 :: specify method parameters
+
+    >>> # Standard import
+    >>> import bground.api as bkg
+    >>> 
+    >>> # (1) Define input and output file
+    >>> IN  = 'ed1_raw.txt'  # input file,  2cols: X, Yraw
+    >>> OUT = 'ed2_bkg.txt'  # output file, 4cols: X, Yraw, Ybkg, Y=Yraw-Ybkg
+    >>>
+    >>> # (2) Call the method, subtract background, and save results.
+    >>> # Add parameter decreasing=True for the snip algorithm.
+    >>> # The kwargs (parameters for the method) must be specified last.
     >>> BMET = bkg.BaseLines(
-    >>>     IN, OUT, method='method', xrange=(30,250), **kwargs)
+    >>>         IN, OUT, method='snip', xrange=(30,250), decreasing=True)
     >>> BMET.run()
 
     '''
     
-    def __init__(self, in_file, out_file, method = "asls", xrange=(30,250), 
-                 **kwargs):
+    def __init__(self, in_file, out_file, method = "peak_filling", 
+                 xrange=(30,250), **kwargs):
         '''
         Initialize BaseLines.
 
@@ -613,20 +629,29 @@ class BaseLines:
             input file
         out_file : str
             output file
-        method : str, optional, by default "asls"
-            Algorithm for pybaselines for baseline detection.
-            Currently supported algorithms:
-                "asls",
-                "imodpoly"
-            
-            Please refer to 
-            https://pybaselines.readthedocs.io/en/latest/algorithms/index.html
-            for more details
-            
+        method : str, optional, by default "peak_filling"
+            Algorithm from pybaselines for baseline detection.     
         xrange : tuple, optional, by default (30,250)
             A range on the x axis, where the baseline should be subtracted..
             The range is inclusive.
+
+        Notes
+        -----
+        * `kwargs` are passed to the algorithm.
+
+        * Recommended methods (and parameters in kwargs):
+            * `peak_filling` (with parameter `half_window=1`),
+            * `snip` (with parameter `decreasing=True`),
+            * `pspline_iasls` (with parameter `lam=5`), 
+            * `irsqr` (with parameter `lam=1000`),
+            * `rubberband` (with parameter `lam=2`)
+        
+
+        * Please refer to 
+        https://pybaselines.readthedocs.io/en/latest/api/Baseline.html
+        for more methods and their details.
         '''
+
         self.data = InputData(in_file).data
         self.out_file = out_file
         self.kwargs = kwargs
@@ -698,11 +723,14 @@ class Run:
         pass
 
 
-    def BaseLines():
+    def BaseLines(
+            in_file, out_file='bground.txt', method = "peak_filling", 
+            xrange=(30,250), **kwargs):
         '''
-        Blah...
+        Run bground.api.BaseLines method with a single function/command.
         '''
-        pass
+        BMET = BaseLines(in_file, out_file, method, xrange, **kwargs)
+        BMET.run()
         
     
     def WaveletMethod():

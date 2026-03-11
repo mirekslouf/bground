@@ -76,9 +76,9 @@ def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray,
         np.where(bground_mask, y - baseline_full, 0)
     ))
 
-def calculate_baseline(x, y, method = "asls", xrange=(30,250), **kwargs):
+def calculate_baseline(x, y, method = "peak_filling", xrange=(30,250), **kwargs):
     '''
-    Calculate the baseline with algorithms for pybaselines and subtract 
+    Calculate the baseline with algorithms from pybaselines and subtract 
     the baseline from the data.
 
     * Input background data = 2 arrays: `X, Y = Iraw = raw intensity`
@@ -90,16 +90,8 @@ def calculate_baseline(x, y, method = "asls", xrange=(30,250), **kwargs):
         X axis of the data.
     y : np.ndarray
         Y axis of the data.
-    method : str, optional, by default "asls"
-        Algorithm for pybaselines for baseline detection.
-        Currently supported algorithms:
-            "asls",
-            "imodpoly"
-        
-        Please refer to 
-        https://pybaselines.readthedocs.io/en/latest/algorithms/index.html
-        for more details
-        
+    method : str, optional, by default "peak_filling"
+        Algorithm from pybaselines for baseline detection.        
     xrange : tuple, optional, by default (30,250)
         A range on the x axis, where the baseline should be subtracted..
         The range is inclusive.
@@ -109,20 +101,27 @@ def calculate_baseline(x, y, method = "asls", xrange=(30,250), **kwargs):
     np.ndarray
         Array with 4 rows `[X, Iraw, Ibkg, I = Iraw - Ibkg]`.
 
-    Raises
-    ------
-    ValueError
-        Error for unknown method.
+    Notes
+    -----
+    * `kwargs` are passed to the algorithm.
+
+    * Recommended methods (and parameters in kwargs):
+        * `peak_filling` (with parameter `half_window=1`),
+        * `snip` (with parameter `decreasing=True`),
+        * `pspline_iasls` (with parameter `lam=5`), 
+        * `irsqr` (with parameter `lam=1000`),
+        * `rubberband` (with parameter `lam=2`)
+    
+
+    * Please refer to 
+    https://pybaselines.readthedocs.io/en/latest/api/Baseline.html
+    for more methods and their details.
     '''
     
     x_xrange, y_xrange = select_xrange(x, y, xrange)
     baseline_fitter = Baseline(x_data=x_xrange)
 
-    if method == "asls":
-        baseline, _ = baseline_fitter.asls(y_xrange, **kwargs)
-    elif method == "imodpoly":
-        baseline, _ = baseline_fitter.imodpoly(y_xrange, **kwargs)
-    else:
-        raise ValueError(f"unknown method '{str(method)}'")
+    fn = getattr(baseline_fitter, method)
+    baseline, _ = fn(y_xrange, **kwargs)
 
     return subtract_baseline(x, y, baseline, xrange)
