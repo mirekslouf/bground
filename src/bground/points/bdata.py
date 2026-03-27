@@ -84,6 +84,9 @@ class XYpoints:
         # Sort the two lists => this is a trick found in wwww 
         # https://stackoverflow.com/q/9007877
         (self.X, self.Y) = zip( *sorted( zip(self.X, self.Y) ) )
+        # One more step is needed because zip returns tuples and we need lists
+        self.X = list(self.X)
+        self.Y = list(self.Y)
         
         
 class XYcurve:

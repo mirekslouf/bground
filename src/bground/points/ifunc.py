@@ -193,7 +193,7 @@ def del_bkg_point_close_to_mouse(ax, iplot, xm, ym):
       whose X-coordinate is the closest to the mouse cursor X-coordinate.
     '''
     # a) Sort bkg points (sorted array is necessary for the next step)
-    bfunc.sort_bkg_points(iplot)
+    iplot.background.points.sort_acc_to_X()
     # b) Find index of background point closest to the mouse X-position
     idx = find_nearest(np.array(iplot.background.points.X), xm)
     # c) Remove element with given index from X,Y-lists (save coordinates)

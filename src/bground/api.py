@@ -433,10 +433,10 @@ class InteractivePlot:
         
         * The method (i) clears variables
           and (ii) shows the plot on the screen.
-        * Moreover, the method prints brief help on stdout
-          when the interactive plot opens.
         * The plot is waiting for the user to define
           background points with keyboard and mouse. 
+        * A brief help is printed on stdout
+          when the interactive plot is opened.
         * No params; everything defined during InteractivePlot initialization.
         '''
 
@@ -497,6 +497,32 @@ class RestoreFromPoints(InteractivePlot):
     '''
     
     def __init__(self, DATA, PARS, CLI=False):
+        '''
+        Initialize {RestoreFromPoints} object.
+
+        Parameters
+        ----------
+        DATA : bground.api.InputData object
+            The object contains description of input data.
+            The {InputData} object should be defined
+            either before initializing the {InteractivePlot},
+            or intrinsically if we use bground.api.Run.InteractivePlot.
+        PARS : bground.api.BkgParams object
+            The object contains description of input data.
+            The {BkgData} object should be defined
+            either before initializing the {InteractivePlot},
+            or intrinsically if we use bground.api.Run.InteractivePlot.
+        CLI : bool, optional, default is False
+            If we run the {InteractivePLot} from CLI interface,
+            this arbument should be set to True so that the plot stayed
+            in the screen.
+
+        Returns
+        -------
+        bground.api.RestoreFromPoints object
+            The object should be ready to use.
+            The principal object method is InteractivePlot.run.
+        '''
         
         # The same initialization like in the superclass.
         # (if __init__ contains just this command, it can be ommited
@@ -514,7 +540,16 @@ class RestoreFromPoints(InteractivePlot):
  
 
     def run(self):
-    
+        '''
+        Run {RestoreFromPoints} method of background subtraction.
+        
+        * The method reads a TXT.BP file with background points
+          and recalculates background and saves the results.
+        * The TXT.BP file usually comes from
+          a previous run of InteractivePlot method.
+        * No params; everything defined during InteractivePlot initialization.
+        '''
+
         # (0) Read background points
         # (self.background comes from initialization
         # (it contains the name of the file with bkg points
@@ -653,7 +688,7 @@ class Run:
         -------
         bground.api.InteractivePlot
             The object is used to run the InteractivePlot method,
-            but it also saves the output data.
+            but it also saves and plots the original and bkg-corrected data.
         
         Example
         -------
@@ -724,7 +759,7 @@ class Run:
         -------
         bground.api.RestoreFromPoints
             The object is used to run the RestoreFromPoints method,
-            but it also saves the output data.
+            but it also saves and plots the original and bkg-corrected data.
         
         Example
         -------
@@ -734,8 +769,8 @@ class Run:
         >>> import bground.api as bkg
         >>> 
         >>> # Define I/O files
-        >>> # (input file  = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
-        >>> # (background file = TXT.BP file from a previous run of InteractivePlot
+        >>> # (input file = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
+        >>> # (bkg points = TXT.BP file from a previous run of InteractivePlot
         >>> IN  = r'../_DATA/tbf3_sum_hsd_i300.txt'
         >>> BKG = r'test2_simple.txt.bp'
         >>> 
@@ -866,28 +901,55 @@ class Help():
 
 class Plots:
     '''
-    Class defines plotting for all background correction methods.
+    Class defining plotting for all background correction methods.
     
-    How does it work?
+    * The class returns Plots object.
+    * The {Plots} object is designed as a component
+      for arbitrary background subtraction class/method.
     
-    * Blah...
-    * Blah...
+    Example
+    
+    >>> import bground.api as bkg
+    >>> IN_FILE  = r'input_data.txt'
+    >>> BKG_FILE = r'processed_data.txt'
+    >>> SMET = bkg.Run.InteractivePlot(IN_FILE, BKG_FILE)
+    >>> SMET.plots.plot_original()
+    >>> SMET.plots.plot_without_bkg() 
+    
+    How is it done?
+    
+    * Using true *composition* (not just aggregation).
+    * The component class (Plots) holds the reference to the parent class.
+    * The parent/composite class can be any background subtraction class,
+      such as: InteractivePlot, RestoreFromPoints, ...
+    * The parent class (for example InteractivePlot)
+      saves the reference to Plots during initialization
+      by means of the following command: `self.plots = Plots(self)`. 
     '''
     
         
     def __init__(self, parent):
         '''
-        Initialize the class ...
-        
+        Initialize {Plots} object.
+
+        * The {Plots} object is designed as a component
+          for arbitrary background subtraction class/method.
+        * The method is typically not initialized directly,
+          but within the composite/parent class that defines
+          a bacgkround subtraction method.
+    
         Parameters
         ----------
-        parent : TYPE
-            DESCRIPTION.
+        parent : class defining a background subtraction method
+            An arbitrary class in this module
+            that defines a backround subtraction method, such as:
+            InteractivePlot, RestoreFromPoints ...
 
         Returns
         -------
-        None
-            We just initialize self._parent property.
+        Plots object
+            The object has the only property: `self._parent = parent`.
+            This is the whole trick that makes this class a true component.
         '''
         self._parent = parent   # aggregated object
 
