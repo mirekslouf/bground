@@ -1,51 +1,57 @@
 '''
-Module: bground.bfunc
----------------------
+Module: bground.points.bfunc
+----------------------------
 Functions for the background calculation.
 
-* The functions are usually called indirectly, from bground.iplot module.
-* The bground.iplot module defines an interactive plot, which is used as a GUI.
-
-Technical notes:
-
-* All functions in this module manipulate with bground.bdata.bkg object.
-    - The bkg object contains all info needed for background subtraction.
-* The last function works also with data = 2D-numpy array object.
-    - The 2D-numpy array with two rows: [X,Y], where Y = Iraw = raw intensity
-    - The last function calculates a 3-row array: [X, Iraw, Ibkg, I=Iraw-Ibkg]
+* The functions are usually called indirectly, via bground.api.
+* The functions manimulate with background data of {iplot} object.
+* The {iplot} object can come from two classes:
+    - bground.api.InteractivePlot = classical interactive plot
+    - bground.api.RestoreFromPoints
+      = restore bkg from previous interactive plot
 '''
 
 import numpy as np
 from scipy import interpolate
 
 
-def load_bkg_points(bkg_object):
+def load_bkg_points(iplot, bkg_file=None):
     '''
-    Load backround points to {bkg_object}.
+    Load backround points to {iplot.background} object.
     
-    * {bkg_object} must be known/pre-defined
-    * {bkg_object.bname} contains name of input/outpu files
-    * {bkg_object.bname}+'.bkg' is the name of file with bkg points to read
+    * {iplot} must be known/pre-defined and contain {iplot.background} object
+    * {iplot.background.bname} contains name of input/output files
+    * {iplot.background..bname}+'.bp' = name of file with bkg points to read
 
     Parameters
     ----------
-    bkg_object : bground.points.bdata.XYbackground object
-        This object stores bname, btype, XYpoints, and XYcurve.
-        
-        * bname = name of the input/output file with bkg points
-        * btype = type of the backround (linear, quadratic, cubic)
-        * XYpoints = simple object with background points (X-list and Y-list).
+    iplot : bground.api.InteractivePlot object
+        From this objec, we take the iplot.background sub-object.
+        The iplot.background sub-object stores
+        bname, btype, XYpoints, and XYcurve.
 
+    bkg_file : optional, str or PathLike object, default is None
+        If {bkt_file} argument is given,
+        the background points will be loaded from the specified {bkg_file}
+        instead of the standard {iplot.background.bname}+'.bp' file.
+        
     Returns
     -------
-    bkg_object : bground.points.bdata.XYbackground object
-        The object contains the following items: 
-        (i) name of the input file, 
-        (ii) type of backround subtraction, and
-        (iii) the X,Y background points and type of the.
+    iplot.background object
+        The object is described above.
+        In addition, the data are loaded into iplot.backround,
+        i.e. the original iplot object is updated with the loaded background.
     '''
+    
     # Prepare name bkg-file = file with background points
-    bkg_file = str(bkg_object.bname) + '.bkg'
+    if bkg_file is None:
+        # bkg_file argument not given (default)
+        # => we suppose that the filename is defined inside bkg_object
+        bkg_file = str(iplot.background.bname) + '.bp'
+    else:
+        # bkg_file argument was specified (either str or PathLike object)
+        # => convert to str and suppose that it the full name of bkg_file 
+        bkg_file = str(bkg_file)
         
     # Go through {bkg_file} and save data into {bkg_object}
     with open(bkg_file, 'r') as f:
@@ -57,7 +63,7 @@ def load_bkg_points(bkg_object):
             if line.startswith("#"):
                 if line.startswith("# Background correction type"):
                     # Read background type if given
-                    bkg_object.btype = line.split(":")[-1].strip()
+                    iplot.background.btype = line.split(":")[-1].strip()
                 continue
             # Read data lines
             parts = line.split()
@@ -73,8 +79,8 @@ def load_bkg_points(bkg_object):
             # Correct data line (hopefully) => read x-coord and y-coord
             try:
                 x, y = map(float, parts)
-                bkg_object.points.X.append(x)
-                bkg_object.points.Y.append(y)
+                iplot.background.points.X.append(x)
+                iplot.background.points.Y.append(y)
             except ValueError:
                 print('Cannot convert X,Y-coords to float!')
                 raise
@@ -89,142 +95,133 @@ def load_bkg_points(bkg_object):
     # ( - bkg_object.points.X, bkg_object.points.Y = X,Y-coords of bkg points
     # (later we can calculate also:
     # ( - bkg_object.curve => to finish background subtraction procedure
-    return bkg_object
+    return iplot.background
 
 
-def save_bkg_points(bkg_object):
+def save_bkg_points(iplot):
     '''
     Save bacgkround points to the output text file.
     
-    * The background points are stored in {bkg_object}.
-    * The background points output file will be {bkg_object.bname}+'.bkg'.
+    * The bkg points are stored in {iplot.background} sub-object.
+    * The bkg points output file will be {iplot.background.bname}+'.bp'.
 
     Parameters
     ----------
-    bkg_object : bground.bdata.XYbackground object
-        Object that stores background-related data,
-        including bacgkround points.
+    iplot : bground.api.InteractivePlot object
+        From this objec, we take the iplot.background sub-object.
+        The iplot.background sub-object stores
+        bname, btype, XYpoints, and XYcurve.
 
     Returns
     -------
     None
-        The background points are stored in {bkg_object.bname}+'.bkg' file.
+        The background points are stored in
+        {iplot.background.bname}+'.bp' file.
     '''
-    # Prepare name bkg-file = file with background points
-    bkg_file = str(bkg_object.bname) + '.bkg'
+  
+    # Prepare variables
+    # (bkg_type = background type, short name for convenience
+    # (bkg_file = name of bkg-file = file with background points
+    bkg_type = iplot.background.btype
+    bkg_file = str(iplot.background.bname) + '.bp'
 
     # Go through the data in the bkg_object and write them to file
     with open(bkg_file, 'w') as fh:
         fh.writelines('# Background points\n')
         fh.writelines('# 2 columns: [X-coords, Y-coords]\n')
-        fh.writelines(f'# Background correction type: {bkg_object.btype}\n')
-        X = bkg_object.points.X
-        Y = bkg_object.points.Y
+        fh.writelines(f'# Background correction type: {bkg_type}\n')
+        X = iplot.background.points.X
+        Y = iplot.background.points.Y
         for x,y in zip(X,Y): print(f'{x:10.1f}{y:10.1f}', file=fh)
-    
-
-def sort_bkg_points(bkg_object):
-    '''
-    Sort background points according to their X-coordinate.
-    
-    Parameters
-    ----------
-    bkg_object : bground.bdata.bkg object
-        A bkg-object containing (among other things)
-        a list of background points, which are probably unsorted.
-
-    Returns
-    -------
-    None
-        The result is the updated bkg object.
-        The updated object contains bkg.points sorted according to
-        their X-coordinate.
-    '''
-    # Sorting is based on the trick found on www
-    # GoogleSearch: python sort two 1D arrays
-    # https://stackoverflow.com/q/9007877
-    X,Y = (bkg_object.points.X, bkg_object.points.Y)
-    x,y = zip( *sorted( zip(X,Y) ) )
-    bkg_object.points.X = list(x)
-    bkg_object.points.Y = list(y)
 
     
-def calculate_baseline(data, bkg):
+def calculate_baseline(iplot):
     '''
     Calculate background
     = calculate interpolated background curve;
-    the calculated background curve is saved within bkg object.
+    the calculated background curve is saved within iplot.background object.
     
     Parameters
     ----------
-    data : 2D numpy array
-        The array contains two colums [X,Intensity].
-    bkg : bground.points.bdata.XYbackground object
-        Object containing the following items:
-            
-        * bname = string, basename of output file(s)
-        * btype = a type of interpolation for the calculation of the bkground
-        * points = 2-column list: [X-coord, Y-coord]
-        * curve = baseline (to be (re)calculated when calling this function)
+    iplot : api.bground.InteractivePlot object
+        From this object, we use two sub-objects
+        in this function: data (original XY data)
+        and background (background object = bground.bdata.XYbackground).
         
     Returns
     -------
     None
-        The result is the updated bkg object,
+        The result is the updated iplot object,
+        specifically the iplot.background sub-object,
         which should contain the following (re)calculated items:
         
-        * bkg.curve.X = calculated X-coordinates of the whole background
-        * bkg.curve.Y = calculated Y-coordinates of the WHOLE background
+        * iplot.background.curve.X = X-coordinates of the whole bkg curve
+        * iplot.background.curve.Y = X-coordinates of the whole bkg curve
     '''
     # (1) Prepare background points = X,Y coordinates for interpolation
-    X,Y = (bkg.points.X,bkg.points.Y)
+    X,Y = (iplot.background.points.X, iplot.background.points.Y)
     # (2) Interpolate background points = calculcate background curve
     try:
         # Interpolation = calculation of interpolation function F.
         # (F = interpolation object/function
         # (with which we easily calculate the interpolated data - see below
-        F = interpolate.interp1d(X,Y, kind=bkg.btype)
-        Xmin = bkg.points.X[0]
-        Xmax = bkg.points.X[-1]
-        Xnew = data[0,(Xmin<=data[0])&(data[0]<=Xmax)]
-        Ynew = F(Xnew)
-        bkg.curve.X = Xnew
-        bkg.curve.Y = Ynew
+        F = interpolate.interp1d(X,Y, kind=iplot.background.btype)
+        # Prepare X-range = X-limits for the future background curve
+        Xmin = iplot.background.points.X[0]
+        Xmax = iplot.background.points.X[-1]
+        # Prepare X-data = X-coordinates in range (Xmin...Xmax)
+        Xdata = iplot.data
+        Xdata = Xdata[0, (Xmin<=Xdata[0]) & (Xdata[0]<=Xmax)]
+        # Calculate Y-data = Y-coordinates of the background curve
+        Ydata = F(Xdata)
+        # Save the calculated background curve in iplot.background object
+        iplot.background.curve.X = Xdata
+        iplot.background.curve.Y = Ydata
     except Exception as err:
         # Exceptions: interpolation can fail for whatever reason
         # In such a case we print the error and continue ...
-        print(err)
         print(type(err))
+        print(err)
+        
 
-
-def calculate_bkg_data(data, bkg):
+def calculate_bkg_data(iplot):
     '''
     Final calculation/update of background data = numpy array with XY-data.
     
-    * Input background data = 2 rows: `X, Y = Iraw = raw intensity`
-    * Output background data = 4 rows: `X, Iraw, Ibkg, I = (Iraw - Ibkg)`
-    
     Parameters
     ----------
-    data : 2D numpy array
-        The array with two rows [X,Y] as described above.
-    bkg : bground.points.bdata.XYbackground object
-        The object contains several items,
-        including the interpolated background curve.
+    iplot : api.bground.InteractivePlot object
+        From this object, we use two sub-objects
+        in this function: data (original 2-col data => convert to 4-col)
+        and background (background object with interploated background curve).
 
     Returns
     -------
-    data : 2D numpy array
+    iplot.data : iplot sub-object, np.ndarray
         The array with 4 rows `[X, Iraw, Ibkg, I = Iraw - Ibkg]`.
+        Morover, the data are saved in the iplot.data sub-object anyway.
+    
+    Technical notes
+    ---------------
+    The results of the calculation will be saved in two objects:
+    iplot.data + iplot.background.
+    
+    * The original iplot.data object contains two columns:
+      `[X, Iraw]`
+    * The recalculated iplot.data object will contain four columns:
+      `[X, Iraw, Ibkg, I = Iraw-Ibkg]`
+    * Where X = X-coordinate
+      and Iraw, Ibkg a I = raw, background and net/final/corrected intensity.
     '''
     # (0) Recalculate baseline
     # (in most cases, baseline is calculated when we call this function
     # (BUT calculation might be omitted or have just read the background points
-    calculate_baseline(data, bkg)
+    calculate_baseline(iplot)
     # (1) Modify the data variable if needed.
-    number_of_rows = data.shape[0]
+    number_of_rows = iplot.data.shape[0]
     # If number_of_rows == 2 then add two new rows.
     # => the func is called for the 1st time and data have just 2 original rows
+    data = iplot.data  # shorter name, used below multiple times 
     if number_of_rows == 2:      
         data = np.insert(data,2,[data[1],data[1]],0)
     # If number_of_rows != 2  then rewrite two additional rows with data[1].
@@ -232,8 +229,8 @@ def calculate_bkg_data(data, bkg):
     else:
         data[2],data[3] = data[1],data[1]   
     # (2) Get Xmin and Xmax of background/baseline curve.
-    Xmin = bkg.points.X[0]
-    Xmax = bkg.points.X[-1]
+    Xmin = iplot.background.points.X[0]
+    Xmax = iplot.background.points.X[-1]
     # (3) Set range in which the background/baseline is defined.
     # (in this package, we define background only inside the selected range
     bkg_range = (Xmin<=data[0]) & (data[0]<=Xmax)
@@ -242,28 +239,31 @@ def calculate_bkg_data(data, bkg):
     # (a) Zero intensities outside bkg_range.
     data[2] = np.where(bkg_range,data[2],0)
     # (b) Baseline intentities inside bkg_range
-    data[2,bkg_range] = bkg.curve.Y
+    data[2,bkg_range] = iplot.background.curve.Y
     # (5) Define 3rd data row  = I = Iraw - Ibkg = net intensity.
     # (the net intensity will contain zeros outsice bkg_range
     # (a) Zero intensities outside bkg_range.
     data[3] = np.where(bkg_range,data[3],0)
     # (b) Net intensities inside bkg_range = raw_intensities - bkg_intensities
-    data[3,bkg_range] = data[3,bkg_range] - bkg.curve.Y
+    data[3,bkg_range] = data[3,bkg_range] - iplot.background.curve.Y
     # (c) Set possible negative intensities after bkgr subtraction to zero
     data[3,data[3]<0] = 0
     # (b) Return modified data array
     # (the two rows of the modified array contain baseline and net intensity
-    return(data)
+    iplot.data = data
+    return(iplot.data)
 
 
-def save_bkg_data(data, bkg, out_file):
+def save_bkg_data(iplot):
+    '''
+    Save background data to file.
+    '''
     file_header = (
         'XY-data with background subtraction\n' +
         '4 columns: [X, Y=Iraw, Ibkg, I=(Iraw-Ibkg)]\n'+
-        f'Background correction type: {bkg.btype}')
+        f'Background correction type: {iplot.background.btype}')
     np.savetxt(
-        out_file, 
-        np.transpose(data),
+        iplot.pars.bkg_file, 
+        np.transpose(iplot.data),
         fmt=('%8.3f','%11.3e','%11.3e', '%11.3e'),
         header=file_header)
-    

@@ -2,37 +2,30 @@
 Module: bground.api
 -------------------
 
-Definition of API for (application programming interface) of BGROUND package.
+Definition of API (Application Programming Interface) of the BGROUND package.
 
-* The API can be employed as a simple UI within Spyder and/or Jupyter scripts.
-* The main purpose of the API - easy access to functions for bkgr subtraction.
+* The API can be used as a simple UI within Spyder or Jupyter.
+* The main purpose of the API: easy access to functions for bkgr subtraction.
 
-Simple example how to get help and run a background subtraction method:
+Minimal example of running a background subtraction method:
     
->>> # Standard import
->>> # (alternative: import ediff.bkg as bkg
 >>> import bground.api as bkg
->>> 
->>> # Simple help system
->>> # (note: universal access by means of bground.api.Help class
->>> bkg.Help.intro()
->>> bkg.Help.more_help()
->>> bkg.Help.InteractivePlot()
->>>
->>> # Run selected background subtraction method
->>> # (note: universal access by means of bground.api.Run class
->>> bkg.Run.InteractivePlot()
+>>> IN_FILE  = r'input_data.txt'
+>>> BKG_FILE = r'processed_data.txt'
+>>> bkg.Run.InteractivePlot(IN_FILE, BKG_FILE)
 
-More help to the individual background subtraction methods:
+More details to all individual background subtraction methods:
 
 * bground.api.InteractivePlot
-  = semi-automatatic method, universal, finished  
+  = semi-automatatic method, universal, finished
+* bground.api.RestoreFromPoints
+  = special case of the previous, restore bkg from saved bkg points  
 * bground.api.FitFunction
-  = automatic method, simple fitting, TODO - Edvard
+  = automatic method, fit bkg with a simple function, TODO - Edvard
 * bground.api.BaseLines
-  = automatic method, advanced fitting, TOFINISH - Jakub
+  = automatic method, fit bkg with PyBaseLines funcs, TODO - Jakub
 * bground.api.WaveletMethod
-  = automatic method, wavelet-based fitting, TODO - Edvard
+  = automatic method, fit bkg with wavelet-based funcs, TODO - Adriana
 '''
 
 
@@ -41,7 +34,7 @@ import bground.help
 # {points} sub-package
 import bground.points.bdata 
 import bground.points.bfunc
-import bground.points.iplot
+import bground.points.ifunc
 
 import bground.blines.blines as blines
 
@@ -108,35 +101,75 @@ def set_plot_parameters(
 
 class InputData:
     '''
-    Class defining {InputData} for {InteractivePlot}.
+    Class defining {InputData} for background subtraction.
     
-    * Input data can be: file, np.array, pd.DataFrame, ediff.io.Profile.
-    * The usage of InputData class is shown in the example above.
-    * The rest of the documentation => detailed comments in the source code.
+    * Input data can be:
+      filename, np.array, pd.DataFrame, or ediff.io.Diffractogram1D object.
+    * In any case, the input data should contain two columns:
+      `[X, Y = Iraw = raw_intensity]`.
     '''
     
     def __init__(self, input_data, **kwargs):
+        '''
+        Initialize {InputData} object that defines input for bkg subtraction.
+
+        Parameters
+        ----------
+        input_data : str or np.array or pd.DataFrame or ediff.io.Diffraction1D
+            The input_data are converted to
+            self.name, self.data and self.diff1D sub-objects.
+            Self.name = name of the input file (or description of the source).
+            Self.data = np.array with 2 rows: `[X, Y = Iraw = raw intensity]`.
+            Self.diff1D = None or ediff.io.Diffraction1D object
+            if it was given as an argument.
+        kwargs : keyword arguments for pd.read_csv, optional
+            The keyword arguments are relevant only if {input_data}
+            is str/PathLike object defining the input data file.
+            The keyword arguments are passed to pd.read_csv function
+            to read the file as a simple DataFrame, which is immediately
+            converted to a simple np.array = to self.data sub-object
+            described above.
+
+        Returns
+        -------
+        bground.api.InputData
+            The object is fully initialized
+            and ready to use in background subtraction methods.
+            It contains the self.name,
+            self.data and (optionally) self.diff1D sub-objects described above.
+            
+        Technical notes
+        ---------------
+        * If {input_data} is a file, we read it to np.array with
+          pd.read_csv instead of np.loadtxt, as it is more flexible/powerful.
+        * The {kwargs} are pre-set reasonably enough to read most of common
+          files, but user can adjuste them if needed - of course.
+        * If {kwargs} need to be adjusted, see the comments in the source
+          code and pandas.read_csv online documentation.
+        '''
+        
         # Initialization of InputData object.
-        # No docstring: just class description above + comments below.
+        # * Two pieces of input:
+        #   input_data (file or array or DataFrame or ediff.io.Diffraction1D)
+        #   kwargs (to read the file using pd.read_csv function
+        # * The input is saved in two/three properties:
+        #   self.name = name of the input file (or str describing data source)
+        #   self.data = the XY-data itself = array with 2 rows [X,Y=Intensity]
+        #   self.diff1D = extra object if ediff.io.Diffracton1D was the input
+        #                 this is set to None if the input was "common data"
+        self.name, self.data, self.diff1D = \
+            InputData.read_input_data(input_data, **kwargs)
         
-        # Call read_input_data method with **kwargs:
-        # The method reads input data and returns:
-        #  - self.name = name of the data, filename or variable name
-        #  - self.data = numpy array with two rows ~ X-data, Y-data
-        # The input_data may be:
-        #  - text file containing several columns
-        #    (then **kwargs are passed to pd.read_csv
-        #  - numpy array
-        #    (user responsibility: array contains just two rows ~ X,Y
-        #  - pandas DataFrame
-        #    (user responsibility: DataFrame contains just two cols ~ X,Y)
-        #  - data saved in Profile object from ediff package
-        #    (program responsibility: df['pixel'] ~ X, df['Iraw'] ~ Y
-        self.name, self.data, self.profile = \
-            self.read_input_data(input_data, **kwargs)
-        
-        
-    def read_input_data(self, input_data, **kwargs): 
+    
+    @staticmethod
+    def read_input_data(input_data, **kwargs):
+        '''
+        Read {input_data} using optional {kwargs}
+        return the results to be saved in {InputData} object properties.
+    
+        * intrinsic method of {InputData} object
+        * more info => look at the detailed comments in the func source code
+        '''
         # Read input data with XY-data.
         # No docstring: just class description above + comments below.
         # * The optional arguments (comment, sep, usecols)
@@ -172,7 +205,7 @@ class InputData:
             #     and transpose the array (columns should be the 1st index)
             data = np.transpose(np.array(df))
             # (e) set that the data are NOT the special ed.io.Profile
-            profile = None
+            diff1D = None
         elif isinstance(input_data, np.ndarray):
             # The input is a numpy array.
             # => just assign array to data
@@ -181,7 +214,7 @@ class InputData:
             #    (for example, pass something like: arr[[0,2]]
             name = 'np.ndarray'
             data = input_data
-            profile = None
+            diff1D = None
         elif type(input_data) == pd.DataFrame:
             # The input is pandas.DataFrame
             # => convert DataFrame to numpy.array
@@ -194,7 +227,7 @@ class InputData:
             #   => we would think that {Profiles} are DataFrames 
             name = 'pd.DataFrame'
             data = np.transpose(np.array(input_data))
-            profile = None
+            diff1D = None
         elif input_data.__class__.__name__ == 'Diffractogram1D':
             # The input is ediff.io.Profile.
             # (special case, input from our own, connected package ediff
@@ -206,129 +239,187 @@ class InputData:
             #   we could import this, but then bground would depend on ediff
             name = 'ediff.io.Diffractogram1D'
             data = np.transpose(np.array(input_data[['Pixels','Iraw']]))
-            profile = input_data
+            diff1D = input_data
         else:
             raise TypeError('Unknown type of input data!')
          
         # Return the result = 2xN numpy array with XY-data.
         # (i.e. data[0] = X-data/values, data[1] = Y-data/values)
-        return(name, data, profile)
+        return(name, data, diff1D)
 
 
-class OutputParams:
+class BkgParams:
     '''
-    The name of output file(s) + plot parameters + output verbosity.
+    Class defining {BkgParams} = background parameters
+    for background subtraction.
     
-    * Output file name(s) = file(s) with the background calculation results.
-    * The plot parameters are X,Y-axis labels + X,Y-axes ranges/limits.
-    
-    The usage of OutputParams class is shown in the example above.
-    
-    * The rest of the documentation => detailed comments in the source code.
+    * BkgParams, group 1 = name of the output/background file(s).
+    * BkgParams, group 2 = x,y-labels and x,y-limits of the interactive plot
+    * BkgParams, group 3 = messages argument;
+      if True the program prints brief messages on stdout. 
     '''
     
-    def __init__(self, output_file, 
+    def __init__(self, bkg_file, 
                  xlabel=None, ylabel=None, xlim=None, ylim=None, 
                  messages=True):
-        # Initialization of PlotParams object.
-        # No docstring: just class description above + comments below.
+        '''
+        Initialize {BkgParams} object that defines properties of background.
+
+        Parameters
+        ----------
+        bkg_file : str or PathLike object
+            Name of the background/output file(s).
+            There can be three different output files:
+            data file (basic output; {bkg_file}.txt),
+            background points (if bkg points are defined; {bkg_file}.txt.bp),
+            background plot (if user requests this; {bkg_file}.txt.png).
+            The main output ({bkg_file}.txt) has 4 columns:
+            `[X, Y = Iraw, Ibkg, I = (Iraw - Ibkg)]`.
+        xlabel : str, optional, default is None
+            Label of X-axis (in the background plots).
+        ylabel : str, optional, default is None
+            Label of X-axis (in the background plots).
+        xlim : float or tuple of two floats, optional, default is None
+            X-range (in the background plots).
+            If xlim = 300, set Xrange/xlim to (0,300).
+            If xlim = (50,300), set Xrange/xlim to (50,300).
+        ylim : float or tuple of two floats, optional, default is None
+            Y-range (in the background plots).
+            If ylim = 300, set Yrange/ylim to (0,300).
+            If ylim = (50,300), set Yrange/ylim to (50,300).
+        messages : bool, optional, default is True
+            If True, the program shows short messages on stdout as it runs.
+
+        Returns
+        -------
+        bground.api.BkgParams object
+            The object is fully initialized and ready to be used.
+            In fact the object is simple
+            - just a collectoin of properties, no methods.
+        '''
+        # Initialization of BkgParams object => 3 groups of params:
+        #  1) self.bkg_file = name of background file(s
+        #  2) self.xlabel/ylabel/xlim/ylim = params of bkg plots
+        #  3) self.messages = if True, print short messages on stdout
+        #----
         
-        # Brief description of PlotParams object:
-        #  * The object defines the output file(s) name
-        #    and interactive plot parameters.
-        #  * The output file will store the background-corrected data.
-        #  * The interactive plot is a simple user interface,
-        #    by means of which the background is defined and calculated.
-        #    The plot parameters adjust the plot as described below.
-        
-        self.output_file = output_file  # Name of the output file(s)
+        # (1) Set the name of background file(s), which can be:
+        # * some.txt     = main output, 4 cols = [X, Iraw, Ibkg, I = Iraw-Ibkg]
+        # * some.txt.bp  = saved background points (for possible recalculation)
+        # * some.txt.png = saved plot (from interactive matplotlib interface)
+        #----
+        # If {bkg_file} is a PathLike object, convert to string
+        bkg_file = str(bkg_file)
+        # If {bkg_file} ends with '.bp' or '.txt', remove the extension
+        # (this may be a copy paste error
+        # (OR intentional in the inherited method RestoreFromBackground,
+        # (where the input bkg_file usually HAS the extension '.txt.bp'
+        bkg_file = bkg_file.lower()
+        bkg_file = bkg_file.removesuffix('.bp')
+        bkg_file = bkg_file.removesuffix('.png')
+        # Iif the out_file name does not have .txt extension, add
+        if not(bkg_file.lower().endswith('.txt')):
+            bkg_file = bkg_file + '.txt'
+        # Save the final name to self.out_file
+        self.bkg_file = bkg_file
+
+        # (2) Set the interactive plot parameters
+        # (x,y-labels
         self.xlabel = xlabel            # x-axis label of the interactive plot
         self.ylabel = ylabel            # y-axis label of the interactive plot
-        
+        # (x,y-limits
         if isinstance(xlim,list): self.xlim = xlim  # xlim = [xmin,xmax]
         else: self.xlim = [0,xlim]                  # ...or just xmax
-        
         if isinstance(ylim,list): self.ylim = ylim  # ylim = [ymin,ymax]
         else: self.ylim = [0,ylim]                  # ...or just ymax
         
-        self.messages = messages        # Printing of short messages to stdout
+        # (3) Additional parameter - if we want brief messages to stdout
+        # (we usually want the messages for InteractivePlot => default is True
+        self.messages = messages
         
-        # Note: messages argument determines,
-        # if we print a short messages on stdout when the plot is interactive.
-        # The argument can be overrident by InteractivePlot object;
-        # the reasons are explained below in InteractivPlot object definition.
-
 
 class InteractivePlot:
     '''
-    InteractivePlot method of backround subtraction.
-
+    Class defining {InteractivePlot} method of backround subtraction.
+    
     * When running the method, a new window with interactive plot is opened.
     * The user defines background points using mouse and keyboard shortcuts.
-    * The program does the rest - subtracts bkgr and shows/saves the results.
-            
-    Example 1 :: classical, step-by-step way
+    * The program does the rest - it subtracts bkg + shows/saves the results.
+    
+    The method can be run in two ways:
         
-    >>> # Standard import (alternative: import ediff.bkg as bkg)
+    * Classical, step-by-step approach - see the example below
+    * Modern, single-funtion approach - see bground.api.Run.InteractivePlot
+    
+    Example - running InteractivePlot in classical way:
+        
+    >>> # Standard import
+    >>> # (alternative: import ediff as ed => bkg is available as ed.bkg
     >>> import bground.api as bkg
     >>>
     >>> # Define I/O files
-    >>> IN  = 'ed1_raw.txt'
-    >>> OUT = 'ed2_bcorr.txt'
+    >>> # (input file  = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
+    >>> # (output file = XYdata, 4 cols: [X, Iraw, Inet, I = (Iraw - Inet)]
+    >>> IN  = 'data1_raw_intensity.txt'
+    >>> OUT = 'data2_bkg_subtracted.txt'
     >>>
-    >>> # Define input data and output/plot parameters
+    >>> # Define auxiliary objects
     >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
-    >>> PPAR = bkg.PlotParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
+    >>> PPAR = bkg.BkgParams(OUT,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
     >>>
     >>> # Initialize and run InteractivePlot subtraction method
-    >>> # (a new window with interactive plot is opened
-    >>> # (user defines background points with the mouse and keyboard
-    >>> # (ouput files are saved automatically at the end of processing 
-    >>> SMET = bkg.WaveletMethod(DATA, PPAR)
+    >>> # (the method is initialized using the auxiliary objects and run
+    >>> # (SMET.data + SMET.background sub-objects will contain the results
+    >>> SMET = bkg.InteractivePlot(DATA, PPAR)
     >>> SMET.run()
-    
-    Example 2 :: simplified, one-step approach
-    
-    >>> # Standard import (alternative: import ediff.bkg as bkg)
-    >>> import bground.api as bkg
-    >>>
-    >>> # Define I/O files
-    >>> IN  = 'ed1_raw.txt'
-    >>> OUT = 'ed2_bcorr.txt'
-    >>>
-    >>> # Run InteractivePlot subtraction method with a single function
-    >>> # (the function initializes all objects and runs the method
-    >>> bkg.Run.InteractivePlot(IN_FILE, OUT_FILE, 
-    >>>     xlabel='Pixels', ylabel='Intensity', xlim=300, ylim=300)
     '''
-
+    
     
     def __init__(self, DATA, PARS, CLI=False):
-        # Initialization of InteractivePlot object.
-        # No docstring: just class description above + comments below.
-        
-        # Brief description:
-        # * This object defines the interactive plot parameters.
-        # * The interactive plot is a simple user interface,
-        #   by means of which the background is defined and calculated.
-        # * InteractivePlot object takes three arguments/properties:
-        #   - DATA = InputData object above = input data
-        #   - PPAR = PlotParameters object above = plot params + output file
-        #   - CLI = set CLI=Trure if the program runs in command line interface 
+        '''
+        Initialize {InteractivePlot} object.
 
-        # Basic properties
-        # (DATA = InputData object
-        # (PPAR = PlotParameters object
-        # (these two objects should be defined BEFORE InteractivePlot object
-        self.data = DATA
+        Parameters
+        ----------
+        DATA : bground.api.InputData object
+            The object contains description of input data.
+            The {InputData} object should be defined
+            either before initializing the {InteractivePlot},
+            or intrinsically if we use bground.api.Run.InteractivePlot.
+        PARS : bground.api.BkgParams object
+            The object contains description of input data.
+            The {BkgData} object should be defined
+            either before initializing the {InteractivePlot},
+            or intrinsically if we use bground.api.Run.InteractivePlot.
+        CLI : bool, optional, default is False
+            If we run the {InteractivePLot} from CLI interface,
+            this arbument should be set to True so that the plot stayed
+            in the screen.
+
+        Returns
+        -------
+        bground.api.InteractivePlot object
+            The object should be ready to use.
+            The principal object method is InteractivePlot.run.
+        '''
+        
+        # Save properties from DATA object
+        self.name = DATA.name
+        self.data = DATA.data
+        self.diff1D = DATA.diff1D
+        
+        # Save properties from PARS object
         self.pars = PARS
         
         # Additional property - empty XYbackground object
         # (this object is defined as a semi-empty object here
-        # (the only argument we supply is the name of the output file
+        # (the only argument we supply is the name of the background file
         self.background = \
-            bground.points.bdata.XYbackground(self.pars.output_file)
+            bground.points.bdata.XYbackground(self.pars.bkg_file)
             
+        # Initialize plotting - by means of composition
+        self.plots = Plots(self)
+        
         # Initialize specific interactive backend
         # in case Python runs in CLI = Command Line Interface,
         # i.e. if the program runs outside Spyder or Jupyter environments
@@ -338,247 +429,117 @@ class InteractivePlot:
         
     def run(self):
         '''
-        Run the interactive plot.
+        Run {InteractivePlot} method of background subtraction.
         
-        Technical notes
-        ---------------
-        * This method is very simple - it just runs the interactive plot.
-        * No parameters => everything is defined in InteractivePlot object.
+        * The method (i) clears variables
+          and (ii) shows the plot on the screen.
+        * Moreover, the method prints brief help on stdout
+          when the interactive plot opens.
+        * The plot is waiting for the user to define
+          background points with keyboard and mouse. 
+        * No params; everything defined during InteractivePlot initialization.
         '''
 
-        # Run interactive plot.
-        # No docstring: just class description above + comments below.
-        
-        # Brief description:
-        # * This method runs the interactive plot.
-        # * In addition, it does a few minor things.
-        # * It takes no parameters - everything is in InteractivePlot object.
-        
-        # Clear background points from possible previous runs.
-        # (Possible issue in Jupyter, when re-running cell with the command.
+        # (0) Clear background points from possible previous runs.
+        # * Issue in Jupyter, when re-running the cell with this command
         self.background.points.X = []
         self.background.points.Y = []
         
-        # Run the interactive plot
-        # (the return values seem to be necessary for current Jupyter interface
-        fig,ax = bground.points.iplot.interactive_plot(
-            self.data.data, self.background, self.pars, self.data.profile)
+        # (1) Run the interactive plot
+        # * the plot appears in a new window
+        #   if we use the recommended %matplotlib qt
+        # * in addition, a brief help is printed to to stdout
+        #   = Screen in Python, Console in Spyder, output cell in Jupyter
+        # * the return values seem to be necessary for current Jupyter version
+        fig,ax = bground.points.ifunc.interactive_plot(self)
         
-        # The plot appears in a new window
-        # (if we use the recommended %matplotlib qt).
-        # In addition to this, we print a brief help to stdout
-        # (CLI in standard python, Console in Spyder, output cell in Jupyter).
-        bground.points.iplot.print_brief_help(self.pars)
-        
-        # Optimize the layout of the returned figure.
-        # (this works in all three supported interfaces: CLI, Spyder, Jupyter)
+        # (2) Optimize the layout of the returned figure and show the plot.
+        # * fig.tight_layout() functin works
+        #   in all three supported interfaces: CLI, Spyder, Jupyter
         fig.tight_layout()
-        
-        # Show the plot
-        plt.show()
-
-
-    def plot_data_before_processing(
-            self, title='Raw data before processing', grid=True):
-        '''
-        Plot raw XY-data BEFORE any processing.
-
-        Parameters
-        ----------
-        title : str, optional
-            Title of the plot.
-            The default can be changed to None (no title) or any other string.
-        grid : bool, optional, default is True
-            If true, show grid in the plot.
-
-        Returns
-        -------
-        None
-            The result is the plot shown on the screen.
-            
-        Notes and limitations
-        ---------------------
-        * This is a supplementary method of bground.ui.InteractivePlot object.
-        * The method can be used BEFORE the interactive plot is run.
-        * *The method has a limited number of parameters*  
-          as most of them are taken from calling InteractivePlot object.
-        * *It can be used in Jupyter*   
-          to visualize the background definition
-          in the notebook after the interactive plot is closed
-          and after we switch to non-interactive plots (%matplotlib inline).
-        * *It will not work in CLI or Spyder*   
-          because we cannot switch from interactive to non-interactive plots
-          within one script.
-          Moreover, there tend to be some hard-to-debug confusions
-          connected with the fact that it is not so clear, what is the
-          current active plot.
-        '''        
-
-        # Close all previous plots.
-        # (necessary to avoid confusions about current plot in Jupyter
-        plt.close('all')
-        # Get XY-data
-        X,Y = self.data.data
-        # PLot XY-data
-        plt.plot(X,Y, 'b-')
-        if title is not None:
-            plt.title(title)
-        # ...add xy-labels and limits
-        plt.xlabel(self.ppar.xlabel)
-        plt.ylabel(self.ppar.ylabel)
-        plt.xlim(self.ppar.xlim)
-        plt.ylim (self.ppar.ylim)
-        # ...add grid
-        if grid is not None:
-            plt.grid()
-        # Show the final plot
-        plt.tight_layout()
-        plt.show()
-
-
-    def plot_data_with_bkgr_definition(
-            self, title='Data with background definition', grid=True):
-        '''
-        Plot XY-data and background AFTER the interactive plot is closed.
-
-        Parameters
-        ----------
-        title : str, optional
-            Title of the plot.
-            The default can be changed to None (no title) or any other string.
-        grid : bool, optional, default is True
-            If true, show grid in the plot.
-
-        Returns
-        -------
-        None
-            The result is the plot shown on the screen.
-            
-        Notes and limitations
-        ---------------------
-        * This is a supplementary method of bground.ui.InteractivePlot object.
-        * The method can be used AFTER the interactive plot is closed.
-        * *The method has a limited number of parameters*  
-          as most of them are taken from calling InteractivePlot object.
-        * *It can be used in Jupyter*   
-          to visualize the background definition
-          in the notebook after the interactive plot is closed
-          and after we switch to non-interactive plots (%matplotlib inline).
-        * *It will not work in CLI or Spyder*   
-          because we cannot switch from interactive to non-interactive plots
-          within one script.
-          Moreover, there tend to be some hard-to-debug confusions
-          connected with the fact that it is not so clear, what is the
-          current active plot.
-        '''
-        
-        # Close all previous plots.
-        # (necessary to avoid confusions about current plot in Jupyter
-        plt.close('all')
-        # Get XY-data
-        X,Y = self.data.data
-        # Get background points
-        Xp = self.background.points.X
-        Yp = self.background.points.Y
-        # Get background interpolation curve
-        Xc = self.background.curve.X
-        Yc = self.background.curve.Y
-        # PLot XY-data
-        plt.plot(X,Y, 'b-')
-        # ...add background points
-        plt.plot(Xp,Yp, 'r+')
-        # ...background interpolation curve
-        plt.plot(Xc,Yc, 'r--')
-        # ...add title
-        if title is not None:
-            plt.title(title)
-        # ...add xy-labels and limits
-        plt.xlabel(self.ppar.xlabel)
-        plt.ylabel(self.ppar.ylabel)
-        plt.xlim(self.ppar.xlim)
-        plt.ylim (self.ppar.ylim)
-        # ...add grid
-        if grid is not None:
-            plt.grid()
-        # Show the final plot
-        plt.tight_layout()
-        plt.show()
-
-        
-    def plot_data_after_bkgr_subtraction(
-            self, title='Data after background subtraction', 
-            xlim=None, ylim=None, grid=True):
-        '''
-        Show background-corrected XY-data AFTER the interactive plot is closed.
-
-        Parameters
-        ----------
-        title : str, optional
-            Title of the plot.
-            The default can be changed to None (no title) or any other string.
-        xlim : tuple or list with two values, default is None
-            X-axis limits [xmin,xmax].
-            If the default value is unchanged,
-            the limits are taken from self.ppar.xlim.
-        ylim : tuple or list with two values, default is None
-            Y-axis limits [ymin,ymax].
-            If the default value is unchanged,
-            the limits are taken from self.ppar.xlim.
-        grid : bool, optional, default is True
-            If the argument is True, a grid is added to the plot.
-
-        Returns
-        -------
-        None
-            The result is the plot shown on the screen.
-
-        Notes and limitations
-        ---------------------
-        * The same limitations as in the case of
-          bground.ui.InteractivePlot.show_data_after_background_definition.
-        '''
-        
-        # Close all previous plots.
-        # (necessary to avoid confusions about current plot in Jupyter
-        plt.close('all')
-        # Get XY-data
-        data = self.data.data
-        # Get background object
-        bkgr = self.background
-        # Re-perform background subtraction
-        data_corr = bground.points.bfunc.subtract_background(data, bkgr)
-        X,Y = data_corr[0],data_corr[2]
-        # Plot background-corrected XY-data
-        plt.plot(X,Y, 'b-')
-        # ...add title
-        if title is not None:
-            plt.title(title)
-        # ...add xy-labels
-        plt.xlabel(self.ppar.xlabel)
-        plt.ylabel(self.ppar.ylabel)
-        # ...add xy-limits
-        if xlim is None: xlim = self.ppar.xlim
-        if ylim is None: ylim = self.ppar.ylim
-        plt.xlim(xlim)
-        plt.ylim(ylim)
-        # ...add grid
-        if grid is not None:
-            plt.grid()
-        # Show the final plot
-        plt.tight_layout()
         plt.show()
     
 
-class RestoreFromPoints:
+class RestoreFromPoints(InteractivePlot):
     '''
-    TODO: This is an empty class; the method is under developlment ...
+    RestoreFromPoints background subtraction method.
+    
+    * This is a specific case (and subclass) of InteractivePlot method.
+    * It inherits the initialization and visualization from InteractivePlot.
+    * But it runs non-interactively, just reading bkgpoints + calculating bkg.
+    
+    The method can be run in two ways:
+        
+    * Classical, step-by-step approach - see the example below
+    * Modern, single-funtion approach - see bground.api.Run.RestoreFromPoints
+    
+    Example - running RestoreFromPoints in classical way:
+        
+    >>> # Standard import
+    >>> # (alternative: import ediff as ed => bkg is available as ed.bkg
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> # (input file  = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
+    >>> # (background file = TXT.BP file from a previous run of InteractivePlot
+    >>> IN  = 'data1_raw_intensity.txt'
+    >>> BKG = 'data2_bkg_subtracted.txt.bp'
+    >>>
+    >>> # Define auxiliary objects
+    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
+    >>> PPAR = bkg.BkgParams(BKG,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
+    >>>
+    >>> # Initialize and run RestoreFromPoints subtraction method
+    >>> # (the method is initialized using the auxiliary objects and run
+    >>> # (SMET.data + SMET.background sub-objects will contain the results
+    >>> SMET = bkg.RestoreFromPointsPlot(DATA, PPAR)
+    >>> SMET.run()
     '''
-    pass
+    
+    def __init__(self, DATA, PARS, CLI=False):
+        
+        # The same initialization like in the superclass.
+        # (if __init__ contains just this command, it can be ommited
+        # (here: just for historical reasons; we used to have additional args
+        super().__init__(DATA, PARS, CLI)
+        
+        # Note: it is possible to initialize this function
+        # with all possible names: 'some', 'some.txt', 'some.txt.bp'
+        # and the initialization procedure of BkgParams calls resolves this.
+        
+        # Note: CLI=True if program runs from pure Python in command line
+        # => in super().__init__ we set the same matplotlib backend
+        # => we get the same interface in InteractivePlot and RestoreFromPoints
+        # => for compatibility with methods show_data_with_bkg_definition ...
+ 
+
+    def run(self):
+    
+        # (0) Read background points
+        # (self.background comes from initialization
+        # (it contains the name of the file with bkg points
+        # (this filename is in PARS and saved in self.background.bname
+        self.background = bground.points.bfunc.load_bkg_points(self)
+        
+        # (1) Calculate background-corrected data AND save them to self.data
+        # (self.data = the RestoreFromPoints object ALWAYS contains the output
+        self.data = bground.points.bfunc.calculate_bkg_data(self)
+        
+        # (2) Save the calculated data ALSO in self.diff1D => if it was defined
+        # (self.diff1D IF ediff.io.Diffractogram1D used for the initialization 
+        if self.diff1D is not None:
+            self.diff1D['Ibkg'] = self.data[2]
+            self.diff1D['I']    = self.data[3]
+
+        # (3) Save the calculated data ALSO to out_file => if it was defined
+        # (save data to file IF {out_file} argument was given
+        bground.points.bfunc.save_bkg_data(self)
+       
 
 
 class FitFunction:
     '''
-    TODO: This is an empty class; the method is under developlment ...
+    TODO: Edvard Sidoryk ...
     '''
 
 
@@ -586,8 +547,9 @@ class BaseLines:
     '''
     TODO: Jakub David ...
     
-    * Move "real" code to bground.blines
-    * Keep lines <80 chars, add docstrings + testing examples to GDrive
+    * Move "real" code to bground.blines.
+    * Keep lines < 80 chars, add docstrings.
+    * Add testing examples to GDrive.
     '''
     
     def __init__(self, in_file, out_file, method = "asls", xrange=(30,250),  **kwargs):
@@ -626,7 +588,7 @@ class BaseLines:
 
 class WaveletMethod:
     '''
-    TODO: This is an empty class; the method is under development ...
+    TODO: Adriana Vasquez Pelayo ...
     '''
     
 
@@ -634,33 +596,173 @@ class Run:
     '''
     This class runs the background subtraction methods.
     
-    * The class contains a function for each bkg subtraction method.
-    * The function initializes and runs selected method in one step.
+    * The class contains functions for each bkg subtraction method.
+    * Each function initializes and runs the selected method in one step.
+    * Behind the scenes, the initializes bground.api.InputData and bground.api.
     * This is convenient in our simple API and for the OO-use in EDIFF package.
+    
+    List of the available methods:
+    
+    * Run.InteractivePlot   = run {InteractivePlot} bkg subtraction method
+    * Run.RestoreFromPoints = run {RestoreFromPoints} bkg subtration method
+    * Run.FitFunction       = run {FitFunction} bkg subtraction method
+    * Run.BaseLines         = run {BaseLines} bkg subtraction method(s)
+    * Run.WaveletMethod     = run {WaveletMethod} bkg subtraction method(s)
+    
+    How does it work?
+    
+    * Behind the scenes, each Run-function in this class initializes
+      bground.api.InputData and bground.api.BkgParams.
+    * In the next step, the Run-function defines and runs selected method,
+      using all parameters for {InputData}, {BkgParams}, and the method itself.
+    * Important is that all parameters are set in one place,
+      within single Run-function without, which further simplifies the API.
     '''
 
-
     def InteractivePlot(
-            in_data, out_file='bground.txt', 
+            in_data, bkg_file, 
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
-            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=True):
+            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=True,
+            CLI=False):
         '''
         Run bground.api.InteractivePlot method with a single function/command.
+               
+        Parameters
+        ----------
+        in_data : filename or np.ndarray or pd.DataFrame or ELD profile
+            Input XYdata, containing 2 columns:
+            `[X, Y = Iraw = raw intensity]`.
+        bkg_file : filename
+            Name of the background/output file(s).
+            There can be three different output files:
+            data file (basic output; {bkg_file}.txt),
+            background points (if bkg points are defined; {bkg_file}.txt.bp),
+            background plot (if user requests this; {bkg_file}.txt.png).
+            The main output ({bkg_file}.txt) has 4 columns:
+            `[X, Y = Iraw, Ibkg, I = (Iraw - Ibkg)]`.
+        comment, skiprows, header, sep, usecols: params for pd.read_csv func
+             Parameters that are passed to pd.read_csv function
+             if the {in_data} is an XYfile with two columns.
+             See bground.api.InputData docs for more details.
+         xlabel, ylabel, xlim, ylim, messages, CLI: params for plotting
+             Parameters that are used when plotting the XYdata
+             in the form of matplotlib interactive graph.
+             See bground.api.BkgParams docs for more details.
+        
+        Returns
+        -------
+        bground.api.InteractivePlot
+            The object is used to run the InteractivePlot method,
+            but it also saves the output data.
+        
+        Example
+        -------
+        
+        >>> # Standard import
+        >>> # (alternative: import ediff as ed => bkg is available as ed.bkg
+        >>> import bground.api as bkg
+        >>>
+        >>> # Define I/O files
+        >>> # (input file  = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
+        >>> # (output file = XYdata, 4 cols: [X, Iraw, Inet, I = (Iraw - Inet)]
+        >>> IN  = 'data1_raw_intensity.txt'
+        >>> OUT = 'data2_bkg_subtracted.txt'
+        >>>
+        >>> # Run InteractivePlot subtraction method with a single function
+        >>> # (the func initializes all objects and runs the method
+        >>> # (SMET.data + SMET.background sub-objects will contain the results
+        >>> SMET = bkg.Run.InteractivePlot(IN, OUT, 
+        >>>     xlabel='Pixels', ylabel='Intensity', xlim=300, ylim=300)
         '''
+        
+        # (1) Define objects with input and output data
         DATA = InputData(in_data, sep=sep, usecols=usecols,
             comment=comment, skiprows=skiprows, header=header)
-        PARS = OutputParams(out_file, xlabel, ylabel, xlim, ylim, messages)
-        BMET = InteractivePlot(DATA, PARS, CLI=False)
+        PARS = BkgParams(bkg_file, xlabel, ylabel, xlim, ylim, messages)
+        
+        # (2) Define the method
+        # (including optional argument CLI if it runs from pure CLI python
+        BMET = InteractivePlot(DATA, PARS, CLI=CLI)
+        
+        # (3) Run the method
         BMET.run()
         
-    
-    def RestoreFromPoints():
-        '''
-        Run *api.RestoreFromPoints* method with a single function/command.
+        # (4) Return the final InteractivePlot object
+        # (the data are auto-saved to bkg_file(s)
+        # (BUT returning the object is useful to see/show/plot the data
+        return(BMET)
         
-        * TODO: Mirek (straightforward, almost done)
+    
+    def RestoreFromPoints(in_data, bkg_points, out_file=None,
+            comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
+            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
+            CLI=False):
         '''
-        pass
+        Run bground.api.RestoreFromPoints method with a single func/command.
+
+        Parameters
+        ----------
+        in_data : filename or np.ndarray or pd.DataFrame or ELD profile
+            Input XYdata, containing 2 columns:
+            `[X, Y = Iraw = raw intensity]`.
+        bkg_points : filename
+            Name of the file with background points (usually a file
+            with TXT.BP extension from previous InteractivePlot run).
+            This TXT.BP background-points-file is loaded
+            and TXT data-file with 4 cols (`[X, Iraw, Inet, I=Iraw-Inet]`)
+            is recalculated - this is the core of the RestoreFromPoints method.
+        comment, skiprows, header, sep, usecols: params for pd.read_csv func
+            Parameters that are passed to pd.read_csv function
+            if the {in_data} is an XYfile with two columns.
+            See bground.api.InputData docs for more details.
+         xlabel, ylabel, xlim, ylim, messages, CLI: params for plotting
+            Parameters that are used when plotting the XYdata
+            in the form of matplotlib interactive graph.
+            See bground.api.BkgParams docs for more details.
+        
+        Returns
+        -------
+        bground.api.RestoreFromPoints
+            The object is used to run the RestoreFromPoints method,
+            but it also saves the output data.
+        
+        Example
+        -------
+        
+        >>> # Standard import
+        >>> # (alternative: import ediff as ed => bkg is available as ed.bkg
+        >>> import bground.api as bkg
+        >>> 
+        >>> # Define I/O files
+        >>> # (input file  = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
+        >>> # (background file = TXT.BP file from a previous run of InteractivePlot
+        >>> IN  = r'../_DATA/tbf3_sum_hsd_i300.txt'
+        >>> BKG = r'test2_simple.txt.bp'
+        >>> 
+        >>> # Run RestoreFromPoints using a single command
+        >>> # (the method is initialized using the auxiliary objects and run
+        >>> # (SMET.data + SMET.background sub-objects will contain the results
+        >>> SMET = bkg.Run.RestoreFromPoints(
+        >>>         IN, BKG,
+        >>>         xlabel='Pix', ylabel='Intensity',xlim=[0,200],ylim=[0,180])
+        '''
+        
+        # (1) Define objects with input and output data
+        DATA = InputData(in_data, sep=sep, usecols=usecols,
+            comment=comment, skiprows=skiprows, header=header)
+        PARS = BkgParams(bkg_points, xlabel, ylabel, xlim, ylim, messages)
+        
+        # (2) Define the method
+        # (including optional {out_file} to specify 
+        BMET = RestoreFromPoints(DATA, PARS, CLI)
+        
+        # (3) Run the method
+        BMET.run()
+        
+        # (4) Return the final RestoreFromPoints object
+        # (the data are auto-saved to bkg_file(s)
+        # (BUT returning the object is useful to see/show/plot the data
+        return(BMET)
     
     
     def FitFunction():
@@ -760,3 +862,187 @@ class Help():
         Help :: WaveletMethod method of background subtraction
         '''
         bground.help.Wavelet.how_it_works()
+
+
+class Plots:
+    '''
+    Class defines plotting for all background correction methods.
+    
+    How does it work?
+    
+    * Blah...
+    * Blah...
+    '''
+    
+        
+    def __init__(self, parent):
+        '''
+        Initialize the class ...
+        
+        Parameters
+        ----------
+        parent : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None
+            We just initialize self._parent property.
+        '''
+        self._parent = parent   # aggregated object
+
+    
+    def plot_original(self, title='Raw data before processing', grid=True):
+        '''
+        Plot raw XY-data BEFORE any processing.
+        
+        Parameters
+        ----------
+        title : str, optional
+            Title of the plot.
+            The default can be changed to None (no title) or any other string.
+        grid : bool, optional, default is True
+            If true, show grid in the plot.
+        
+        Returns
+        -------
+        None
+            The result is the plot shown on the screen.
+        '''        
+        # Close all previous plots.
+        # (necessary to avoid confusions about current plot in Jupyter
+        plt.close('all')
+        # Get XY-data
+        X,Y = self._parent.data[0:2]
+        # PLot XY-data
+        plt.plot(X,Y, 'b-')
+        if title is not None: plt.title(title)
+        # ...add xy-labels and limits
+        plt.xlabel(self._parent.pars.xlabel)
+        plt.ylabel(self._parent.pars.ylabel)
+        plt.xlim(self._parent.pars.xlim)
+        plt.ylim (self._parent.pars.ylim)
+        # ...add grid
+        if grid is not None: plt.grid()
+        # Show the final plot
+        plt.tight_layout()
+        plt.show()
+
+    
+    def plot_with_bkg(       
+            self, title='Data with background definition', grid=True):
+        '''
+        Plot XY-data and background AFTER the interactive plot is closed.
+
+        Parameters
+        ----------
+        title : str, optional
+            Title of the plot.
+            The default can be changed to None (no title) or any other string.
+        grid : bool, optional, default is True
+            If true, show grid in the plot.
+
+        Returns
+        -------
+        None
+            The result is the plot shown on the screen.
+        '''
+        
+        # (0) Initialize, prepare parameters for plotting
+        # Close all previous plots.
+        # (necessary to avoid confusions about current plot in Jupyter
+        plt.close('all')
+        # Verify, if the background points are defined
+        # (some methods use bkg points, some not
+        # (below we use and plot the bkg points only if they are defined
+        background_points_defined = len(self._parent.background.points.X) > 0
+        # Get XY-data
+        X,Y = self._parent.data[0:2]
+        # Get background points => if they are defined!
+        if background_points_defined:
+            Xp = self._parent.background.points.X
+            Yp = self._parent.background.points.Y
+        # Get background interpolation curve
+        Xc = self._parent.background.curve.X
+        Yc = self._parent.background.curve.Y
+        
+        # (1) Plot data
+        # ... XY-data
+        plt.plot(X,Y, 'b-')
+        # ... background interpolation curve
+        plt.plot(Xc,Yc, 'r--')
+        # ... background points => if they are defined!
+        if background_points_defined: plt.plot(Xp,Yp, 'r+')
+        
+        # (2) Finalize the plot
+        # ...add title
+        if title is not None: plt.title(title)
+        # ...add xy-labels and limits
+        plt.xlabel(self._parent.pars.xlabel)
+        plt.ylabel(self._parent.pars.ylabel)
+        plt.xlim(self._parent.pars.xlim)
+        plt.ylim (self._parent.pars.ylim)
+        # ...add grid
+        if grid is not None: plt.grid()
+        
+        # (3) Show the finalized plot
+        plt.tight_layout()
+        plt.show()
+
+    
+    def plot_without_bkg(
+            self, title='Data after background subtraction', 
+            xlim=None, ylim=None, grid=True):
+        '''
+        Show background-corrected XY-data AFTER the interactive plot is closed.
+
+        Parameters
+        ----------
+        title : str, optional
+            Title of the plot.
+            The default can be changed to None (no title) or any other string.
+        xlim : tuple or list with two values, default is None
+            X-axis limits [xmin,xmax].
+            If the default value is unchanged,
+            the limits are taken from self.ppar.xlim.
+        ylim : tuple or list with two values, default is None
+            Y-axis limits [ymin,ymax].
+            If the default value is unchanged,
+            the limits are taken from self.ppar.xlim.
+        grid : bool, optional, default is True
+            If the argument is True, a grid is added to the plot.
+
+        Returns
+        -------
+        None
+            The result is the plot shown on the screen.
+        '''
+        
+        # Close all previous plots.
+        # (necessary to avoid confusions about current plot in Jupyter
+        plt.close('all')
+        
+        # Re-perform background subtraction
+        # (just to be sure, it is quite fast
+        data_without_bkg = \
+            bground.points.bfunc.calculate_bkg_data(self._parent)
+        X,Y = data_without_bkg[0],data_without_bkg[3]
+        
+        # Plot background-corrected XY-data
+        plt.plot(X,Y, 'b-')
+        # ...add title
+        if title is not None:
+            plt.title(title)
+        # ...add xy-labels
+        plt.xlabel(self._parent.pars.xlabel)
+        plt.ylabel(self._parent.pars.ylabel)
+        # ...add xy-limits
+        if xlim is None: xlim = self._parent.pars.xlim
+        if ylim is None: ylim = self._parent.pars.ylim
+        plt.xlim(xlim)
+        plt.ylim(ylim)
+        # ...add grid
+        if grid is True: plt.grid()
+        # Show the final plot
+        plt.tight_layout()
+        plt.show()
