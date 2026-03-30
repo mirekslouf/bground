@@ -623,7 +623,8 @@ class BaseLines:
 
 class WaveletMethod:
     '''
-    TODO: Adriana Vasquez Pelayo ...
+    TODO: Adriana Vazquez Pelayo ...
+    First test commit.
     '''
     
 
