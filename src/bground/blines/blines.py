@@ -77,11 +77,10 @@ def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray,
 
 def calculate_baseline(x, y, method = "peak_filling", xrange=(30,250), **kwargs):
     '''
-    Calculate the baseline with algorithms from pybaselines and subtract 
-    the baseline from the data.
+    Calculate the baseline with algorithms from pybaselines.
 
     * Input background data = 2 arrays: `X, Y = Iraw = raw intensity`
-    * Output background data = 4 rows: `X, Iraw, Ibkg, I = (Iraw - Ibkg)`
+    * Output = 2 arrays: `X, Y = Ibkg = baseline intensity`
 
     Parameters
     ----------
@@ -97,8 +96,8 @@ def calculate_baseline(x, y, method = "peak_filling", xrange=(30,250), **kwargs)
 
     Returns
     -------
-    np.ndarray
-        Array with 4 rows `[X, Iraw, Ibkg, I = Iraw - Ibkg]`.
+    Two 1D Numpy arrays
+        `X, Y = Ibkg = baseline intensity`.
 
     Notes
     -----
@@ -123,4 +122,4 @@ def calculate_baseline(x, y, method = "peak_filling", xrange=(30,250), **kwargs)
     fn = getattr(baseline_fitter, method)
     baseline, _ = fn(y_xrange, **kwargs)
 
-    return subtract_baseline(x, y, baseline, xrange)
+    return x_xrange, baseline

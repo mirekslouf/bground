@@ -675,11 +675,13 @@ class BaseLines:
             The result is saved to the file specified in the constructor.
         '''
 
-        self.data = bground.blines.blines.calculate_baseline(
+        bline_x, bline_y = bground.blines.blines.calculate_baseline(
             self.x, self.y, self.method, self.xrange, **self.kwargs)
-        self.background.curve.X, self.background.curve.Y = \
-            bground.blines.blines.select_xrange(
-                self.x, self.data[2], self.xrange)
+        
+        self.background.curve.X, self.background.curve.Y = bline_x, bline_y
+        self.data = bground.blines.blines.subtract_baseline(
+            self.x, self.y, bline_y, self.xrange)
+        
         bground.points.bfunc.save_bkg_data(self)
 
     
