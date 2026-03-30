@@ -28,7 +28,7 @@
 
             <h2>Contents</h2>
             <ul>
-  <li><a href="#module-bgroundbdata">Module: bground.bdata</a></li>
+  <li><a href="#module-bgroundpointsbdata">Module: bground.points.bdata</a></li>
 </ul>
 
 
@@ -43,6 +43,9 @@
                         </li>
                         <li>
                                 <a class="function" href="#XYpoints.add_point">add_point</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#XYpoints.sort_acc_to_X">sort_acc_to_X</a>
                         </li>
                 </ul>
 
@@ -81,7 +84,7 @@
                     <h1 class="modulename">
 <a href="./../../bground.html">bground</a><wbr>.<a href="./../points.html">points</a><wbr>.bdata    </h1>
 
-                        <div class="docstring"><h2 id="module-bgroundbdata">Module: bground.bdata</h2>
+                        <div class="docstring"><h2 id="module-bgroundpointsbdata">Module: <a href="">bground.points.bdata</a></h2>
 
 <p>The module defines three simple clasess.
 The classes keep data for the backround definition.</p>
@@ -89,7 +92,7 @@ The classes keep data for the backround definition.</p>
 <ol>
 <li>Class XYpoints = coordinates of the user-defined bakground points.</li>
 <li>Class XYcurve = two numpy arrays defining the whole calculated bkg curve.</li>
-<li>Class bkg = complete info about the user-defined background, containing:
+<li>Class XYbackground = complete user-defined background, containing:
 <ul>
 <li>XYpoints object = the user-defined coordinates of bkg point</li>
 <li>XYcurve object = the calculated background curve</li>
@@ -101,8 +104,8 @@ The classes keep data for the backround definition.</p>
 
 <ul>
 <li>The first two classes (XYpoints, XYcurve) are used just inside the 3rd one.</li>
-<li>The 3rd class (bkg) is used in module iplot = the interactive bkg definition.</li>
-<li>For a common user, the classes are behind the sceenes, completely invisible.</li>
+<li>The 3rd class (XYbackground) is used in <a href="../api.html#InteractivePlot">bground.api.InteractivePlot</a> object.</li>
+<li>For a common user, all classes are behind the sceenes, completely invisible.</li>
 </ul>
 </div>
 
@@ -111,14 +114,14 @@ The classes keep data for the backround definition.</p>
                         <label class="view-source-button" for="mod-bdata-view-source"><span>View Source</span></label>
 
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="sd">Module: bground.bdata</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd">---------------------</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="sd">Module: bground.points.bdata</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd">----------------------------</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">The module defines three simple clasess.</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="sd">The classes keep data for the backround definition.</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">1. Class XYpoints = coordinates of the user-defined bakground points.</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">2. Class XYcurve = two numpy arrays defining the whole calculated bkg curve.</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">3. Class bkg = complete info about the user-defined background, containing:</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">3. Class XYbackground = complete user-defined background, containing:</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">    - XYpoints object = the user-defined coordinates of bkg point</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">    - XYcurve object = the calculated background curve</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">    - a few other properties (name of file for saving bkg, type of bkg)</span>
@@ -126,123 +129,170 @@ The classes keep data for the backround definition.</p>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">Technical notes:</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
 </span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="sd">* The first two classes (XYpoints, XYcurve) are used just inside the 3rd one.</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">* The 3rd class (bkg) is used in module iplot = the interactive bkg definition.</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">* For a common user, the classes are behind the sceenes, completely invisible.</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="sd">* The 3rd class (XYbackground) is used in bground.api.InteractivePlot object.</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">* For a common user, all classes are behind the sceenes, completely invisible.</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="sd">&#39;&#39;&#39;</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYpoints</span><span class="p">:</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">    XYpoints = object containing two lists X,Y.</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">    The lists X,Y contain X,Y coordinates of background points.</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a><span class="sd">        Initialize XYpoints object.</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">        Parameters</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a><span class="sd">        ----------</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        X : list, optional, the default is []</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">            X-coordinates of user-defined background points</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        Y : list, optional, the default is []</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">            Y-coordinates of user-defined background points</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        Returns</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">        -------</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        New XYobject.</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>        
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Xcoord</span><span class="p">,</span><span class="n">Ycoord</span><span class="p">):</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        Add one background point to XYpoints object.</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        </span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">        Parameters</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">        ----------</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="sd">        Xcoord : float</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="sd">            X-coordinate of a background point.</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        Ycoord : float</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">            Y-coordinate of a background point.</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        Returns</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        -------</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        None; just the Xcoord,Ycoord are added to XYpoints object.</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xcoord</span><span class="p">)</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ycoord</span><span class="p">)</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYcurve</span><span class="p">:</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">    XYcurve = object containing two 1D numpy arrays X,Y.</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">    Two arrays X,Y contain all X,Y points defining the calculated bkg curve.</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">        Initialize XYpoints object.</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        </span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">        Parameters</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">        ----------</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">        X : TYPE, optional</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">            DESCRIPTION. The default is [].</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        Y : TYPE, optional</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">            DESCRIPTION. The default is [].</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        Returns</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        -------</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">        None.</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYbackground</span><span class="p">:</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">    User-defined background.</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>    
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bname</span><span class="p">,</span> 
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>                 <span class="n">btype</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>                 <span class="n">points</span> <span class="o">=</span> <span class="n">XYpoints</span><span class="p">([],[]),</span> 
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>                 <span class="n">curve</span> <span class="o">=</span> <span class="n">XYcurve</span><span class="p">([],[])):</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        Initialize background.</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        Parameters</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        ----------</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        bname : str</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">            {bname} = filename of output file *without extension*.</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">            The extension will be added automatically according to context.</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        btype : string; default is &#39;linear&#39; </span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">            Background interpolation type</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">            = interpolation during backround calculation.</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">            Implemented interpolation types: &#39;linear&#39;, &#39;quadratic&#39;, &#39;cubic&#39;.</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">        points : bdata.XYpoints object</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">            Coordinates of user-defined backround points.</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        curve  : bdata.XYcurve object</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">            Backround curve = X,Y of all points of the calculated background.</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">            </span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        Returns</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">        -------</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        XYbackground object.</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        </span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">        Technical notes</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">        ---------------</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">        * In function definition, we use XYpoints([],[]) and XYcurve([],[]).</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">        * The empty arrays should eliminate possible non-zero values</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">          from possible previous run in Spyder.</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">        * Nevertheless, in current version this is not sufficient</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">          and the background in the main program must be initialized</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">          with empty objects XYpoints and XYcurve as well.</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">        * At the moment, I regard this as a Python mystery.</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bname</span>  <span class="o">=</span> <span class="n">bname</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btype</span>  <span class="o">=</span> <span class="n">btype</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span>  <span class="o">=</span> <span class="n">curve</span> 
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYpoints</span><span class="p">:</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">    XYpoints = object containing two lists X,Y.</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">    The lists X,Y contain X,Y coordinates of background points.</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>    
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">        Initialize XYpoints object.</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        Parameters</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">        ----------</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        X : list, optional, the default is []</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">            X-coordinates of user-defined background points</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="sd">        Y : list, optional, the default is []</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">            Y-coordinates of user-defined background points</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        Returns</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        -------</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        bground.bdata.XYpoints</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">            Object containing X and Y coords of the backround points.</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">            After the initialization, the object is usually empty;</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">            the real values are added later.</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">       &#39;&#39;&#39;</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>        
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xcoord</span><span class="p">,</span> <span class="n">Ycoord</span><span class="p">):</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        Add one background point to XYpoints object.</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        </span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        Parameters</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        ----------</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        Xcoord : float</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">            X-coordinate of a background point.</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Ycoord : float</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">            Y-coordinate of a background point.</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        Returns</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        -------</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        None</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">            The XYpoints object is updated</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">            =&gt; Xcoord,Ycoord are appended at the end.</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xcoord</span><span class="p">)</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ycoord</span><span class="p">)</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">sort_acc_to_X</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">        Sort bacground points according to X-coordinate.</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">        Returns</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">        -------</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        None</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">            The XYpoints object is updated</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">            =&gt; the bkg points are sorted.</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="c1"># Sort the two lists =&gt; this is a trick found in wwww </span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="c1"># https://stackoverflow.com/q/9007877</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span> <span class="o">*</span><span class="nb">sorted</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>        <span class="c1"># One more step is needed because zip returns tuples and we need lists</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>        
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYcurve</span><span class="p">:</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">    XYcurve = object containing two 1D numpy arrays X,Y.</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">    Two arrays X,Y contain all X,Y points defining the calculated bkg curve.</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>    
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        Initialize XYpoints object.</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        </span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">        Parameters</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        ----------</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        X : list or np.array, optional, default is []</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">            X-coordinates of the whole background curve. </span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        Y : list or np.array, optional, default is []</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">            X-coordinates of the whole background curve.</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        Returns</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        -------</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">        bground.bdata.XYcurve</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">            Object containing X and Y coords of the whole background curve.</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">            After the initialization, the object is usually empty;</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">            the real values are added later.</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYbackground</span><span class="p">:</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="sd">    Class defining {XYbackground} objects.</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="sd">    </span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="sd">    The {XYbackground} object collects/saves the following properties:</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">        </span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">    * self.bname  = of the bkg/output file(s) to which we will save the result</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">    * self.btype  = type of background - linear, quadratic or cubic spline</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">    * self.points = XYpoints object = X,Y-coordinates of the bkg points</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">    * self.curve  = XYcurve object = X,Y-coordinates of the whole bkg curve</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bname</span><span class="p">,</span> 
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>                 <span class="n">btype</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>                 <span class="n">points</span> <span class="o">=</span> <span class="n">XYpoints</span><span class="p">([],[]),</span> 
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>                 <span class="n">curve</span> <span class="o">=</span> <span class="n">XYcurve</span><span class="p">([],[])):</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        Initialize XYbackground object.</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        Parameters</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        ----------</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        bname : str</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            {bname} = filename of output file *without extension*.</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="sd">            The extension will be added automatically according to context.</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        btype : string; default is &#39;linear&#39; </span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">            Background interpolation type</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">            = interpolation during backround calculation.</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">            Implemented interpolation types: &#39;linear&#39;, &#39;quadratic&#39;, &#39;cubic&#39;.</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        points : bdata.XYpoints object</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">            Coordinates of user-defined backround points.</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        curve  : bdata.XYcurve object</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">            Backround curve = X,Y of all points of the calculated background.</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">            </span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        Returns</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">        -------</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">        bground.bdata XYbackground</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">            The object is initialized and ready to be used.</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">            Typically, the initialized XYbackground object is semi-empty,</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">            containing just self.bname and self.btype, while the self.points</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">            and self.curve sub-objects are empty.</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="sd">        </span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">        Technical notes</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        ---------------</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        * During the initialization, the default values</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">          for points and curve sub-objects are empty lists/arrays</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">          = XYpoints([],[]) and XYcurve([],[].</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">        * The empty arrays should eliminate possible non-zero values</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">          from possible previous runs in Spyder or Jupyter.</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a><span class="sd">        * Nevertheless, in some environments this may not be sufficient</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">          and the background in the main program must be initialized</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">          with empty objects XYpoints and XYcurve explicitly.</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">        * Some of our functions re-initialize the object with empty XYpoints</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">          and XYcurve to be on the safe side; this is a bit mysterious feature.</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bname</span>  <span class="o">=</span> <span class="n">bname</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btype</span>  <span class="o">=</span> <span class="n">btype</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span>  <span class="o">=</span> <span class="n">curve</span> 
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>        
 </span></pre></div>
 
 
@@ -258,48 +308,74 @@ The classes keep data for the backround definition.</p>
 
     </div>
     <a class="headerlink" href="#XYpoints"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints-22"><a href="#XYpoints-22"><span class="linenos">22</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYpoints</span><span class="p">:</span>
-</span><span id="XYpoints-23"><a href="#XYpoints-23"><span class="linenos">23</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYpoints-24"><a href="#XYpoints-24"><span class="linenos">24</span></a><span class="sd">    XYpoints = object containing two lists X,Y.</span>
-</span><span id="XYpoints-25"><a href="#XYpoints-25"><span class="linenos">25</span></a><span class="sd">    The lists X,Y contain X,Y coordinates of background points.</span>
-</span><span id="XYpoints-26"><a href="#XYpoints-26"><span class="linenos">26</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
-</span><span id="XYpoints-27"><a href="#XYpoints-27"><span class="linenos">27</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="XYpoints-28"><a href="#XYpoints-28"><span class="linenos">28</span></a>    
-</span><span id="XYpoints-29"><a href="#XYpoints-29"><span class="linenos">29</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
-</span><span id="XYpoints-30"><a href="#XYpoints-30"><span class="linenos">30</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYpoints-31"><a href="#XYpoints-31"><span class="linenos">31</span></a><span class="sd">        Initialize XYpoints object.</span>
-</span><span id="XYpoints-32"><a href="#XYpoints-32"><span class="linenos">32</span></a>
-</span><span id="XYpoints-33"><a href="#XYpoints-33"><span class="linenos">33</span></a><span class="sd">        Parameters</span>
-</span><span id="XYpoints-34"><a href="#XYpoints-34"><span class="linenos">34</span></a><span class="sd">        ----------</span>
-</span><span id="XYpoints-35"><a href="#XYpoints-35"><span class="linenos">35</span></a><span class="sd">        X : list, optional, the default is []</span>
-</span><span id="XYpoints-36"><a href="#XYpoints-36"><span class="linenos">36</span></a><span class="sd">            X-coordinates of user-defined background points</span>
-</span><span id="XYpoints-37"><a href="#XYpoints-37"><span class="linenos">37</span></a><span class="sd">        Y : list, optional, the default is []</span>
-</span><span id="XYpoints-38"><a href="#XYpoints-38"><span class="linenos">38</span></a><span class="sd">            Y-coordinates of user-defined background points</span>
-</span><span id="XYpoints-39"><a href="#XYpoints-39"><span class="linenos">39</span></a>
-</span><span id="XYpoints-40"><a href="#XYpoints-40"><span class="linenos">40</span></a><span class="sd">        Returns</span>
-</span><span id="XYpoints-41"><a href="#XYpoints-41"><span class="linenos">41</span></a><span class="sd">        -------</span>
-</span><span id="XYpoints-42"><a href="#XYpoints-42"><span class="linenos">42</span></a><span class="sd">        New XYobject.</span>
-</span><span id="XYpoints-43"><a href="#XYpoints-43"><span class="linenos">43</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYpoints-44"><a href="#XYpoints-44"><span class="linenos">44</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-</span><span id="XYpoints-45"><a href="#XYpoints-45"><span class="linenos">45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
-</span><span id="XYpoints-46"><a href="#XYpoints-46"><span class="linenos">46</span></a>        
-</span><span id="XYpoints-47"><a href="#XYpoints-47"><span class="linenos">47</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Xcoord</span><span class="p">,</span><span class="n">Ycoord</span><span class="p">):</span>
-</span><span id="XYpoints-48"><a href="#XYpoints-48"><span class="linenos">48</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYpoints-49"><a href="#XYpoints-49"><span class="linenos">49</span></a><span class="sd">        Add one background point to XYpoints object.</span>
-</span><span id="XYpoints-50"><a href="#XYpoints-50"><span class="linenos">50</span></a><span class="sd">        </span>
-</span><span id="XYpoints-51"><a href="#XYpoints-51"><span class="linenos">51</span></a><span class="sd">        Parameters</span>
-</span><span id="XYpoints-52"><a href="#XYpoints-52"><span class="linenos">52</span></a><span class="sd">        ----------</span>
-</span><span id="XYpoints-53"><a href="#XYpoints-53"><span class="linenos">53</span></a><span class="sd">        Xcoord : float</span>
-</span><span id="XYpoints-54"><a href="#XYpoints-54"><span class="linenos">54</span></a><span class="sd">            X-coordinate of a background point.</span>
-</span><span id="XYpoints-55"><a href="#XYpoints-55"><span class="linenos">55</span></a><span class="sd">        Ycoord : float</span>
-</span><span id="XYpoints-56"><a href="#XYpoints-56"><span class="linenos">56</span></a><span class="sd">            Y-coordinate of a background point.</span>
-</span><span id="XYpoints-57"><a href="#XYpoints-57"><span class="linenos">57</span></a>
-</span><span id="XYpoints-58"><a href="#XYpoints-58"><span class="linenos">58</span></a><span class="sd">        Returns</span>
-</span><span id="XYpoints-59"><a href="#XYpoints-59"><span class="linenos">59</span></a><span class="sd">        -------</span>
-</span><span id="XYpoints-60"><a href="#XYpoints-60"><span class="linenos">60</span></a><span class="sd">        None; just the Xcoord,Ycoord are added to XYpoints object.</span>
-</span><span id="XYpoints-61"><a href="#XYpoints-61"><span class="linenos">61</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYpoints-62"><a href="#XYpoints-62"><span class="linenos">62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xcoord</span><span class="p">)</span>
-</span><span id="XYpoints-63"><a href="#XYpoints-63"><span class="linenos">63</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ycoord</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints-23"><a href="#XYpoints-23"><span class="linenos">23</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYpoints</span><span class="p">:</span>
+</span><span id="XYpoints-24"><a href="#XYpoints-24"><span class="linenos">24</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints-25"><a href="#XYpoints-25"><span class="linenos">25</span></a><span class="sd">    XYpoints = object containing two lists X,Y.</span>
+</span><span id="XYpoints-26"><a href="#XYpoints-26"><span class="linenos">26</span></a><span class="sd">    The lists X,Y contain X,Y coordinates of background points.</span>
+</span><span id="XYpoints-27"><a href="#XYpoints-27"><span class="linenos">27</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
+</span><span id="XYpoints-28"><a href="#XYpoints-28"><span class="linenos">28</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="XYpoints-29"><a href="#XYpoints-29"><span class="linenos">29</span></a>
+</span><span id="XYpoints-30"><a href="#XYpoints-30"><span class="linenos">30</span></a>    
+</span><span id="XYpoints-31"><a href="#XYpoints-31"><span class="linenos">31</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
+</span><span id="XYpoints-32"><a href="#XYpoints-32"><span class="linenos">32</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints-33"><a href="#XYpoints-33"><span class="linenos">33</span></a><span class="sd">        Initialize XYpoints object.</span>
+</span><span id="XYpoints-34"><a href="#XYpoints-34"><span class="linenos">34</span></a>
+</span><span id="XYpoints-35"><a href="#XYpoints-35"><span class="linenos">35</span></a><span class="sd">        Parameters</span>
+</span><span id="XYpoints-36"><a href="#XYpoints-36"><span class="linenos">36</span></a><span class="sd">        ----------</span>
+</span><span id="XYpoints-37"><a href="#XYpoints-37"><span class="linenos">37</span></a><span class="sd">        X : list, optional, the default is []</span>
+</span><span id="XYpoints-38"><a href="#XYpoints-38"><span class="linenos">38</span></a><span class="sd">            X-coordinates of user-defined background points</span>
+</span><span id="XYpoints-39"><a href="#XYpoints-39"><span class="linenos">39</span></a><span class="sd">        Y : list, optional, the default is []</span>
+</span><span id="XYpoints-40"><a href="#XYpoints-40"><span class="linenos">40</span></a><span class="sd">            Y-coordinates of user-defined background points</span>
+</span><span id="XYpoints-41"><a href="#XYpoints-41"><span class="linenos">41</span></a>
+</span><span id="XYpoints-42"><a href="#XYpoints-42"><span class="linenos">42</span></a><span class="sd">        Returns</span>
+</span><span id="XYpoints-43"><a href="#XYpoints-43"><span class="linenos">43</span></a><span class="sd">        -------</span>
+</span><span id="XYpoints-44"><a href="#XYpoints-44"><span class="linenos">44</span></a><span class="sd">        bground.bdata.XYpoints</span>
+</span><span id="XYpoints-45"><a href="#XYpoints-45"><span class="linenos">45</span></a><span class="sd">            Object containing X and Y coords of the backround points.</span>
+</span><span id="XYpoints-46"><a href="#XYpoints-46"><span class="linenos">46</span></a><span class="sd">            After the initialization, the object is usually empty;</span>
+</span><span id="XYpoints-47"><a href="#XYpoints-47"><span class="linenos">47</span></a><span class="sd">            the real values are added later.</span>
+</span><span id="XYpoints-48"><a href="#XYpoints-48"><span class="linenos">48</span></a><span class="sd">       &#39;&#39;&#39;</span>
+</span><span id="XYpoints-49"><a href="#XYpoints-49"><span class="linenos">49</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+</span><span id="XYpoints-50"><a href="#XYpoints-50"><span class="linenos">50</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+</span><span id="XYpoints-51"><a href="#XYpoints-51"><span class="linenos">51</span></a>
+</span><span id="XYpoints-52"><a href="#XYpoints-52"><span class="linenos">52</span></a>        
+</span><span id="XYpoints-53"><a href="#XYpoints-53"><span class="linenos">53</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xcoord</span><span class="p">,</span> <span class="n">Ycoord</span><span class="p">):</span>
+</span><span id="XYpoints-54"><a href="#XYpoints-54"><span class="linenos">54</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints-55"><a href="#XYpoints-55"><span class="linenos">55</span></a><span class="sd">        Add one background point to XYpoints object.</span>
+</span><span id="XYpoints-56"><a href="#XYpoints-56"><span class="linenos">56</span></a><span class="sd">        </span>
+</span><span id="XYpoints-57"><a href="#XYpoints-57"><span class="linenos">57</span></a><span class="sd">        Parameters</span>
+</span><span id="XYpoints-58"><a href="#XYpoints-58"><span class="linenos">58</span></a><span class="sd">        ----------</span>
+</span><span id="XYpoints-59"><a href="#XYpoints-59"><span class="linenos">59</span></a><span class="sd">        Xcoord : float</span>
+</span><span id="XYpoints-60"><a href="#XYpoints-60"><span class="linenos">60</span></a><span class="sd">            X-coordinate of a background point.</span>
+</span><span id="XYpoints-61"><a href="#XYpoints-61"><span class="linenos">61</span></a><span class="sd">        Ycoord : float</span>
+</span><span id="XYpoints-62"><a href="#XYpoints-62"><span class="linenos">62</span></a><span class="sd">            Y-coordinate of a background point.</span>
+</span><span id="XYpoints-63"><a href="#XYpoints-63"><span class="linenos">63</span></a>
+</span><span id="XYpoints-64"><a href="#XYpoints-64"><span class="linenos">64</span></a><span class="sd">        Returns</span>
+</span><span id="XYpoints-65"><a href="#XYpoints-65"><span class="linenos">65</span></a><span class="sd">        -------</span>
+</span><span id="XYpoints-66"><a href="#XYpoints-66"><span class="linenos">66</span></a><span class="sd">        None</span>
+</span><span id="XYpoints-67"><a href="#XYpoints-67"><span class="linenos">67</span></a><span class="sd">            The XYpoints object is updated</span>
+</span><span id="XYpoints-68"><a href="#XYpoints-68"><span class="linenos">68</span></a><span class="sd">            =&gt; Xcoord,Ycoord are appended at the end.</span>
+</span><span id="XYpoints-69"><a href="#XYpoints-69"><span class="linenos">69</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYpoints-70"><a href="#XYpoints-70"><span class="linenos">70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xcoord</span><span class="p">)</span>
+</span><span id="XYpoints-71"><a href="#XYpoints-71"><span class="linenos">71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ycoord</span><span class="p">)</span>
+</span><span id="XYpoints-72"><a href="#XYpoints-72"><span class="linenos">72</span></a>
+</span><span id="XYpoints-73"><a href="#XYpoints-73"><span class="linenos">73</span></a>        
+</span><span id="XYpoints-74"><a href="#XYpoints-74"><span class="linenos">74</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">sort_acc_to_X</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="XYpoints-75"><a href="#XYpoints-75"><span class="linenos">75</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints-76"><a href="#XYpoints-76"><span class="linenos">76</span></a><span class="sd">        Sort bacground points according to X-coordinate.</span>
+</span><span id="XYpoints-77"><a href="#XYpoints-77"><span class="linenos">77</span></a>
+</span><span id="XYpoints-78"><a href="#XYpoints-78"><span class="linenos">78</span></a><span class="sd">        Returns</span>
+</span><span id="XYpoints-79"><a href="#XYpoints-79"><span class="linenos">79</span></a><span class="sd">        -------</span>
+</span><span id="XYpoints-80"><a href="#XYpoints-80"><span class="linenos">80</span></a><span class="sd">        None</span>
+</span><span id="XYpoints-81"><a href="#XYpoints-81"><span class="linenos">81</span></a><span class="sd">            The XYpoints object is updated</span>
+</span><span id="XYpoints-82"><a href="#XYpoints-82"><span class="linenos">82</span></a><span class="sd">            =&gt; the bkg points are sorted.</span>
+</span><span id="XYpoints-83"><a href="#XYpoints-83"><span class="linenos">83</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYpoints-84"><a href="#XYpoints-84"><span class="linenos">84</span></a>        
+</span><span id="XYpoints-85"><a href="#XYpoints-85"><span class="linenos">85</span></a>        <span class="c1"># Sort the two lists =&gt; this is a trick found in wwww </span>
+</span><span id="XYpoints-86"><a href="#XYpoints-86"><span class="linenos">86</span></a>        <span class="c1"># https://stackoverflow.com/q/9007877</span>
+</span><span id="XYpoints-87"><a href="#XYpoints-87"><span class="linenos">87</span></a>        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span> <span class="o">*</span><span class="nb">sorted</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+</span><span id="XYpoints-88"><a href="#XYpoints-88"><span class="linenos">88</span></a>        <span class="c1"># One more step is needed because zip returns tuples and we need lists</span>
+</span><span id="XYpoints-89"><a href="#XYpoints-89"><span class="linenos">89</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+</span><span id="XYpoints-90"><a href="#XYpoints-90"><span class="linenos">90</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -319,23 +395,26 @@ This simple object is used in the following bkg object below.</p>
 
     </div>
     <a class="headerlink" href="#XYpoints.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints.__init__-29"><a href="#XYpoints.__init__-29"><span class="linenos">29</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
-</span><span id="XYpoints.__init__-30"><a href="#XYpoints.__init__-30"><span class="linenos">30</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYpoints.__init__-31"><a href="#XYpoints.__init__-31"><span class="linenos">31</span></a><span class="sd">        Initialize XYpoints object.</span>
-</span><span id="XYpoints.__init__-32"><a href="#XYpoints.__init__-32"><span class="linenos">32</span></a>
-</span><span id="XYpoints.__init__-33"><a href="#XYpoints.__init__-33"><span class="linenos">33</span></a><span class="sd">        Parameters</span>
-</span><span id="XYpoints.__init__-34"><a href="#XYpoints.__init__-34"><span class="linenos">34</span></a><span class="sd">        ----------</span>
-</span><span id="XYpoints.__init__-35"><a href="#XYpoints.__init__-35"><span class="linenos">35</span></a><span class="sd">        X : list, optional, the default is []</span>
-</span><span id="XYpoints.__init__-36"><a href="#XYpoints.__init__-36"><span class="linenos">36</span></a><span class="sd">            X-coordinates of user-defined background points</span>
-</span><span id="XYpoints.__init__-37"><a href="#XYpoints.__init__-37"><span class="linenos">37</span></a><span class="sd">        Y : list, optional, the default is []</span>
-</span><span id="XYpoints.__init__-38"><a href="#XYpoints.__init__-38"><span class="linenos">38</span></a><span class="sd">            Y-coordinates of user-defined background points</span>
-</span><span id="XYpoints.__init__-39"><a href="#XYpoints.__init__-39"><span class="linenos">39</span></a>
-</span><span id="XYpoints.__init__-40"><a href="#XYpoints.__init__-40"><span class="linenos">40</span></a><span class="sd">        Returns</span>
-</span><span id="XYpoints.__init__-41"><a href="#XYpoints.__init__-41"><span class="linenos">41</span></a><span class="sd">        -------</span>
-</span><span id="XYpoints.__init__-42"><a href="#XYpoints.__init__-42"><span class="linenos">42</span></a><span class="sd">        New XYobject.</span>
-</span><span id="XYpoints.__init__-43"><a href="#XYpoints.__init__-43"><span class="linenos">43</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYpoints.__init__-44"><a href="#XYpoints.__init__-44"><span class="linenos">44</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-</span><span id="XYpoints.__init__-45"><a href="#XYpoints.__init__-45"><span class="linenos">45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints.__init__-31"><a href="#XYpoints.__init__-31"><span class="linenos">31</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
+</span><span id="XYpoints.__init__-32"><a href="#XYpoints.__init__-32"><span class="linenos">32</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints.__init__-33"><a href="#XYpoints.__init__-33"><span class="linenos">33</span></a><span class="sd">        Initialize XYpoints object.</span>
+</span><span id="XYpoints.__init__-34"><a href="#XYpoints.__init__-34"><span class="linenos">34</span></a>
+</span><span id="XYpoints.__init__-35"><a href="#XYpoints.__init__-35"><span class="linenos">35</span></a><span class="sd">        Parameters</span>
+</span><span id="XYpoints.__init__-36"><a href="#XYpoints.__init__-36"><span class="linenos">36</span></a><span class="sd">        ----------</span>
+</span><span id="XYpoints.__init__-37"><a href="#XYpoints.__init__-37"><span class="linenos">37</span></a><span class="sd">        X : list, optional, the default is []</span>
+</span><span id="XYpoints.__init__-38"><a href="#XYpoints.__init__-38"><span class="linenos">38</span></a><span class="sd">            X-coordinates of user-defined background points</span>
+</span><span id="XYpoints.__init__-39"><a href="#XYpoints.__init__-39"><span class="linenos">39</span></a><span class="sd">        Y : list, optional, the default is []</span>
+</span><span id="XYpoints.__init__-40"><a href="#XYpoints.__init__-40"><span class="linenos">40</span></a><span class="sd">            Y-coordinates of user-defined background points</span>
+</span><span id="XYpoints.__init__-41"><a href="#XYpoints.__init__-41"><span class="linenos">41</span></a>
+</span><span id="XYpoints.__init__-42"><a href="#XYpoints.__init__-42"><span class="linenos">42</span></a><span class="sd">        Returns</span>
+</span><span id="XYpoints.__init__-43"><a href="#XYpoints.__init__-43"><span class="linenos">43</span></a><span class="sd">        -------</span>
+</span><span id="XYpoints.__init__-44"><a href="#XYpoints.__init__-44"><span class="linenos">44</span></a><span class="sd">        bground.bdata.XYpoints</span>
+</span><span id="XYpoints.__init__-45"><a href="#XYpoints.__init__-45"><span class="linenos">45</span></a><span class="sd">            Object containing X and Y coords of the backround points.</span>
+</span><span id="XYpoints.__init__-46"><a href="#XYpoints.__init__-46"><span class="linenos">46</span></a><span class="sd">            After the initialization, the object is usually empty;</span>
+</span><span id="XYpoints.__init__-47"><a href="#XYpoints.__init__-47"><span class="linenos">47</span></a><span class="sd">            the real values are added later.</span>
+</span><span id="XYpoints.__init__-48"><a href="#XYpoints.__init__-48"><span class="linenos">48</span></a><span class="sd">       &#39;&#39;&#39;</span>
+</span><span id="XYpoints.__init__-49"><a href="#XYpoints.__init__-49"><span class="linenos">49</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+</span><span id="XYpoints.__init__-50"><a href="#XYpoints.__init__-50"><span class="linenos">50</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
 </span></pre></div>
 
 
@@ -353,7 +432,9 @@ Y-coordinates of user-defined background points</li>
 <h6 id="returns">Returns</h6>
 
 <ul>
-<li><strong>New XYobject.</strong></li>
+<li><strong><a href="#XYpoints">bground.bdata.XYpoints</a></strong>: Object containing X and Y coords of the backround points.
+After the initialization, the object is usually empty;
+the real values are added later.</li>
 </ul>
 </div>
 
@@ -370,23 +451,25 @@ Y-coordinates of user-defined background points</li>
 
     </div>
     <a class="headerlink" href="#XYpoints.add_point"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints.add_point-47"><a href="#XYpoints.add_point-47"><span class="linenos">47</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Xcoord</span><span class="p">,</span><span class="n">Ycoord</span><span class="p">):</span>
-</span><span id="XYpoints.add_point-48"><a href="#XYpoints.add_point-48"><span class="linenos">48</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYpoints.add_point-49"><a href="#XYpoints.add_point-49"><span class="linenos">49</span></a><span class="sd">        Add one background point to XYpoints object.</span>
-</span><span id="XYpoints.add_point-50"><a href="#XYpoints.add_point-50"><span class="linenos">50</span></a><span class="sd">        </span>
-</span><span id="XYpoints.add_point-51"><a href="#XYpoints.add_point-51"><span class="linenos">51</span></a><span class="sd">        Parameters</span>
-</span><span id="XYpoints.add_point-52"><a href="#XYpoints.add_point-52"><span class="linenos">52</span></a><span class="sd">        ----------</span>
-</span><span id="XYpoints.add_point-53"><a href="#XYpoints.add_point-53"><span class="linenos">53</span></a><span class="sd">        Xcoord : float</span>
-</span><span id="XYpoints.add_point-54"><a href="#XYpoints.add_point-54"><span class="linenos">54</span></a><span class="sd">            X-coordinate of a background point.</span>
-</span><span id="XYpoints.add_point-55"><a href="#XYpoints.add_point-55"><span class="linenos">55</span></a><span class="sd">        Ycoord : float</span>
-</span><span id="XYpoints.add_point-56"><a href="#XYpoints.add_point-56"><span class="linenos">56</span></a><span class="sd">            Y-coordinate of a background point.</span>
-</span><span id="XYpoints.add_point-57"><a href="#XYpoints.add_point-57"><span class="linenos">57</span></a>
-</span><span id="XYpoints.add_point-58"><a href="#XYpoints.add_point-58"><span class="linenos">58</span></a><span class="sd">        Returns</span>
-</span><span id="XYpoints.add_point-59"><a href="#XYpoints.add_point-59"><span class="linenos">59</span></a><span class="sd">        -------</span>
-</span><span id="XYpoints.add_point-60"><a href="#XYpoints.add_point-60"><span class="linenos">60</span></a><span class="sd">        None; just the Xcoord,Ycoord are added to XYpoints object.</span>
-</span><span id="XYpoints.add_point-61"><a href="#XYpoints.add_point-61"><span class="linenos">61</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYpoints.add_point-62"><a href="#XYpoints.add_point-62"><span class="linenos">62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xcoord</span><span class="p">)</span>
-</span><span id="XYpoints.add_point-63"><a href="#XYpoints.add_point-63"><span class="linenos">63</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ycoord</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints.add_point-53"><a href="#XYpoints.add_point-53"><span class="linenos">53</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xcoord</span><span class="p">,</span> <span class="n">Ycoord</span><span class="p">):</span>
+</span><span id="XYpoints.add_point-54"><a href="#XYpoints.add_point-54"><span class="linenos">54</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints.add_point-55"><a href="#XYpoints.add_point-55"><span class="linenos">55</span></a><span class="sd">        Add one background point to XYpoints object.</span>
+</span><span id="XYpoints.add_point-56"><a href="#XYpoints.add_point-56"><span class="linenos">56</span></a><span class="sd">        </span>
+</span><span id="XYpoints.add_point-57"><a href="#XYpoints.add_point-57"><span class="linenos">57</span></a><span class="sd">        Parameters</span>
+</span><span id="XYpoints.add_point-58"><a href="#XYpoints.add_point-58"><span class="linenos">58</span></a><span class="sd">        ----------</span>
+</span><span id="XYpoints.add_point-59"><a href="#XYpoints.add_point-59"><span class="linenos">59</span></a><span class="sd">        Xcoord : float</span>
+</span><span id="XYpoints.add_point-60"><a href="#XYpoints.add_point-60"><span class="linenos">60</span></a><span class="sd">            X-coordinate of a background point.</span>
+</span><span id="XYpoints.add_point-61"><a href="#XYpoints.add_point-61"><span class="linenos">61</span></a><span class="sd">        Ycoord : float</span>
+</span><span id="XYpoints.add_point-62"><a href="#XYpoints.add_point-62"><span class="linenos">62</span></a><span class="sd">            Y-coordinate of a background point.</span>
+</span><span id="XYpoints.add_point-63"><a href="#XYpoints.add_point-63"><span class="linenos">63</span></a>
+</span><span id="XYpoints.add_point-64"><a href="#XYpoints.add_point-64"><span class="linenos">64</span></a><span class="sd">        Returns</span>
+</span><span id="XYpoints.add_point-65"><a href="#XYpoints.add_point-65"><span class="linenos">65</span></a><span class="sd">        -------</span>
+</span><span id="XYpoints.add_point-66"><a href="#XYpoints.add_point-66"><span class="linenos">66</span></a><span class="sd">        None</span>
+</span><span id="XYpoints.add_point-67"><a href="#XYpoints.add_point-67"><span class="linenos">67</span></a><span class="sd">            The XYpoints object is updated</span>
+</span><span id="XYpoints.add_point-68"><a href="#XYpoints.add_point-68"><span class="linenos">68</span></a><span class="sd">            =&gt; Xcoord,Ycoord are appended at the end.</span>
+</span><span id="XYpoints.add_point-69"><a href="#XYpoints.add_point-69"><span class="linenos">69</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYpoints.add_point-70"><a href="#XYpoints.add_point-70"><span class="linenos">70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xcoord</span><span class="p">)</span>
+</span><span id="XYpoints.add_point-71"><a href="#XYpoints.add_point-71"><span class="linenos">71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ycoord</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -404,7 +487,51 @@ Y-coordinate of a background point.</li>
 <h6 id="returns">Returns</h6>
 
 <ul>
-<li><strong>None; just the Xcoord,Ycoord are added to XYpoints object.</strong></li>
+<li><strong>None</strong>: The XYpoints object is updated
+=&gt; Xcoord,Ycoord are appended at the end.</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div id="XYpoints.sort_acc_to_X" class="classattr">
+                                        <input id="XYpoints.sort_acc_to_X-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">sort_acc_to_X</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="XYpoints.sort_acc_to_X-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#XYpoints.sort_acc_to_X"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYpoints.sort_acc_to_X-74"><a href="#XYpoints.sort_acc_to_X-74"><span class="linenos">74</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">sort_acc_to_X</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="XYpoints.sort_acc_to_X-75"><a href="#XYpoints.sort_acc_to_X-75"><span class="linenos">75</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYpoints.sort_acc_to_X-76"><a href="#XYpoints.sort_acc_to_X-76"><span class="linenos">76</span></a><span class="sd">        Sort bacground points according to X-coordinate.</span>
+</span><span id="XYpoints.sort_acc_to_X-77"><a href="#XYpoints.sort_acc_to_X-77"><span class="linenos">77</span></a>
+</span><span id="XYpoints.sort_acc_to_X-78"><a href="#XYpoints.sort_acc_to_X-78"><span class="linenos">78</span></a><span class="sd">        Returns</span>
+</span><span id="XYpoints.sort_acc_to_X-79"><a href="#XYpoints.sort_acc_to_X-79"><span class="linenos">79</span></a><span class="sd">        -------</span>
+</span><span id="XYpoints.sort_acc_to_X-80"><a href="#XYpoints.sort_acc_to_X-80"><span class="linenos">80</span></a><span class="sd">        None</span>
+</span><span id="XYpoints.sort_acc_to_X-81"><a href="#XYpoints.sort_acc_to_X-81"><span class="linenos">81</span></a><span class="sd">            The XYpoints object is updated</span>
+</span><span id="XYpoints.sort_acc_to_X-82"><a href="#XYpoints.sort_acc_to_X-82"><span class="linenos">82</span></a><span class="sd">            =&gt; the bkg points are sorted.</span>
+</span><span id="XYpoints.sort_acc_to_X-83"><a href="#XYpoints.sort_acc_to_X-83"><span class="linenos">83</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYpoints.sort_acc_to_X-84"><a href="#XYpoints.sort_acc_to_X-84"><span class="linenos">84</span></a>        
+</span><span id="XYpoints.sort_acc_to_X-85"><a href="#XYpoints.sort_acc_to_X-85"><span class="linenos">85</span></a>        <span class="c1"># Sort the two lists =&gt; this is a trick found in wwww </span>
+</span><span id="XYpoints.sort_acc_to_X-86"><a href="#XYpoints.sort_acc_to_X-86"><span class="linenos">86</span></a>        <span class="c1"># https://stackoverflow.com/q/9007877</span>
+</span><span id="XYpoints.sort_acc_to_X-87"><a href="#XYpoints.sort_acc_to_X-87"><span class="linenos">87</span></a>        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span> <span class="o">*</span><span class="nb">sorted</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+</span><span id="XYpoints.sort_acc_to_X-88"><a href="#XYpoints.sort_acc_to_X-88"><span class="linenos">88</span></a>        <span class="c1"># One more step is needed because zip returns tuples and we need lists</span>
+</span><span id="XYpoints.sort_acc_to_X-89"><a href="#XYpoints.sort_acc_to_X-89"><span class="linenos">89</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+</span><span id="XYpoints.sort_acc_to_X-90"><a href="#XYpoints.sort_acc_to_X-90"><span class="linenos">90</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Sort bacground points according to X-coordinate.</p>
+
+<h6 id="returns">Returns</h6>
+
+<ul>
+<li><strong>None</strong>: The XYpoints object is updated
+=&gt; the bkg points are sorted.</li>
 </ul>
 </div>
 
@@ -422,30 +549,34 @@ Y-coordinate of a background point.</li>
 
     </div>
     <a class="headerlink" href="#XYcurve"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYcurve-65"><a href="#XYcurve-65"><span class="linenos">65</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYcurve</span><span class="p">:</span>
-</span><span id="XYcurve-66"><a href="#XYcurve-66"><span class="linenos">66</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYcurve-67"><a href="#XYcurve-67"><span class="linenos">67</span></a><span class="sd">    XYcurve = object containing two 1D numpy arrays X,Y.</span>
-</span><span id="XYcurve-68"><a href="#XYcurve-68"><span class="linenos">68</span></a><span class="sd">    Two arrays X,Y contain all X,Y points defining the calculated bkg curve.</span>
-</span><span id="XYcurve-69"><a href="#XYcurve-69"><span class="linenos">69</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
-</span><span id="XYcurve-70"><a href="#XYcurve-70"><span class="linenos">70</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="XYcurve-71"><a href="#XYcurve-71"><span class="linenos">71</span></a>    
-</span><span id="XYcurve-72"><a href="#XYcurve-72"><span class="linenos">72</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
-</span><span id="XYcurve-73"><a href="#XYcurve-73"><span class="linenos">73</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYcurve-74"><a href="#XYcurve-74"><span class="linenos">74</span></a><span class="sd">        Initialize XYpoints object.</span>
-</span><span id="XYcurve-75"><a href="#XYcurve-75"><span class="linenos">75</span></a><span class="sd">        </span>
-</span><span id="XYcurve-76"><a href="#XYcurve-76"><span class="linenos">76</span></a><span class="sd">        Parameters</span>
-</span><span id="XYcurve-77"><a href="#XYcurve-77"><span class="linenos">77</span></a><span class="sd">        ----------</span>
-</span><span id="XYcurve-78"><a href="#XYcurve-78"><span class="linenos">78</span></a><span class="sd">        X : TYPE, optional</span>
-</span><span id="XYcurve-79"><a href="#XYcurve-79"><span class="linenos">79</span></a><span class="sd">            DESCRIPTION. The default is [].</span>
-</span><span id="XYcurve-80"><a href="#XYcurve-80"><span class="linenos">80</span></a><span class="sd">        Y : TYPE, optional</span>
-</span><span id="XYcurve-81"><a href="#XYcurve-81"><span class="linenos">81</span></a><span class="sd">            DESCRIPTION. The default is [].</span>
-</span><span id="XYcurve-82"><a href="#XYcurve-82"><span class="linenos">82</span></a>
-</span><span id="XYcurve-83"><a href="#XYcurve-83"><span class="linenos">83</span></a><span class="sd">        Returns</span>
-</span><span id="XYcurve-84"><a href="#XYcurve-84"><span class="linenos">84</span></a><span class="sd">        -------</span>
-</span><span id="XYcurve-85"><a href="#XYcurve-85"><span class="linenos">85</span></a><span class="sd">        None.</span>
-</span><span id="XYcurve-86"><a href="#XYcurve-86"><span class="linenos">86</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYcurve-87"><a href="#XYcurve-87"><span class="linenos">87</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-</span><span id="XYcurve-88"><a href="#XYcurve-88"><span class="linenos">88</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYcurve-93"><a href="#XYcurve-93"><span class="linenos"> 93</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYcurve</span><span class="p">:</span>
+</span><span id="XYcurve-94"><a href="#XYcurve-94"><span class="linenos"> 94</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYcurve-95"><a href="#XYcurve-95"><span class="linenos"> 95</span></a><span class="sd">    XYcurve = object containing two 1D numpy arrays X,Y.</span>
+</span><span id="XYcurve-96"><a href="#XYcurve-96"><span class="linenos"> 96</span></a><span class="sd">    Two arrays X,Y contain all X,Y points defining the calculated bkg curve.</span>
+</span><span id="XYcurve-97"><a href="#XYcurve-97"><span class="linenos"> 97</span></a><span class="sd">    This simple object is used in the following bkg object below.</span>
+</span><span id="XYcurve-98"><a href="#XYcurve-98"><span class="linenos"> 98</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="XYcurve-99"><a href="#XYcurve-99"><span class="linenos"> 99</span></a>
+</span><span id="XYcurve-100"><a href="#XYcurve-100"><span class="linenos">100</span></a>    
+</span><span id="XYcurve-101"><a href="#XYcurve-101"><span class="linenos">101</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
+</span><span id="XYcurve-102"><a href="#XYcurve-102"><span class="linenos">102</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYcurve-103"><a href="#XYcurve-103"><span class="linenos">103</span></a><span class="sd">        Initialize XYpoints object.</span>
+</span><span id="XYcurve-104"><a href="#XYcurve-104"><span class="linenos">104</span></a><span class="sd">        </span>
+</span><span id="XYcurve-105"><a href="#XYcurve-105"><span class="linenos">105</span></a><span class="sd">        Parameters</span>
+</span><span id="XYcurve-106"><a href="#XYcurve-106"><span class="linenos">106</span></a><span class="sd">        ----------</span>
+</span><span id="XYcurve-107"><a href="#XYcurve-107"><span class="linenos">107</span></a><span class="sd">        X : list or np.array, optional, default is []</span>
+</span><span id="XYcurve-108"><a href="#XYcurve-108"><span class="linenos">108</span></a><span class="sd">            X-coordinates of the whole background curve. </span>
+</span><span id="XYcurve-109"><a href="#XYcurve-109"><span class="linenos">109</span></a><span class="sd">        Y : list or np.array, optional, default is []</span>
+</span><span id="XYcurve-110"><a href="#XYcurve-110"><span class="linenos">110</span></a><span class="sd">            X-coordinates of the whole background curve.</span>
+</span><span id="XYcurve-111"><a href="#XYcurve-111"><span class="linenos">111</span></a>
+</span><span id="XYcurve-112"><a href="#XYcurve-112"><span class="linenos">112</span></a><span class="sd">        Returns</span>
+</span><span id="XYcurve-113"><a href="#XYcurve-113"><span class="linenos">113</span></a><span class="sd">        -------</span>
+</span><span id="XYcurve-114"><a href="#XYcurve-114"><span class="linenos">114</span></a><span class="sd">        bground.bdata.XYcurve</span>
+</span><span id="XYcurve-115"><a href="#XYcurve-115"><span class="linenos">115</span></a><span class="sd">            Object containing X and Y coords of the whole background curve.</span>
+</span><span id="XYcurve-116"><a href="#XYcurve-116"><span class="linenos">116</span></a><span class="sd">            After the initialization, the object is usually empty;</span>
+</span><span id="XYcurve-117"><a href="#XYcurve-117"><span class="linenos">117</span></a><span class="sd">            the real values are added later.</span>
+</span><span id="XYcurve-118"><a href="#XYcurve-118"><span class="linenos">118</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYcurve-119"><a href="#XYcurve-119"><span class="linenos">119</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+</span><span id="XYcurve-120"><a href="#XYcurve-120"><span class="linenos">120</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
 </span></pre></div>
 
 
@@ -465,23 +596,26 @@ This simple object is used in the following bkg object below.</p>
 
     </div>
     <a class="headerlink" href="#XYcurve.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYcurve.__init__-72"><a href="#XYcurve.__init__-72"><span class="linenos">72</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
-</span><span id="XYcurve.__init__-73"><a href="#XYcurve.__init__-73"><span class="linenos">73</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYcurve.__init__-74"><a href="#XYcurve.__init__-74"><span class="linenos">74</span></a><span class="sd">        Initialize XYpoints object.</span>
-</span><span id="XYcurve.__init__-75"><a href="#XYcurve.__init__-75"><span class="linenos">75</span></a><span class="sd">        </span>
-</span><span id="XYcurve.__init__-76"><a href="#XYcurve.__init__-76"><span class="linenos">76</span></a><span class="sd">        Parameters</span>
-</span><span id="XYcurve.__init__-77"><a href="#XYcurve.__init__-77"><span class="linenos">77</span></a><span class="sd">        ----------</span>
-</span><span id="XYcurve.__init__-78"><a href="#XYcurve.__init__-78"><span class="linenos">78</span></a><span class="sd">        X : TYPE, optional</span>
-</span><span id="XYcurve.__init__-79"><a href="#XYcurve.__init__-79"><span class="linenos">79</span></a><span class="sd">            DESCRIPTION. The default is [].</span>
-</span><span id="XYcurve.__init__-80"><a href="#XYcurve.__init__-80"><span class="linenos">80</span></a><span class="sd">        Y : TYPE, optional</span>
-</span><span id="XYcurve.__init__-81"><a href="#XYcurve.__init__-81"><span class="linenos">81</span></a><span class="sd">            DESCRIPTION. The default is [].</span>
-</span><span id="XYcurve.__init__-82"><a href="#XYcurve.__init__-82"><span class="linenos">82</span></a>
-</span><span id="XYcurve.__init__-83"><a href="#XYcurve.__init__-83"><span class="linenos">83</span></a><span class="sd">        Returns</span>
-</span><span id="XYcurve.__init__-84"><a href="#XYcurve.__init__-84"><span class="linenos">84</span></a><span class="sd">        -------</span>
-</span><span id="XYcurve.__init__-85"><a href="#XYcurve.__init__-85"><span class="linenos">85</span></a><span class="sd">        None.</span>
-</span><span id="XYcurve.__init__-86"><a href="#XYcurve.__init__-86"><span class="linenos">86</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYcurve.__init__-87"><a href="#XYcurve.__init__-87"><span class="linenos">87</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-</span><span id="XYcurve.__init__-88"><a href="#XYcurve.__init__-88"><span class="linenos">88</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYcurve.__init__-101"><a href="#XYcurve.__init__-101"><span class="linenos">101</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="p">[],</span> <span class="n">Y</span><span class="o">=</span><span class="p">[]):</span>
+</span><span id="XYcurve.__init__-102"><a href="#XYcurve.__init__-102"><span class="linenos">102</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYcurve.__init__-103"><a href="#XYcurve.__init__-103"><span class="linenos">103</span></a><span class="sd">        Initialize XYpoints object.</span>
+</span><span id="XYcurve.__init__-104"><a href="#XYcurve.__init__-104"><span class="linenos">104</span></a><span class="sd">        </span>
+</span><span id="XYcurve.__init__-105"><a href="#XYcurve.__init__-105"><span class="linenos">105</span></a><span class="sd">        Parameters</span>
+</span><span id="XYcurve.__init__-106"><a href="#XYcurve.__init__-106"><span class="linenos">106</span></a><span class="sd">        ----------</span>
+</span><span id="XYcurve.__init__-107"><a href="#XYcurve.__init__-107"><span class="linenos">107</span></a><span class="sd">        X : list or np.array, optional, default is []</span>
+</span><span id="XYcurve.__init__-108"><a href="#XYcurve.__init__-108"><span class="linenos">108</span></a><span class="sd">            X-coordinates of the whole background curve. </span>
+</span><span id="XYcurve.__init__-109"><a href="#XYcurve.__init__-109"><span class="linenos">109</span></a><span class="sd">        Y : list or np.array, optional, default is []</span>
+</span><span id="XYcurve.__init__-110"><a href="#XYcurve.__init__-110"><span class="linenos">110</span></a><span class="sd">            X-coordinates of the whole background curve.</span>
+</span><span id="XYcurve.__init__-111"><a href="#XYcurve.__init__-111"><span class="linenos">111</span></a>
+</span><span id="XYcurve.__init__-112"><a href="#XYcurve.__init__-112"><span class="linenos">112</span></a><span class="sd">        Returns</span>
+</span><span id="XYcurve.__init__-113"><a href="#XYcurve.__init__-113"><span class="linenos">113</span></a><span class="sd">        -------</span>
+</span><span id="XYcurve.__init__-114"><a href="#XYcurve.__init__-114"><span class="linenos">114</span></a><span class="sd">        bground.bdata.XYcurve</span>
+</span><span id="XYcurve.__init__-115"><a href="#XYcurve.__init__-115"><span class="linenos">115</span></a><span class="sd">            Object containing X and Y coords of the whole background curve.</span>
+</span><span id="XYcurve.__init__-116"><a href="#XYcurve.__init__-116"><span class="linenos">116</span></a><span class="sd">            After the initialization, the object is usually empty;</span>
+</span><span id="XYcurve.__init__-117"><a href="#XYcurve.__init__-117"><span class="linenos">117</span></a><span class="sd">            the real values are added later.</span>
+</span><span id="XYcurve.__init__-118"><a href="#XYcurve.__init__-118"><span class="linenos">118</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYcurve.__init__-119"><a href="#XYcurve.__init__-119"><span class="linenos">119</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+</span><span id="XYcurve.__init__-120"><a href="#XYcurve.__init__-120"><span class="linenos">120</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span>
 </span></pre></div>
 
 
@@ -490,16 +624,18 @@ This simple object is used in the following bkg object below.</p>
 <h6 id="parameters">Parameters</h6>
 
 <ul>
-<li><strong>X</strong> (TYPE, optional):
-DESCRIPTION. The default is [].</li>
-<li><strong>Y</strong> (TYPE, optional):
-DESCRIPTION. The default is [].</li>
+<li><strong>X</strong> (list or np.array, optional, default is []):
+X-coordinates of the whole background curve.</li>
+<li><strong>Y</strong> (list or np.array, optional, default is []):
+X-coordinates of the whole background curve.</li>
 </ul>
 
 <h6 id="returns">Returns</h6>
 
 <ul>
-<li><strong>None.</strong></li>
+<li><strong><a href="#XYcurve">bground.bdata.XYcurve</a></strong>: Object containing X and Y coords of the whole background curve.
+After the initialization, the object is usually empty;
+the real values are added later.</li>
 </ul>
 </div>
 
@@ -517,54 +653,77 @@ DESCRIPTION. The default is [].</li>
 
     </div>
     <a class="headerlink" href="#XYbackground"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYbackground-90"><a href="#XYbackground-90"><span class="linenos"> 90</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYbackground</span><span class="p">:</span>
-</span><span id="XYbackground-91"><a href="#XYbackground-91"><span class="linenos"> 91</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYbackground-92"><a href="#XYbackground-92"><span class="linenos"> 92</span></a><span class="sd">    User-defined background.</span>
-</span><span id="XYbackground-93"><a href="#XYbackground-93"><span class="linenos"> 93</span></a><span class="sd">    &#39;&#39;&#39;</span>
-</span><span id="XYbackground-94"><a href="#XYbackground-94"><span class="linenos"> 94</span></a>    
-</span><span id="XYbackground-95"><a href="#XYbackground-95"><span class="linenos"> 95</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bname</span><span class="p">,</span> 
-</span><span id="XYbackground-96"><a href="#XYbackground-96"><span class="linenos"> 96</span></a>                 <span class="n">btype</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-</span><span id="XYbackground-97"><a href="#XYbackground-97"><span class="linenos"> 97</span></a>                 <span class="n">points</span> <span class="o">=</span> <span class="n">XYpoints</span><span class="p">([],[]),</span> 
-</span><span id="XYbackground-98"><a href="#XYbackground-98"><span class="linenos"> 98</span></a>                 <span class="n">curve</span> <span class="o">=</span> <span class="n">XYcurve</span><span class="p">([],[])):</span>
-</span><span id="XYbackground-99"><a href="#XYbackground-99"><span class="linenos"> 99</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYbackground-100"><a href="#XYbackground-100"><span class="linenos">100</span></a><span class="sd">        Initialize background.</span>
-</span><span id="XYbackground-101"><a href="#XYbackground-101"><span class="linenos">101</span></a>
-</span><span id="XYbackground-102"><a href="#XYbackground-102"><span class="linenos">102</span></a><span class="sd">        Parameters</span>
-</span><span id="XYbackground-103"><a href="#XYbackground-103"><span class="linenos">103</span></a><span class="sd">        ----------</span>
-</span><span id="XYbackground-104"><a href="#XYbackground-104"><span class="linenos">104</span></a><span class="sd">        bname : str</span>
-</span><span id="XYbackground-105"><a href="#XYbackground-105"><span class="linenos">105</span></a><span class="sd">            {bname} = filename of output file *without extension*.</span>
-</span><span id="XYbackground-106"><a href="#XYbackground-106"><span class="linenos">106</span></a><span class="sd">            The extension will be added automatically according to context.</span>
-</span><span id="XYbackground-107"><a href="#XYbackground-107"><span class="linenos">107</span></a><span class="sd">        btype : string; default is &#39;linear&#39; </span>
-</span><span id="XYbackground-108"><a href="#XYbackground-108"><span class="linenos">108</span></a><span class="sd">            Background interpolation type</span>
-</span><span id="XYbackground-109"><a href="#XYbackground-109"><span class="linenos">109</span></a><span class="sd">            = interpolation during backround calculation.</span>
-</span><span id="XYbackground-110"><a href="#XYbackground-110"><span class="linenos">110</span></a><span class="sd">            Implemented interpolation types: &#39;linear&#39;, &#39;quadratic&#39;, &#39;cubic&#39;.</span>
-</span><span id="XYbackground-111"><a href="#XYbackground-111"><span class="linenos">111</span></a><span class="sd">        points : bdata.XYpoints object</span>
-</span><span id="XYbackground-112"><a href="#XYbackground-112"><span class="linenos">112</span></a><span class="sd">            Coordinates of user-defined backround points.</span>
-</span><span id="XYbackground-113"><a href="#XYbackground-113"><span class="linenos">113</span></a><span class="sd">        curve  : bdata.XYcurve object</span>
-</span><span id="XYbackground-114"><a href="#XYbackground-114"><span class="linenos">114</span></a><span class="sd">            Backround curve = X,Y of all points of the calculated background.</span>
-</span><span id="XYbackground-115"><a href="#XYbackground-115"><span class="linenos">115</span></a><span class="sd">            </span>
-</span><span id="XYbackground-116"><a href="#XYbackground-116"><span class="linenos">116</span></a><span class="sd">        Returns</span>
-</span><span id="XYbackground-117"><a href="#XYbackground-117"><span class="linenos">117</span></a><span class="sd">        -------</span>
-</span><span id="XYbackground-118"><a href="#XYbackground-118"><span class="linenos">118</span></a><span class="sd">        XYbackground object.</span>
-</span><span id="XYbackground-119"><a href="#XYbackground-119"><span class="linenos">119</span></a><span class="sd">        </span>
-</span><span id="XYbackground-120"><a href="#XYbackground-120"><span class="linenos">120</span></a><span class="sd">        Technical notes</span>
-</span><span id="XYbackground-121"><a href="#XYbackground-121"><span class="linenos">121</span></a><span class="sd">        ---------------</span>
-</span><span id="XYbackground-122"><a href="#XYbackground-122"><span class="linenos">122</span></a><span class="sd">        * In function definition, we use XYpoints([],[]) and XYcurve([],[]).</span>
-</span><span id="XYbackground-123"><a href="#XYbackground-123"><span class="linenos">123</span></a><span class="sd">        * The empty arrays should eliminate possible non-zero values</span>
-</span><span id="XYbackground-124"><a href="#XYbackground-124"><span class="linenos">124</span></a><span class="sd">          from possible previous run in Spyder.</span>
-</span><span id="XYbackground-125"><a href="#XYbackground-125"><span class="linenos">125</span></a><span class="sd">        * Nevertheless, in current version this is not sufficient</span>
-</span><span id="XYbackground-126"><a href="#XYbackground-126"><span class="linenos">126</span></a><span class="sd">          and the background in the main program must be initialized</span>
-</span><span id="XYbackground-127"><a href="#XYbackground-127"><span class="linenos">127</span></a><span class="sd">          with empty objects XYpoints and XYcurve as well.</span>
-</span><span id="XYbackground-128"><a href="#XYbackground-128"><span class="linenos">128</span></a><span class="sd">        * At the moment, I regard this as a Python mystery.</span>
-</span><span id="XYbackground-129"><a href="#XYbackground-129"><span class="linenos">129</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYbackground-130"><a href="#XYbackground-130"><span class="linenos">130</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bname</span>  <span class="o">=</span> <span class="n">bname</span>
-</span><span id="XYbackground-131"><a href="#XYbackground-131"><span class="linenos">131</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btype</span>  <span class="o">=</span> <span class="n">btype</span>
-</span><span id="XYbackground-132"><a href="#XYbackground-132"><span class="linenos">132</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
-</span><span id="XYbackground-133"><a href="#XYbackground-133"><span class="linenos">133</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span>  <span class="o">=</span> <span class="n">curve</span> 
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYbackground-123"><a href="#XYbackground-123"><span class="linenos">123</span></a><span class="k">class</span><span class="w"> </span><span class="nc">XYbackground</span><span class="p">:</span>
+</span><span id="XYbackground-124"><a href="#XYbackground-124"><span class="linenos">124</span></a><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYbackground-125"><a href="#XYbackground-125"><span class="linenos">125</span></a><span class="sd">    Class defining {XYbackground} objects.</span>
+</span><span id="XYbackground-126"><a href="#XYbackground-126"><span class="linenos">126</span></a><span class="sd">    </span>
+</span><span id="XYbackground-127"><a href="#XYbackground-127"><span class="linenos">127</span></a><span class="sd">    The {XYbackground} object collects/saves the following properties:</span>
+</span><span id="XYbackground-128"><a href="#XYbackground-128"><span class="linenos">128</span></a><span class="sd">        </span>
+</span><span id="XYbackground-129"><a href="#XYbackground-129"><span class="linenos">129</span></a><span class="sd">    * self.bname  = of the bkg/output file(s) to which we will save the result</span>
+</span><span id="XYbackground-130"><a href="#XYbackground-130"><span class="linenos">130</span></a><span class="sd">    * self.btype  = type of background - linear, quadratic or cubic spline</span>
+</span><span id="XYbackground-131"><a href="#XYbackground-131"><span class="linenos">131</span></a><span class="sd">    * self.points = XYpoints object = X,Y-coordinates of the bkg points</span>
+</span><span id="XYbackground-132"><a href="#XYbackground-132"><span class="linenos">132</span></a><span class="sd">    * self.curve  = XYcurve object = X,Y-coordinates of the whole bkg curve</span>
+</span><span id="XYbackground-133"><a href="#XYbackground-133"><span class="linenos">133</span></a><span class="sd">    &#39;&#39;&#39;</span>
+</span><span id="XYbackground-134"><a href="#XYbackground-134"><span class="linenos">134</span></a>    
+</span><span id="XYbackground-135"><a href="#XYbackground-135"><span class="linenos">135</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bname</span><span class="p">,</span> 
+</span><span id="XYbackground-136"><a href="#XYbackground-136"><span class="linenos">136</span></a>                 <span class="n">btype</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+</span><span id="XYbackground-137"><a href="#XYbackground-137"><span class="linenos">137</span></a>                 <span class="n">points</span> <span class="o">=</span> <span class="n">XYpoints</span><span class="p">([],[]),</span> 
+</span><span id="XYbackground-138"><a href="#XYbackground-138"><span class="linenos">138</span></a>                 <span class="n">curve</span> <span class="o">=</span> <span class="n">XYcurve</span><span class="p">([],[])):</span>
+</span><span id="XYbackground-139"><a href="#XYbackground-139"><span class="linenos">139</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYbackground-140"><a href="#XYbackground-140"><span class="linenos">140</span></a><span class="sd">        Initialize XYbackground object.</span>
+</span><span id="XYbackground-141"><a href="#XYbackground-141"><span class="linenos">141</span></a>
+</span><span id="XYbackground-142"><a href="#XYbackground-142"><span class="linenos">142</span></a><span class="sd">        Parameters</span>
+</span><span id="XYbackground-143"><a href="#XYbackground-143"><span class="linenos">143</span></a><span class="sd">        ----------</span>
+</span><span id="XYbackground-144"><a href="#XYbackground-144"><span class="linenos">144</span></a><span class="sd">        bname : str</span>
+</span><span id="XYbackground-145"><a href="#XYbackground-145"><span class="linenos">145</span></a><span class="sd">            {bname} = filename of output file *without extension*.</span>
+</span><span id="XYbackground-146"><a href="#XYbackground-146"><span class="linenos">146</span></a><span class="sd">            The extension will be added automatically according to context.</span>
+</span><span id="XYbackground-147"><a href="#XYbackground-147"><span class="linenos">147</span></a><span class="sd">        btype : string; default is &#39;linear&#39; </span>
+</span><span id="XYbackground-148"><a href="#XYbackground-148"><span class="linenos">148</span></a><span class="sd">            Background interpolation type</span>
+</span><span id="XYbackground-149"><a href="#XYbackground-149"><span class="linenos">149</span></a><span class="sd">            = interpolation during backround calculation.</span>
+</span><span id="XYbackground-150"><a href="#XYbackground-150"><span class="linenos">150</span></a><span class="sd">            Implemented interpolation types: &#39;linear&#39;, &#39;quadratic&#39;, &#39;cubic&#39;.</span>
+</span><span id="XYbackground-151"><a href="#XYbackground-151"><span class="linenos">151</span></a><span class="sd">        points : bdata.XYpoints object</span>
+</span><span id="XYbackground-152"><a href="#XYbackground-152"><span class="linenos">152</span></a><span class="sd">            Coordinates of user-defined backround points.</span>
+</span><span id="XYbackground-153"><a href="#XYbackground-153"><span class="linenos">153</span></a><span class="sd">        curve  : bdata.XYcurve object</span>
+</span><span id="XYbackground-154"><a href="#XYbackground-154"><span class="linenos">154</span></a><span class="sd">            Backround curve = X,Y of all points of the calculated background.</span>
+</span><span id="XYbackground-155"><a href="#XYbackground-155"><span class="linenos">155</span></a><span class="sd">            </span>
+</span><span id="XYbackground-156"><a href="#XYbackground-156"><span class="linenos">156</span></a><span class="sd">        Returns</span>
+</span><span id="XYbackground-157"><a href="#XYbackground-157"><span class="linenos">157</span></a><span class="sd">        -------</span>
+</span><span id="XYbackground-158"><a href="#XYbackground-158"><span class="linenos">158</span></a><span class="sd">        bground.bdata XYbackground</span>
+</span><span id="XYbackground-159"><a href="#XYbackground-159"><span class="linenos">159</span></a><span class="sd">            The object is initialized and ready to be used.</span>
+</span><span id="XYbackground-160"><a href="#XYbackground-160"><span class="linenos">160</span></a><span class="sd">            Typically, the initialized XYbackground object is semi-empty,</span>
+</span><span id="XYbackground-161"><a href="#XYbackground-161"><span class="linenos">161</span></a><span class="sd">            containing just self.bname and self.btype, while the self.points</span>
+</span><span id="XYbackground-162"><a href="#XYbackground-162"><span class="linenos">162</span></a><span class="sd">            and self.curve sub-objects are empty.</span>
+</span><span id="XYbackground-163"><a href="#XYbackground-163"><span class="linenos">163</span></a><span class="sd">        </span>
+</span><span id="XYbackground-164"><a href="#XYbackground-164"><span class="linenos">164</span></a><span class="sd">        Technical notes</span>
+</span><span id="XYbackground-165"><a href="#XYbackground-165"><span class="linenos">165</span></a><span class="sd">        ---------------</span>
+</span><span id="XYbackground-166"><a href="#XYbackground-166"><span class="linenos">166</span></a><span class="sd">        * During the initialization, the default values</span>
+</span><span id="XYbackground-167"><a href="#XYbackground-167"><span class="linenos">167</span></a><span class="sd">          for points and curve sub-objects are empty lists/arrays</span>
+</span><span id="XYbackground-168"><a href="#XYbackground-168"><span class="linenos">168</span></a><span class="sd">          = XYpoints([],[]) and XYcurve([],[].</span>
+</span><span id="XYbackground-169"><a href="#XYbackground-169"><span class="linenos">169</span></a><span class="sd">        * The empty arrays should eliminate possible non-zero values</span>
+</span><span id="XYbackground-170"><a href="#XYbackground-170"><span class="linenos">170</span></a><span class="sd">          from possible previous runs in Spyder or Jupyter.</span>
+</span><span id="XYbackground-171"><a href="#XYbackground-171"><span class="linenos">171</span></a><span class="sd">        * Nevertheless, in some environments this may not be sufficient</span>
+</span><span id="XYbackground-172"><a href="#XYbackground-172"><span class="linenos">172</span></a><span class="sd">          and the background in the main program must be initialized</span>
+</span><span id="XYbackground-173"><a href="#XYbackground-173"><span class="linenos">173</span></a><span class="sd">          with empty objects XYpoints and XYcurve explicitly.</span>
+</span><span id="XYbackground-174"><a href="#XYbackground-174"><span class="linenos">174</span></a><span class="sd">        * Some of our functions re-initialize the object with empty XYpoints</span>
+</span><span id="XYbackground-175"><a href="#XYbackground-175"><span class="linenos">175</span></a><span class="sd">          and XYcurve to be on the safe side; this is a bit mysterious feature.</span>
+</span><span id="XYbackground-176"><a href="#XYbackground-176"><span class="linenos">176</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYbackground-177"><a href="#XYbackground-177"><span class="linenos">177</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bname</span>  <span class="o">=</span> <span class="n">bname</span>
+</span><span id="XYbackground-178"><a href="#XYbackground-178"><span class="linenos">178</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btype</span>  <span class="o">=</span> <span class="n">btype</span>
+</span><span id="XYbackground-179"><a href="#XYbackground-179"><span class="linenos">179</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
+</span><span id="XYbackground-180"><a href="#XYbackground-180"><span class="linenos">180</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span>  <span class="o">=</span> <span class="n">curve</span> 
 </span></pre></div>
 
 
-            <div class="docstring"><p>User-defined background.</p>
+            <div class="docstring"><p>Class defining {XYbackground} objects.</p>
+
+<p>The {XYbackground} object collects/saves the following properties:</p>
+
+<ul>
+<li>self.bname  = of the bkg/output file(s) to which we will save the result</li>
+<li>self.btype  = type of background - linear, quadratic or cubic spline</li>
+<li>self.points = XYpoints object = X,Y-coordinates of the bkg points</li>
+<li>self.curve  = XYcurve object = X,Y-coordinates of the whole bkg curve</li>
+</ul>
 </div>
 
 
@@ -578,49 +737,56 @@ DESCRIPTION. The default is [].</li>
 
     </div>
     <a class="headerlink" href="#XYbackground.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="XYbackground.__init__-95"><a href="#XYbackground.__init__-95"><span class="linenos"> 95</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bname</span><span class="p">,</span> 
-</span><span id="XYbackground.__init__-96"><a href="#XYbackground.__init__-96"><span class="linenos"> 96</span></a>                 <span class="n">btype</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-</span><span id="XYbackground.__init__-97"><a href="#XYbackground.__init__-97"><span class="linenos"> 97</span></a>                 <span class="n">points</span> <span class="o">=</span> <span class="n">XYpoints</span><span class="p">([],[]),</span> 
-</span><span id="XYbackground.__init__-98"><a href="#XYbackground.__init__-98"><span class="linenos"> 98</span></a>                 <span class="n">curve</span> <span class="o">=</span> <span class="n">XYcurve</span><span class="p">([],[])):</span>
-</span><span id="XYbackground.__init__-99"><a href="#XYbackground.__init__-99"><span class="linenos"> 99</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-</span><span id="XYbackground.__init__-100"><a href="#XYbackground.__init__-100"><span class="linenos">100</span></a><span class="sd">        Initialize background.</span>
-</span><span id="XYbackground.__init__-101"><a href="#XYbackground.__init__-101"><span class="linenos">101</span></a>
-</span><span id="XYbackground.__init__-102"><a href="#XYbackground.__init__-102"><span class="linenos">102</span></a><span class="sd">        Parameters</span>
-</span><span id="XYbackground.__init__-103"><a href="#XYbackground.__init__-103"><span class="linenos">103</span></a><span class="sd">        ----------</span>
-</span><span id="XYbackground.__init__-104"><a href="#XYbackground.__init__-104"><span class="linenos">104</span></a><span class="sd">        bname : str</span>
-</span><span id="XYbackground.__init__-105"><a href="#XYbackground.__init__-105"><span class="linenos">105</span></a><span class="sd">            {bname} = filename of output file *without extension*.</span>
-</span><span id="XYbackground.__init__-106"><a href="#XYbackground.__init__-106"><span class="linenos">106</span></a><span class="sd">            The extension will be added automatically according to context.</span>
-</span><span id="XYbackground.__init__-107"><a href="#XYbackground.__init__-107"><span class="linenos">107</span></a><span class="sd">        btype : string; default is &#39;linear&#39; </span>
-</span><span id="XYbackground.__init__-108"><a href="#XYbackground.__init__-108"><span class="linenos">108</span></a><span class="sd">            Background interpolation type</span>
-</span><span id="XYbackground.__init__-109"><a href="#XYbackground.__init__-109"><span class="linenos">109</span></a><span class="sd">            = interpolation during backround calculation.</span>
-</span><span id="XYbackground.__init__-110"><a href="#XYbackground.__init__-110"><span class="linenos">110</span></a><span class="sd">            Implemented interpolation types: &#39;linear&#39;, &#39;quadratic&#39;, &#39;cubic&#39;.</span>
-</span><span id="XYbackground.__init__-111"><a href="#XYbackground.__init__-111"><span class="linenos">111</span></a><span class="sd">        points : bdata.XYpoints object</span>
-</span><span id="XYbackground.__init__-112"><a href="#XYbackground.__init__-112"><span class="linenos">112</span></a><span class="sd">            Coordinates of user-defined backround points.</span>
-</span><span id="XYbackground.__init__-113"><a href="#XYbackground.__init__-113"><span class="linenos">113</span></a><span class="sd">        curve  : bdata.XYcurve object</span>
-</span><span id="XYbackground.__init__-114"><a href="#XYbackground.__init__-114"><span class="linenos">114</span></a><span class="sd">            Backround curve = X,Y of all points of the calculated background.</span>
-</span><span id="XYbackground.__init__-115"><a href="#XYbackground.__init__-115"><span class="linenos">115</span></a><span class="sd">            </span>
-</span><span id="XYbackground.__init__-116"><a href="#XYbackground.__init__-116"><span class="linenos">116</span></a><span class="sd">        Returns</span>
-</span><span id="XYbackground.__init__-117"><a href="#XYbackground.__init__-117"><span class="linenos">117</span></a><span class="sd">        -------</span>
-</span><span id="XYbackground.__init__-118"><a href="#XYbackground.__init__-118"><span class="linenos">118</span></a><span class="sd">        XYbackground object.</span>
-</span><span id="XYbackground.__init__-119"><a href="#XYbackground.__init__-119"><span class="linenos">119</span></a><span class="sd">        </span>
-</span><span id="XYbackground.__init__-120"><a href="#XYbackground.__init__-120"><span class="linenos">120</span></a><span class="sd">        Technical notes</span>
-</span><span id="XYbackground.__init__-121"><a href="#XYbackground.__init__-121"><span class="linenos">121</span></a><span class="sd">        ---------------</span>
-</span><span id="XYbackground.__init__-122"><a href="#XYbackground.__init__-122"><span class="linenos">122</span></a><span class="sd">        * In function definition, we use XYpoints([],[]) and XYcurve([],[]).</span>
-</span><span id="XYbackground.__init__-123"><a href="#XYbackground.__init__-123"><span class="linenos">123</span></a><span class="sd">        * The empty arrays should eliminate possible non-zero values</span>
-</span><span id="XYbackground.__init__-124"><a href="#XYbackground.__init__-124"><span class="linenos">124</span></a><span class="sd">          from possible previous run in Spyder.</span>
-</span><span id="XYbackground.__init__-125"><a href="#XYbackground.__init__-125"><span class="linenos">125</span></a><span class="sd">        * Nevertheless, in current version this is not sufficient</span>
-</span><span id="XYbackground.__init__-126"><a href="#XYbackground.__init__-126"><span class="linenos">126</span></a><span class="sd">          and the background in the main program must be initialized</span>
-</span><span id="XYbackground.__init__-127"><a href="#XYbackground.__init__-127"><span class="linenos">127</span></a><span class="sd">          with empty objects XYpoints and XYcurve as well.</span>
-</span><span id="XYbackground.__init__-128"><a href="#XYbackground.__init__-128"><span class="linenos">128</span></a><span class="sd">        * At the moment, I regard this as a Python mystery.</span>
-</span><span id="XYbackground.__init__-129"><a href="#XYbackground.__init__-129"><span class="linenos">129</span></a><span class="sd">        &#39;&#39;&#39;</span>
-</span><span id="XYbackground.__init__-130"><a href="#XYbackground.__init__-130"><span class="linenos">130</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bname</span>  <span class="o">=</span> <span class="n">bname</span>
-</span><span id="XYbackground.__init__-131"><a href="#XYbackground.__init__-131"><span class="linenos">131</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btype</span>  <span class="o">=</span> <span class="n">btype</span>
-</span><span id="XYbackground.__init__-132"><a href="#XYbackground.__init__-132"><span class="linenos">132</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
-</span><span id="XYbackground.__init__-133"><a href="#XYbackground.__init__-133"><span class="linenos">133</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span>  <span class="o">=</span> <span class="n">curve</span> 
+            <div class="pdoc-code codehilite"><pre><span></span><span id="XYbackground.__init__-135"><a href="#XYbackground.__init__-135"><span class="linenos">135</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bname</span><span class="p">,</span> 
+</span><span id="XYbackground.__init__-136"><a href="#XYbackground.__init__-136"><span class="linenos">136</span></a>                 <span class="n">btype</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+</span><span id="XYbackground.__init__-137"><a href="#XYbackground.__init__-137"><span class="linenos">137</span></a>                 <span class="n">points</span> <span class="o">=</span> <span class="n">XYpoints</span><span class="p">([],[]),</span> 
+</span><span id="XYbackground.__init__-138"><a href="#XYbackground.__init__-138"><span class="linenos">138</span></a>                 <span class="n">curve</span> <span class="o">=</span> <span class="n">XYcurve</span><span class="p">([],[])):</span>
+</span><span id="XYbackground.__init__-139"><a href="#XYbackground.__init__-139"><span class="linenos">139</span></a><span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+</span><span id="XYbackground.__init__-140"><a href="#XYbackground.__init__-140"><span class="linenos">140</span></a><span class="sd">        Initialize XYbackground object.</span>
+</span><span id="XYbackground.__init__-141"><a href="#XYbackground.__init__-141"><span class="linenos">141</span></a>
+</span><span id="XYbackground.__init__-142"><a href="#XYbackground.__init__-142"><span class="linenos">142</span></a><span class="sd">        Parameters</span>
+</span><span id="XYbackground.__init__-143"><a href="#XYbackground.__init__-143"><span class="linenos">143</span></a><span class="sd">        ----------</span>
+</span><span id="XYbackground.__init__-144"><a href="#XYbackground.__init__-144"><span class="linenos">144</span></a><span class="sd">        bname : str</span>
+</span><span id="XYbackground.__init__-145"><a href="#XYbackground.__init__-145"><span class="linenos">145</span></a><span class="sd">            {bname} = filename of output file *without extension*.</span>
+</span><span id="XYbackground.__init__-146"><a href="#XYbackground.__init__-146"><span class="linenos">146</span></a><span class="sd">            The extension will be added automatically according to context.</span>
+</span><span id="XYbackground.__init__-147"><a href="#XYbackground.__init__-147"><span class="linenos">147</span></a><span class="sd">        btype : string; default is &#39;linear&#39; </span>
+</span><span id="XYbackground.__init__-148"><a href="#XYbackground.__init__-148"><span class="linenos">148</span></a><span class="sd">            Background interpolation type</span>
+</span><span id="XYbackground.__init__-149"><a href="#XYbackground.__init__-149"><span class="linenos">149</span></a><span class="sd">            = interpolation during backround calculation.</span>
+</span><span id="XYbackground.__init__-150"><a href="#XYbackground.__init__-150"><span class="linenos">150</span></a><span class="sd">            Implemented interpolation types: &#39;linear&#39;, &#39;quadratic&#39;, &#39;cubic&#39;.</span>
+</span><span id="XYbackground.__init__-151"><a href="#XYbackground.__init__-151"><span class="linenos">151</span></a><span class="sd">        points : bdata.XYpoints object</span>
+</span><span id="XYbackground.__init__-152"><a href="#XYbackground.__init__-152"><span class="linenos">152</span></a><span class="sd">            Coordinates of user-defined backround points.</span>
+</span><span id="XYbackground.__init__-153"><a href="#XYbackground.__init__-153"><span class="linenos">153</span></a><span class="sd">        curve  : bdata.XYcurve object</span>
+</span><span id="XYbackground.__init__-154"><a href="#XYbackground.__init__-154"><span class="linenos">154</span></a><span class="sd">            Backround curve = X,Y of all points of the calculated background.</span>
+</span><span id="XYbackground.__init__-155"><a href="#XYbackground.__init__-155"><span class="linenos">155</span></a><span class="sd">            </span>
+</span><span id="XYbackground.__init__-156"><a href="#XYbackground.__init__-156"><span class="linenos">156</span></a><span class="sd">        Returns</span>
+</span><span id="XYbackground.__init__-157"><a href="#XYbackground.__init__-157"><span class="linenos">157</span></a><span class="sd">        -------</span>
+</span><span id="XYbackground.__init__-158"><a href="#XYbackground.__init__-158"><span class="linenos">158</span></a><span class="sd">        bground.bdata XYbackground</span>
+</span><span id="XYbackground.__init__-159"><a href="#XYbackground.__init__-159"><span class="linenos">159</span></a><span class="sd">            The object is initialized and ready to be used.</span>
+</span><span id="XYbackground.__init__-160"><a href="#XYbackground.__init__-160"><span class="linenos">160</span></a><span class="sd">            Typically, the initialized XYbackground object is semi-empty,</span>
+</span><span id="XYbackground.__init__-161"><a href="#XYbackground.__init__-161"><span class="linenos">161</span></a><span class="sd">            containing just self.bname and self.btype, while the self.points</span>
+</span><span id="XYbackground.__init__-162"><a href="#XYbackground.__init__-162"><span class="linenos">162</span></a><span class="sd">            and self.curve sub-objects are empty.</span>
+</span><span id="XYbackground.__init__-163"><a href="#XYbackground.__init__-163"><span class="linenos">163</span></a><span class="sd">        </span>
+</span><span id="XYbackground.__init__-164"><a href="#XYbackground.__init__-164"><span class="linenos">164</span></a><span class="sd">        Technical notes</span>
+</span><span id="XYbackground.__init__-165"><a href="#XYbackground.__init__-165"><span class="linenos">165</span></a><span class="sd">        ---------------</span>
+</span><span id="XYbackground.__init__-166"><a href="#XYbackground.__init__-166"><span class="linenos">166</span></a><span class="sd">        * During the initialization, the default values</span>
+</span><span id="XYbackground.__init__-167"><a href="#XYbackground.__init__-167"><span class="linenos">167</span></a><span class="sd">          for points and curve sub-objects are empty lists/arrays</span>
+</span><span id="XYbackground.__init__-168"><a href="#XYbackground.__init__-168"><span class="linenos">168</span></a><span class="sd">          = XYpoints([],[]) and XYcurve([],[].</span>
+</span><span id="XYbackground.__init__-169"><a href="#XYbackground.__init__-169"><span class="linenos">169</span></a><span class="sd">        * The empty arrays should eliminate possible non-zero values</span>
+</span><span id="XYbackground.__init__-170"><a href="#XYbackground.__init__-170"><span class="linenos">170</span></a><span class="sd">          from possible previous runs in Spyder or Jupyter.</span>
+</span><span id="XYbackground.__init__-171"><a href="#XYbackground.__init__-171"><span class="linenos">171</span></a><span class="sd">        * Nevertheless, in some environments this may not be sufficient</span>
+</span><span id="XYbackground.__init__-172"><a href="#XYbackground.__init__-172"><span class="linenos">172</span></a><span class="sd">          and the background in the main program must be initialized</span>
+</span><span id="XYbackground.__init__-173"><a href="#XYbackground.__init__-173"><span class="linenos">173</span></a><span class="sd">          with empty objects XYpoints and XYcurve explicitly.</span>
+</span><span id="XYbackground.__init__-174"><a href="#XYbackground.__init__-174"><span class="linenos">174</span></a><span class="sd">        * Some of our functions re-initialize the object with empty XYpoints</span>
+</span><span id="XYbackground.__init__-175"><a href="#XYbackground.__init__-175"><span class="linenos">175</span></a><span class="sd">          and XYcurve to be on the safe side; this is a bit mysterious feature.</span>
+</span><span id="XYbackground.__init__-176"><a href="#XYbackground.__init__-176"><span class="linenos">176</span></a><span class="sd">        &#39;&#39;&#39;</span>
+</span><span id="XYbackground.__init__-177"><a href="#XYbackground.__init__-177"><span class="linenos">177</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bname</span>  <span class="o">=</span> <span class="n">bname</span>
+</span><span id="XYbackground.__init__-178"><a href="#XYbackground.__init__-178"><span class="linenos">178</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btype</span>  <span class="o">=</span> <span class="n">btype</span>
+</span><span id="XYbackground.__init__-179"><a href="#XYbackground.__init__-179"><span class="linenos">179</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">points</span>
+</span><span id="XYbackground.__init__-180"><a href="#XYbackground.__init__-180"><span class="linenos">180</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">curve</span>  <span class="o">=</span> <span class="n">curve</span> 
 </span></pre></div>
 
 
-            <div class="docstring"><p>Initialize background.</p>
+            <div class="docstring"><p>Initialize XYbackground object.</p>
 
 <h6 id="parameters">Parameters</h6>
 
@@ -641,19 +807,25 @@ Backround curve = X,Y of all points of the calculated background.</li>
 <h6 id="returns">Returns</h6>
 
 <ul>
-<li><strong>XYbackground object.</strong></li>
+<li><strong>bground.bdata XYbackground</strong>: The object is initialized and ready to be used.
+Typically, the initialized XYbackground object is semi-empty,
+containing just self.bname and self.btype, while the self.points
+and self.curve sub-objects are empty.</li>
 </ul>
 
 <h6 id="technical-notes">Technical notes</h6>
 
 <ul>
-<li>In function definition, we use XYpoints([],[]) and XYcurve([],[]).</li>
+<li>During the initialization, the default values
+for points and curve sub-objects are empty lists/arrays
+= XYpoints([],[]) and XYcurve([],[].</li>
 <li>The empty arrays should eliminate possible non-zero values
-from possible previous run in Spyder.</li>
-<li>Nevertheless, in current version this is not sufficient
+from possible previous runs in Spyder or Jupyter.</li>
+<li>Nevertheless, in some environments this may not be sufficient
 and the background in the main program must be initialized
-with empty objects XYpoints and XYcurve as well.</li>
-<li>At the moment, I regard this as a Python mystery.</li>
+with empty objects XYpoints and XYcurve explicitly.</li>
+<li>Some of our functions re-initialize the object with empty XYpoints
+and XYcurve to be on the safe side; this is a bit mysterious feature.</li>
 </ul>
 </div>
 

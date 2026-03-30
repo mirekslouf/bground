@@ -209,7 +209,7 @@ class InteractivePlot:
         # (objective: all should have correct extensions
         # (but we want to avoid double TXT extension for the main TXT file
         TXTfile = output_file
-        BKGfile = output_file + '.bkg'
+        BKGfile = output_file + '.bp'
         PNGfile = output_file + '.png'
         if not(TXTfile.lower().endswith('.txt')): TXTfile = TXTfile + '.txt'
         

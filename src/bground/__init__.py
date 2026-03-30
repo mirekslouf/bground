@@ -1,5 +1,3 @@
-# Package initialization file.
-
 '''
 Package: BGROUND
 ----------------
@@ -10,22 +8,16 @@ Semi-automatic background subtraction.
 
 Key modules of bground package:
 
-* bground.api = API ~ UI = user interface to run our bkg subtraction methods
-* bground.help = simple help, which explains how to our bkg subtraction methods
+* bground.api = API ~ UI = user interface to run all bkg subtraction methods
+* bground.help = help and links to docs to all background subtraction methods
 
-Sub-packages with the individual bground subtraction methods:
+Complete documentation and examples are available at www:
 
-* bground.points = semi-automatic method: bkg defined by points on XY-curve
-* bground.ffunc  = automatic method: fit background with a simple function 
-* bground.blines = automatic method: fit background with a {pybaselines} funcs
-* bground.wvlet  = automatic method: fit background using wavelet method(s)
-
-Usage of bground package:
-
-* See the initial examples at the top of each sub-package.
+* https://pypi.org/project/bground
+* https://mirekslouf.github.io/bground/docs
 '''
 
-__version__ = '1.1.8'
+__version__ = '1.2.0'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

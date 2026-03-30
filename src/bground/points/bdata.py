@@ -1,12 +1,12 @@
 '''
-Module: bground.bdata
----------------------
+Module: bground.points.bdata
+----------------------------
 The module defines three simple clasess.
 The classes keep data for the backround definition.
 
 1. Class XYpoints = coordinates of the user-defined bakground points.
 2. Class XYcurve = two numpy arrays defining the whole calculated bkg curve.
-3. Class bkg = complete info about the user-defined background, containing:
+3. Class XYbackground = complete user-defined background, containing:
     - XYpoints object = the user-defined coordinates of bkg point
     - XYcurve object = the calculated background curve
     - a few other properties (name of file for saving bkg, type of bkg)
@@ -14,9 +14,10 @@ The classes keep data for the backround definition.
 Technical notes:
 
 * The first two classes (XYpoints, XYcurve) are used just inside the 3rd one.
-* The 3rd class (bkg) is used in module iplot = the interactive bkg definition.
-* For a common user, the classes are behind the sceenes, completely invisible.
+* The 3rd class (XYbackground) is used in bground.api.InteractivePlot object.
+* For a common user, all classes are behind the sceenes, completely invisible.
 '''
+
 
 class XYpoints:
     '''
@@ -24,6 +25,7 @@ class XYpoints:
     The lists X,Y contain X,Y coordinates of background points.
     This simple object is used in the following bkg object below.
     '''
+
     
     def __init__(self, X=[], Y=[]):
         '''
@@ -38,12 +40,16 @@ class XYpoints:
 
         Returns
         -------
-        New XYobject.
-        '''
+        bground.bdata.XYpoints
+            Object containing X and Y coords of the backround points.
+            After the initialization, the object is usually empty;
+            the real values are added later.
+       '''
         self.X = X
         self.Y = Y
+
         
-    def add_point(self,Xcoord,Ycoord):
+    def add_point(self, Xcoord, Ycoord):
         '''
         Add one background point to XYpoints object.
         
@@ -56,17 +62,40 @@ class XYpoints:
 
         Returns
         -------
-        None; just the Xcoord,Ycoord are added to XYpoints object.
+        None
+            The XYpoints object is updated
+            => Xcoord,Ycoord are appended at the end.
         '''
         self.X.append(Xcoord)
         self.Y.append(Ycoord)
 
+        
+    def sort_acc_to_X(self):
+        '''
+        Sort bacground points according to X-coordinate.
+
+        Returns
+        -------
+        None
+            The XYpoints object is updated
+            => the bkg points are sorted.
+        '''
+        
+        # Sort the two lists => this is a trick found in wwww 
+        # https://stackoverflow.com/q/9007877
+        (self.X, self.Y) = zip( *sorted( zip(self.X, self.Y) ) )
+        # One more step is needed because zip returns tuples and we need lists
+        self.X = list(self.X)
+        self.Y = list(self.Y)
+        
+        
 class XYcurve:
     '''
     XYcurve = object containing two 1D numpy arrays X,Y.
     Two arrays X,Y contain all X,Y points defining the calculated bkg curve.
     This simple object is used in the following bkg object below.
     '''
+
     
     def __init__(self, X=[], Y=[]):
         '''
@@ -74,21 +103,32 @@ class XYcurve:
         
         Parameters
         ----------
-        X : TYPE, optional
-            DESCRIPTION. The default is [].
-        Y : TYPE, optional
-            DESCRIPTION. The default is [].
+        X : list or np.array, optional, default is []
+            X-coordinates of the whole background curve. 
+        Y : list or np.array, optional, default is []
+            X-coordinates of the whole background curve.
 
         Returns
         -------
-        None.
+        bground.bdata.XYcurve
+            Object containing X and Y coords of the whole background curve.
+            After the initialization, the object is usually empty;
+            the real values are added later.
         '''
         self.X = X
         self.Y = Y
 
+
 class XYbackground:
     '''
-    User-defined background.
+    Class defining {XYbackground} objects.
+    
+    The {XYbackground} object collects/saves the following properties:
+        
+    * self.bname  = of the bkg/output file(s) to which we will save the result
+    * self.btype  = type of background - linear, quadratic or cubic spline
+    * self.points = XYpoints object = X,Y-coordinates of the bkg points
+    * self.curve  = XYcurve object = X,Y-coordinates of the whole bkg curve
     '''
     
     def __init__(self, bname, 
@@ -96,7 +136,7 @@ class XYbackground:
                  points = XYpoints([],[]), 
                  curve = XYcurve([],[])):
         '''
-        Initialize background.
+        Initialize XYbackground object.
 
         Parameters
         ----------
@@ -114,17 +154,24 @@ class XYbackground:
             
         Returns
         -------
-        XYbackground object.
+        bground.bdata XYbackground
+            The object is initialized and ready to be used.
+            Typically, the initialized XYbackground object is semi-empty,
+            containing just self.bname and self.btype, while the self.points
+            and self.curve sub-objects are empty.
         
         Technical notes
         ---------------
-        * In function definition, we use XYpoints([],[]) and XYcurve([],[]).
+        * During the initialization, the default values
+          for points and curve sub-objects are empty lists/arrays
+          = XYpoints([],[]) and XYcurve([],[].
         * The empty arrays should eliminate possible non-zero values
-          from possible previous run in Spyder.
-        * Nevertheless, in current version this is not sufficient
+          from possible previous runs in Spyder or Jupyter.
+        * Nevertheless, in some environments this may not be sufficient
           and the background in the main program must be initialized
-          with empty objects XYpoints and XYcurve as well.
-        * At the moment, I regard this as a Python mystery.
+          with empty objects XYpoints and XYcurve explicitly.
+        * Some of our functions re-initialize the object with empty XYpoints
+          and XYcurve to be on the safe side; this is a bit mysterious feature.
         '''
         self.bname  = bname
         self.btype  = btype
