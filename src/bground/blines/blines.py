@@ -15,7 +15,6 @@ Alternative input/output:
 '''
 
 import numpy as np
-import matplotlib.pyplot as plt
 from pybaselines import Baseline
 
 def select_xrange(x: np.ndarray, y: np.ndarray, xrange: tuple[int, int]):

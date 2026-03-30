@@ -23,7 +23,7 @@ More details to all individual background subtraction methods:
 * bground.api.FitFunction
   = automatic method, fit bkg with a simple function, TODO - Edvard
 * bground.api.BaseLines
-  = automatic method, fit bkg with PyBaseLines funcs, TODO - Jakub
+  = automatic method, fit bkg with PyBaseLines funcs
 * bground.api.WaveletMethod
   = automatic method, fit bkg with wavelet-based funcs, TODO - Adriana
 '''
@@ -614,21 +614,21 @@ class BaseLines:
 
     '''
     
-    def __init__(self, in_file, out_file, method = "peak_filling", 
+    def __init__(self, input_data, bkg_params, method = "peak_filling", 
                  xrange=(30,250), **kwargs):
         '''
         Initialize BaseLines.
 
         Parameters
         ----------
-        in_file : str
-            input file
-        out_file : str
-            output file
+        input_data : str or InputData
+            InputData directly or any type supported by InputData.
+        bkg_params : str or BkgParams
+            BkgParams or output file as a string.
         method : str, optional, by default "peak_filling"
             Algorithm from pybaselines for baseline detection.     
         xrange : tuple, optional, by default (30,250)
-            A range on the x axis, where the baseline should be subtracted..
+            A range on the x axis, where the baseline should be subtracted.
             The range is inclusive.
 
         Notes
@@ -647,9 +647,16 @@ class BaseLines:
         https://pybaselines.readthedocs.io/en/latest/api/Baseline.html
         for more methods and their details.
         '''
+        if isinstance(input_data, InputData):
+            self.data = input_data.data
+        else:
+            self.data = InputData(input_data).data
 
-        self.data = InputData(in_file).data
-        self.out_file = out_file
+        if isinstance(bkg_params, BkgParams):
+            self.pars = bkg_params
+        else:
+            self.pars = BkgParams(bkg_params)
+
         self.kwargs = kwargs
         self.xrange = xrange
         self.method = method
@@ -657,19 +664,23 @@ class BaseLines:
         
         # necessary for save_bkg_data function
         self.background = bground.points.bdata.XYbackground(
-            self.out_file,
+            self.pars.bkg_file,
             btype="pybaselines " + method
         )
+
+        self.plots = Plots(self)
 
     def run(self):
         '''Run the background subtraction.
             The result is saved to the file specified in the constructor.
         '''
 
-        result = bground.blines.blines.calculate_baseline(
+        self.data = bground.blines.blines.calculate_baseline(
             self.x, self.y, self.method, self.xrange, **self.kwargs)
-        bground.points.bfunc.save_bkg_data(
-            result, self.background, self.out_file)
+        self.background.curve.X, self.background.curve.Y = \
+            bground.blines.blines.select_xrange(
+                self.x, self.data[2], self.xrange)
+        bground.points.bfunc.save_bkg_data(self)
 
     
 
@@ -860,7 +871,7 @@ class Run:
 
 
     def BaseLines(
-            in_file, out_file='bground.txt', method = "peak_filling", 
+            in_file, out_file, method="peak_filling", 
             xrange=(30,250), **kwargs):
         '''
         Run bground.api.BaseLines method with a single function/command.
