@@ -1084,11 +1084,18 @@ class Plots:
         # (necessary to avoid confusions about current plot in Jupyter
         plt.close('all')
         
-        # Re-perform background subtraction
+        # Re-subtract background from points => if the points exist!
         # (just to be sure, it is quite fast
-        data_without_bkg = \
+        # (only for methods that use background.points
+        if len(self._parent.background.points.X) > 0:
+            # If there are background points defined, recalculate.
+            # (not necessary to save result => auto-saved in self._parent.data
             bground.points.bfunc.calculate_bkg_data(self._parent)
-        X,Y = data_without_bkg[0],data_without_bkg[3]
+        
+        # Define X,Y (X-coordinate, Intensity after bkg subtraction)
+        # (the data have been recalculated above
+        # (OR they should be present from automated bkg subtraction methods
+        X,Y = self._parent.data[0], self._parent.data[3]
         
         # Plot background-corrected XY-data
         plt.plot(X,Y, 'b-')
