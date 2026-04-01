@@ -48,54 +48,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-def set_plot_parameters(
-        size=(10,5), dpi=100, fontsize=8, my_defaults=True, my_rcParams=None):
-    '''
-    Set global plot parameters (mostly for plotting in Jupyter).
-
-    Parameters
-    ----------
-    size : tuple of two floats, optional, the default is (8,6)
-        Size of the figure (width, height) in [cm].
-    dpi : int, optional, the defalut is 100
-        DPI of the figure.
-    fontsize : int, optional, the default is 8
-        Size of the font used in figure labels etc.
-    my_defaults : bool, optional, default is True
-        If True, some reasonable additional defaults are set,
-        namely line widths and formats.
-    my_rcParams : dict, optional, default is None
-        Dictionary in plt.rcParams format
-        containing any other allowed global plot parameters.
-
-    Returns
-    -------
-    None
-        The result is a modification of the global plt.rcParams variable.
-    '''
-    # (1) Basic arguments -----------------------------------------------------
-    if size:  # Figure size
-        # Convert size in [cm] to required size in [inch]
-        size = (size[0]/2.54, size[1]/2.54)
-        plt.rcParams.update({'figure.figsize' : size})
-    if dpi:  # Figure dpi
-        plt.rcParams.update({'figure.dpi' : dpi})
-    if fontsize:  # Global font size
-        plt.rcParams.update({'font.size' : fontsize})
-    # (2) Additional default parameters ---------------------------------------
-    if my_defaults:  # Default rcParams if not forbidden by my_defaults=False
-        plt.rcParams.update({
-            'lines.linewidth'    : 0.8,
-            'axes.linewidth'     : 0.6,
-            'xtick.major.width'  : 0.6,
-            'ytick.major.width'  : 0.6,
-            'grid.linewidth'     : 0.6,
-            'grid.linestyle'     : ':'})
-    # (3) Further user-defined parameter in rcParams format -------------------
-    if my_rcParams:  # Other possible rcParams in the form of dictionary
-        plt.rcParams.update(my_rcParams)
-
-
 class InputData:
     '''
     Class defining {InputData} for background subtraction.
@@ -688,7 +640,8 @@ class BaseLines:
 
 class WaveletMethod:
     '''
-    TODO: Adriana Vasquez Pelayo ...
+    TODO: Adriana Vazquez Pelayo ...
+    First test commit.
     '''
     
 
@@ -793,7 +746,7 @@ class Run:
         return(BMET)
         
     
-    def RestoreFromPoints(in_data, bkg_points, out_file=None,
+    def RestoreFromPoints(in_data, bkg_file, out_file=None,
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
             xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
             CLI=False):
@@ -805,12 +758,13 @@ class Run:
         in_data : filename or np.ndarray or pd.DataFrame or ELD profile
             Input XYdata, containing 2 columns:
             `[X, Y = Iraw = raw intensity]`.
-        bkg_points : filename
-            Name of the file with background points (usually a file
-            with TXT.BP extension from previous InteractivePlot run).
-            This TXT.BP background-points-file is loaded
-            and TXT data-file with 4 cols (`[X, Iraw, Inet, I=Iraw-Inet]`)
-            is recalculated - this is the core of the RestoreFromPoints method.
+        bkg_file : filename
+            Name of the file with background points.
+            According to bground package convention,
+            the filename should be `something.txt` or `something.txt.bp`.
+            TXT-files contain the XY-data
+            and TXT.BP-files contain background points.
+            If {bkg_file} is a TXT file, the extension is converted to TXT.BP.
         comment, skiprows, header, sep, usecols: params for pd.read_csv func
             Parameters that are passed to pd.read_csv function
             if the {in_data} is an XYfile with two columns.
@@ -850,7 +804,7 @@ class Run:
         # (1) Define objects with input and output data
         DATA = InputData(in_data, sep=sep, usecols=usecols,
             comment=comment, skiprows=skiprows, header=header)
-        PARS = BkgParams(bkg_points, xlabel, ylabel, xlim, ylim, messages)
+        PARS = BkgParams(bkg_file, xlabel, ylabel, xlim, ylim, messages)
         
         # (2) Define the method
         # (including optional {out_file} to specify 
@@ -1022,6 +976,60 @@ class Plots:
         self._parent = parent   # aggregated object
 
     
+    @staticmethod
+    def set_plot_params(size=(10,5), dpi=100, fontsize=8, 
+                        my_defaults=True, my_rcParams=None):
+        '''
+        Set global plot parameters.
+        
+        * This is a static method.
+        * Mostly for plotting in Jupyter.
+        * It may be used internally in bkg subtraction methods,
+          but InteractivePlot uses its own settings of global plot parameters.
+
+        Parameters
+        ----------
+        size : tuple of two floats, optional, the default is (8,6)
+            Size of the figure (width, height) in [cm].
+        dpi : int, optional, the defalut is 100
+            DPI of the figure.
+        fontsize : int, optional, the default is 8
+            Size of the font used in figure labels etc.
+        my_defaults : bool, optional, default is True
+            If True, some reasonable additional defaults are set,
+            namely line widths and formats.
+        my_rcParams : dict, optional, default is None
+            Dictionary in plt.rcParams format
+            containing any other allowed global plot parameters.
+
+        Returns
+        -------
+        None
+            The result is a modification of the global plt.rcParams variable.
+        '''
+        # (1) Basic arguments -----------------------------------------------------
+        if size:  # Figure size
+            # Convert size in [cm] to required size in [inch]
+            size = (size[0]/2.54, size[1]/2.54)
+            plt.rcParams.update({'figure.figsize' : size})
+        if dpi:  # Figure dpi
+            plt.rcParams.update({'figure.dpi' : dpi})
+        if fontsize:  # Global font size
+            plt.rcParams.update({'font.size' : fontsize})
+        # (2) Additional default parameters ---------------------------------------
+        if my_defaults:  # Default rcParams if not forbidden by my_defaults=False
+            plt.rcParams.update({
+                'lines.linewidth'    : 0.8,
+                'axes.linewidth'     : 0.6,
+                'xtick.major.width'  : 0.6,
+                'ytick.major.width'  : 0.6,
+                'grid.linewidth'     : 0.6,
+                'grid.linestyle'     : ':'})
+        # (3) Further user-defined parameter in rcParams format -------------------
+        if my_rcParams:  # Other possible rcParams in the form of dictionary
+            plt.rcParams.update(my_rcParams)
+
+
     def plot_original(self, title='Raw data before processing', grid=True):
         '''
         Plot raw XY-data BEFORE any processing.
@@ -1152,11 +1160,18 @@ class Plots:
         # (necessary to avoid confusions about current plot in Jupyter
         plt.close('all')
         
-        # Re-perform background subtraction
+        # Re-subtract background from points => if the points exist!
         # (just to be sure, it is quite fast
-        data_without_bkg = \
+        # (only for methods that use background.points
+        if len(self._parent.background.points.X) > 0:
+            # If there are background points defined, recalculate.
+            # (not necessary to save result => auto-saved in self._parent.data
             bground.points.bfunc.calculate_bkg_data(self._parent)
-        X,Y = data_without_bkg[0],data_without_bkg[3]
+        
+        # Define X,Y (X-coordinate, Intensity after bkg subtraction)
+        # (the data have been recalculated above
+        # (OR they should be present from automated bkg subtraction methods
+        X,Y = self._parent.data[0], self._parent.data[3]
         
         # Plot background-corrected XY-data
         plt.plot(X,Y, 'b-')
