@@ -86,7 +86,7 @@ def interactive_plot(iplot):
     
     # (3b) Connect plot with close_event (= when the window is closed)
     fig.canvas.mpl_connect('close_event',
-        lambda event: on_close(event, iplot))
+        lambda event: on_close(event))
     
     # (4) Optimize the plot layout
     plt.tight_layout()
@@ -143,7 +143,7 @@ def on_keypress(event, fig, ax, iplot):
             raise Exception(err)
 
 
-def on_close(event, iplot):
+def on_close(event):
     '''
     Definition of on_close event of the plot.
     
@@ -152,17 +152,11 @@ def on_close(event, iplot):
     * The function prints concluding remarks
       and information about the output files.
     '''
-    bkg_file1 = iplot.pars.bkg_file
-    bkg_file2 = iplot.pars.bkg_file + '.bp'
-    bkg_file3 = iplot.pars.bkg_file + '.png'
-    if not(bkg_file1.lower().endswith('.txt')): bkg_file1 = bkg_file1 + '.txt'
     print()
     print('The interactive plot was closed.')
     print('If you followed the documentation and instructions,')
-    print('the outputs should be saved in the following files:')
-    print(f' - {bkg_file1} = TXT file with background-corrected XYdata')
-    print(f' - {bkg_file2} = BKG file containing background points')
-    print(f' - {bkg_file3} = PNG plot of XY-data with defined background')
+    print('the results are saved in the calling object and')
+    print('(optionally) in the TXT, TXT.BP, and TXT.PNG files.')
 
 
 # =============================================================================
@@ -273,7 +267,7 @@ def load_bkg_points(ax, iplot):
     bfunc.load_bkg_points(iplot)
     # c) print message if requested
     if iplot.pars.messages:
-        print(f'background points read from: [{input_filename}].')
+        print(f'bkg points read from: [{input_filename}].')
     # d) replot with currently loaded background
     replot_with_bkg_points(ax, iplot, points_reloaded=True)
 
@@ -290,10 +284,23 @@ def save_bkg_points(iplot):
     if len(iplot.background.points.X) == 0:
         print('no background points defined!')
         return()
-    # Standard processing of event 'b' = saving of the background points.
+    # ALWAYS sort the background points.
     iplot.background.points.sort_acc_to_X()
-    bfunc.save_bkg_points(iplot)
-    print(f'background points saved to: [{iplot.background.bname+".bp"}]')
+    # OPTIONALLY save the points to file => if saveTXT is True
+    # (saving to file is default, but we may not need it
+    # (in some auto-scripts it is enough to keep the points in the object
+    if iplot.pars.saveTXT is True: 
+        bfunc.save_bkg_points(iplot)
+    # Print the final message
+    if iplot.pars.messages:
+        if iplot.pars.saveTXT is False:
+            # Data ALWAYS saved in self.data and self.background
+            # and OPTIONALLY in self.diff1D if the input is Diffractogram1D.
+            print('bkg points saved in the calling object.')
+        else:
+            # If saveTXT argument True (default, but it could be changed),
+            # the data are saved ALSO in TXT file (4 cols: X, Iraw, Ibkg, I).
+            print(f'bkg points saved in: [{iplot.background.bname+".bp"}]')
     
 
 def subtract_bkg_and_save(iplot):
@@ -309,15 +316,18 @@ def subtract_bkg_and_save(iplot):
       it is updated as well.
     '''
     # Subtract recently defined background and save results
-    # (a) Recalculate background
+    # (a) Calculate baseline = background curve
+    # (the complete background is saved in iplot.background
     bfunc.calculate_baseline(iplot)
-    # (b) Subtract background
-    iplot.data = bfunc.calculate_bkg_data(iplot)
+    # (b) Calculate complete data = X, Y=Iraw, Ibkg, I=(Iraw-Ibkg)
+    # (the complete data are saved in iplot.data
+    bfunc.calculate_bkg_data(iplot)
     # (c) Save the data to a TXT-file
     # (name of the ouput file is in iplot.pars.out_file
     # (the following functions tests this and save the data
-    bfunc.save_bkg_data(iplot)
-    # (d) Save the data also to iplot.profile if it is defined
+    if iplot.pars.saveTXT is True: 
+        bfunc.save_bkg_data(iplot)
+    # (d) Save the data also to iplot.diff1D if it is defined
     # {diff1D} is a Diffractogram1D object from EDIFF package
     # {diff1D} can be used instead of data file to initialize iplot
     # {diff1D} is updated only if it was used = if iplot.diff1D is not None
@@ -326,37 +336,14 @@ def subtract_bkg_and_save(iplot):
         iplot.diff1D['I']    = iplot.data[3]
     # (e) Print final message if requested
     if iplot.pars.messages:
-        print(f'data updated + results saved to: [{iplot.pars.bkg_file}]')
-
-def subtract_bkg_and_udate(iplot):
-    '''
-    Function for keypress 'u'.
-    
-    This is the final function which:
-    
-    * Recalculates recently defined background.
-    * Calculates background-corrected data = subtracts bkg from data.
-    * Updates iplot.diff1D = ediff.io.Diffractogram1D object if it is defined.
-    * Note1: ediff.io.Diffractogram1D can be used for the iplot initialization.
-    * Note2: iplot.diff1D object is updated (if defined) also if we press 't',
-      which means that this function is (partially) redundant.
-    '''
-    # Check if we have the relevant Profile variable.
-    if iplot.diff1D is not None:
-        # Subtract recently defined background and save results
-        # (a) Recalculate background
-        bfunc.calculate_baseline(iplot)
-        # (b) Subtract background => udate data object
-        data = bfunc.calculate_bkg_data(iplot)
-        # (c) Update and return data
-        iplot.diff1D['Ibkg'] = data[2]
-        iplot.diff1D['I']    = data[3]
-        # Print the message if requested.
-        if iplot.pars.messages:
-            print('profile object updated - bkg-corrected data added.')
-    else:
-        if iplot.pars.messages:
-            print('no profile to update.')
+        if iplot.pars.saveTXT is False:
+            # Data ALWAYS saved in self.data and self.background
+            # and OPTIONALLY in self.diff1D if the input is Diffractogram1D.
+            print('data saved in the calling object.')
+        else:
+            # If saveTXT argument True (default, but it could be changed),
+            # the data are saved ALSO in TXT file (4 cols: X, Iraw, Ibkg, I).
+            print(f'data saved in: [{iplot.pars.bkg_file}]')
             
             
 def save_PNG_image(iplot):
@@ -383,7 +370,7 @@ def save_PNG_image(iplot):
     # 2) We print the message that the plot was saved
     # (Note: we add the info about the recommended filename
     if iplot.pars.messages:
-        print(f'plot saved to PNG; recommended name: [{output_filename}]')
+        print(f'plot saved to a PNG file.')
 
 
 # =============================================================================
@@ -424,7 +411,7 @@ def print_brief_help(iplot):
     print('    3,4,5,6 = show bkg points + linear/quadratic/cubic background')
     print('(2) Save the results + close the window when you are done:')
     print('    a,b = read/save background points from/to BKG-file')
-    print('    s,t,u = save background data in PNG-file/TXT-file/ELD-object')
+    print('    s,t = save background data in PNG-file/TXT-file-and-object')
     print('(3) Detailed help, complete documentation, and worked examples:')
     print('    https://mirekslouf.github.io/bground/docs')
     # Add an extra empty line if short messages to stdoud should be printed.

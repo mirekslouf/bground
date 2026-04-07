@@ -269,18 +269,18 @@ class RestoreFromPoints:
         print("Not implemented yet ...")
 
 
-class FitFunction:
+class SimpleFunc:
     '''
     Class with help functions.
     
     * The functions print simple textual help.
-    * Here: help to {FitFunctions} backgound subtraction method.
+    * Here: help to {SimpleFunc} backgound subtraction methods.
     '''
      
     
     def how_it_works():
         '''
-        BGROUND printed help :: FitFunction :: How it works
+        BGROUND printed help :: SimpleFunc :: How it works
         '''
         
         # TODO: brief text explanation

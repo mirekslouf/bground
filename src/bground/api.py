@@ -20,12 +20,12 @@ More details to all individual background subtraction methods:
   = semi-automatatic method, universal, finished
 * bground.api.RestoreFromPoints
   = special case of the previous, restore bkg from saved bkg points  
-* bground.api.FitFunction
-  = automatic method, fit bkg with a simple function, TODO - Edvard
+* bground.api.SimpleFuncs
+  = automatic methods, fit bkg with a simple funcs, TODO - Edvard (+ Adri)
 * bground.api.BaseLines
   = automatic method, fit bkg with PyBaseLines funcs, TODO - Jakub
-* bground.api.WaveletMethod
-  = automatic method, fit bkg with wavelet-based funcs, TODO - Adriana
+* bground.api.Wavelets
+  = automatic method, fit bkg with wavelet-based funcs, TODO - Adri
 '''
 
 
@@ -35,8 +35,9 @@ import bground.help
 import bground.points.bdata 
 import bground.points.bfunc
 import bground.points.ifunc
-
-import bground.blines.blines as blines
+# sub-packages for fully automated bkg subtraction
+import bground.sfunc.sfunc
+import bground.blines.blines
 
 # Reading and analyzing input data
 import numpy as np
@@ -211,9 +212,9 @@ class BkgParams:
       if True the program prints brief messages on stdout. 
     '''
     
-    def __init__(self, bkg_file, 
+    def __init__(self, bkg_file=None, 
                  xlabel=None, ylabel=None, xlim=None, ylim=None, 
-                 messages=True):
+                 saveTXT=True, messages=True):
         '''
         Initialize {BkgParams} object that defines properties of background.
 
@@ -222,11 +223,9 @@ class BkgParams:
         bkg_file : str or PathLike object
             Name of the background/output file(s).
             There can be three different output files:
-            data file (basic output; {bkg_file}.txt),
+            data file (XY-data, basic output; {bkg_file}.txt),
             background points (if bkg points are defined; {bkg_file}.txt.bp),
             background plot (if user requests this; {bkg_file}.txt.png).
-            The main output ({bkg_file}.txt) has 4 columns:
-            `[X, Y = Iraw, Ibkg, I = (Iraw - Ibkg)]`.
         xlabel : str, optional, default is None
             Label of X-axis (in the background plots).
         ylabel : str, optional, default is None
@@ -239,6 +238,10 @@ class BkgParams:
             Y-range (in the background plots).
             If ylim = 300, set Yrange/ylim to (0,300).
             If ylim = (50,300), set Yrange/ylim to (50,300).
+        saveTXT : bool, optional, default is True
+            If True (default), save also in TXT and TXT.BP files.
+            If False, the results are saved only within this object.
+            The False in suitable for certain automated processing paths.            
         messages : bool, optional, default is True
             If True, the program shows short messages on stdout as it runs.
 
@@ -250,31 +253,39 @@ class BkgParams:
             - just a collectoin of properties, no methods.
         '''
         # Initialization of BkgParams object => 3 groups of params:
-        #  1) self.bkg_file = name of background file(s
+        #  1) self.bkg_file = name of background file(s)
         #  2) self.xlabel/ylabel/xlim/ylim = params of bkg plots
-        #  3) self.messages = if True, print short messages on stdout
-        #----
+        #  3) self.saveTXT  = if True (default), save results in TXT-files
+        #     self.messages = if True (default), print short messages on stdout
+        #------
         
-        # (1) Set the name of background file(s), which can be:
-        # * some.txt     = main output, 4 cols = [X, Iraw, Ibkg, I = Iraw-Ibkg]
+        # (1) Set the name of background/output file(s), which can be:
+        # * some.txt     = main output, 4 cols = [X, Iraw, Ibkg, I=(Iraw-Ibkg)]
         # * some.txt.bp  = saved background points (for possible recalculation)
         # * some.txt.png = saved plot (from interactive matplotlib interface)
-        #----
-        # If {bkg_file} is a PathLike object, convert to string
-        bkg_file = str(bkg_file)
-        # If {bkg_file} ends with '.bp' or '.txt', remove the extension
-        # (this may be a copy paste error
-        # (OR intentional in the inherited method RestoreFromBackground,
-        # (where the input bkg_file usually HAS the extension '.txt.bp'
-        bkg_file = bkg_file.lower()
-        bkg_file = bkg_file.removesuffix('.bp')
-        bkg_file = bkg_file.removesuffix('.png')
-        # Iif the out_file name does not have .txt extension, add
-        if not(bkg_file.lower().endswith('.txt')):
-            bkg_file = bkg_file + '.txt'
-        # Save the final name to self.out_file
-        self.bkg_file = bkg_file
-
+        #------
+        if bkg_file is None:
+            # In some cases, we may not want to save output to TXT-files.
+            # => then we save the data just in the calling object:
+            # => specifically in: self.data, self.background, and self.diff1D.
+            self.bkg_file = None
+        else:
+            # In classical usage, we save the data also in output files, 
+            # If {bkg_file} is a PathLike object, convert to string
+            bkg_file = str(bkg_file)
+            # If {bkg_file} ends with '.bp' or '.txt', remove the extension
+            # (this may be a copy paste error
+            # (OR intentional in the inherited method RestoreFromBackground,
+            # (where the input bkg_file usually HAS the extension '.txt.bp'
+            bkg_file = bkg_file.lower()
+            bkg_file = bkg_file.removesuffix('.bp')
+            bkg_file = bkg_file.removesuffix('.png')
+            # Ii the out_file name does not have .txt extension, add
+            if not(bkg_file.lower().endswith('.txt')):
+                bkg_file = bkg_file + '.txt'
+            # Save the final name to self.out_file
+            self.bkg_file = bkg_file
+        
         # (2) Set the interactive plot parameters
         # (x,y-labels
         self.xlabel = xlabel            # x-axis label of the interactive plot
@@ -285,8 +296,10 @@ class BkgParams:
         if isinstance(ylim,list): self.ylim = ylim  # ylim = [ymin,ymax]
         else: self.ylim = [0,ylim]                  # ...or just ymax
         
-        # (3) Additional parameter - if we want brief messages to stdout
-        # (we usually want the messages for InteractivePlot => default is True
+        # (3) Additional parameters
+        # saveTXT - if {True} save results also TXT and TXT.BP files
+        # messages - if {True} print brief messages to stdout
+        self.saveTXT = saveTXT
         self.messages = messages
         
 
@@ -432,8 +445,6 @@ class RestoreFromPoints(InteractivePlot):
     >>> import bground.api as bkg
     >>>
     >>> # Define I/O files
-    >>> # (input file  = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
-    >>> # (background file = TXT.BP file from a previous run of InteractivePlot
     >>> IN  = 'data1_raw_intensity.txt'
     >>> BKG = 'data2_bkg_subtracted.txt.bp'
     >>>
@@ -442,9 +453,8 @@ class RestoreFromPoints(InteractivePlot):
     >>> PPAR = bkg.BkgParams(BKG,'Pix','Intensity',xlim=[0,200],ylim=[0,180])
     >>>
     >>> # Initialize and run RestoreFromPoints subtraction method
-    >>> # (the method is initialized using the auxiliary objects and run
     >>> # (SMET.data + SMET.background sub-objects will contain the results
-    >>> SMET = bkg.RestoreFromPointsPlot(DATA, PPAR)
+    >>> SMET = bkg.RestoreFromPoints(DATA, PPAR)
     >>> SMET.run()
     '''
     
@@ -519,15 +529,150 @@ class RestoreFromPoints(InteractivePlot):
             self.diff1D['I']    = self.data[3]
 
         # (3) Save the calculated data ALSO to out_file => if it was defined
-        # (save data to file IF {out_file} argument was given
-        bground.points.bfunc.save_bkg_data(self)
+        # (save data to file IF {saveTXT} is True
+        if self.pars.saveTXT is True:
+            bground.points.bfunc.save_bkg_data(self)
        
 
+class SimpleFuncs:
+    '''
+    SimpleFunc background subtraction method(s).
+    
+    * This is a specific case (and subclass) of InteractivePlot method.
+    * It inherits the initialization and visualization from InteractivePlot.
+    * But it runs non-interactively, just reading bkgpoints + calculating bkg.
+    
+    The method can be run in two ways:
+        
+    * Classical, step-by-step approach - see the example below
+    * Modern, single-funtion approach - see bground.api.Run.SimpleFunc
+    
+    Example - running SimpleFunc in classical way:
+        
+    >>> # Standard import
+    >>> # (alternative: import ediff as ed => bkg is available as ed.bkg
+    >>> import bground.api as bkg
+    >>>
+    >>> # Define I/O files
+    >>> IN  = 'data1_raw_intensity.txt'
+    >>> BKG = 'data2_bkg_corrected.txt'
+    >>>
+    >>> # Define auxiliary objects
+    >>> DATA = bkg.InputData(IN, usecols=[0,1], unpack=True)
+    >>> BPAR = bkg.BkgParams(BKG,'Pixel','Intensity',xlim=[0,200],ylim=[0,280])
+    >>>
+    >>> # Initialize and run SimpleFunc bkg subtraction method
+    >>> # here: selected SimpleFunc method = RollingBall (+ its params)
+    >>> SMET = bkg.SimpleFuncs(DATA, PPAR)
+    >>> SMET.run(algorithm='RollingBall', xrange=(40,250), radius=70)
 
-class FitFunction:
+    TODO: Evard ...
+    
+    * Add simple tailored NumPy/SciPy based function
+    * This class should not be modified => add func to sfunc.sfunc
     '''
-    TODO: Edvard Sidoryk ...
-    '''
+    
+    def __init__(self, DATA, PARS):
+        '''
+        Initialize {SimpleFunc} object.
+        
+        * The {SimpleFunc} object can run simple bkg subtraction methods.
+
+        Parameters
+        ----------
+        DATA : bground.api.InputData object
+            The object contains description of input data.
+            The {InputData} object should be defined
+            either before initializing the {InteractivePlot},
+            or intrinsically if we use bground.api.Run.InteractivePlot.
+        PARS : bground.api.BkgParams object
+            The object contains description of input data.
+            The {BkgData} object should be defined
+            either before initializing the {InteractivePlot},
+            or intrinsically if we use bground.api.Run.InteractivePlot.
+
+        Returns
+        -------
+        bground.api.SimpleFunc object
+            The object should be ready to use.
+            The principal object method is SimpleFunc.run(method=...).
+        '''
+        
+        # Save properties from DATA object
+        self.name = DATA.name
+        self.data = DATA.data
+        self.diff1D = DATA.diff1D
+        
+        # Save properties from PARS object
+        self.pars = PARS
+        
+        # Additional property - empty XYbackground object
+        # (this object is defined as a semi-empty object here
+        # (the only argument we supply is the name of the background file
+        self.background = \
+            bground.points.bdata.XYbackground(self.pars.bkg_file)
+                        
+        # Initialize plotting - by means of composition
+        self.plots = Plots(self)
+        
+
+    def run(self, algorithm='RollingBall', **kwargs):
+        '''
+        Run specific background subtraction {method} from {SimpleFunc} class.
+        
+        * Default SimpleFunc method is 'RollingBall'.
+        * Optional {kwargs} are passed to the selected method.
+        
+        Parameters
+        ----------
+        method : str, optional, default is 'RollingBall'
+            Name of the background subtraction method.
+            Implemented methods: 'RollingBall'.
+        kwargs : keyword arguments
+            Arbitrary keyword arguments.
+            The arguments are passed to selected bkg subtraction {method}.
+            Example: for 'RollingBall' method, we should specify {radius} arg.
+        
+        Summary of kwargs
+        -----------------
+        xrange : tuple/list of two floats
+            Argument relevant to all functions/algorithms.
+            If None, then the func/algorihtm will use the whole range
+            as defined in calling object = self.pars.xlim.
+            If specified (recommended), then the algorithm/func will use
+            the selected sub-range where are the relevant diffraction peaks.
+        radius: integer
+            Argument relevant to 'RollingBall' algorithm.
+            Radius of the rolling ball.
+        
+        Returns
+        -------
+        None
+            The results are saved in self object,
+            specifically in self.background (bkg curve)
+            and self.data (bgk-corrected data).
+            The bkg-corrected data are also saved in a TXT-file
+            if saveTXT=False argument was not used in initialization.
+        '''
+
+        # (1) Run the selected bkg subtraction method
+        # (the results are ALWAYS auto-saved in self.background and self.data
+        if algorithm == 'RollingBall':
+            bground.sfunc.sfunc.rolling_ball(self, **kwargs)
+        else:
+            raise ValueError('Uknown background subtraction method!')
+        
+        # (2) Save the calculated data ALSO in self.diff1D => if it was defined
+        # (self.diff1D IF ediff.io.Diffractogram1D used for the initialization 
+        if self.diff1D is not None:
+            self.diff1D['Ibkg'] = self.data[2]
+            self.diff1D['I']    = self.data[3]
+
+        # (3) Save the calculated data ALSO to out_file => if it was defined
+        # (save data to file IF {saveTXT} is True
+        # (we can use the existing func from bground.points sub-package
+        if self.pars.saveTXT is True:
+            bground.points.bfunc.save_bkg_data(self)
 
 
 class BaseLines:
@@ -538,6 +683,7 @@ class BaseLines:
     * Keep lines < 80 chars, add docstrings.
     * Add testing examples to GDrive.
     '''
+
     
     def __init__(self, in_file, out_file, method = "asls", xrange=(30,250),  **kwargs):
         self.data = InputData(in_file).data
@@ -553,12 +699,14 @@ class BaseLines:
             btype="pybaselines " + method
         )
 
+
     def run(self):
         '''Run the background subtraction.
             The result is saved to the file specified in the constructor.
         '''
 
-        x_xrange, y_xrange = blines.select_xrange(self.x, self.y, self.xrange)
+        x_xrange, y_xrange = \
+            bground.blines.blines.select_xrange(self.x, self.y, self.xrange)
         baseline_fitter = Baseline(x_data=x_xrange)
 
         if self.method == "asls":
@@ -568,50 +716,48 @@ class BaseLines:
         else:
             raise ValueError(f"unknown method '{str(self.method)}'")
 
-        new_data = blines.subtract_baseline(self.x, self.y, baseline, self.xrange)
-        bground.points.bfunc.save_bkg_data(new_data, self.background, self.out_file)
+        new_data = \
+            bground.blines.blines.subtract_baseline(
+                self.x, self.y, baseline, self.xrange)
+        bground.points.bfunc.save_bkg_data(
+            new_data, self.background, self.out_file)
 
     
 
-class WaveletMethod:
+class Wavelets:
     '''
-    TODO: Adriana Vazquez Pelayo ...
-    First test commit.
-    '''
+    TODO: Adri ...
+    
+    * Implement a simple wavelet method - template: SimpleFuncs - RollingBall
+    * Then implement additional method(s) according to {Cotret_2017.pdf}
+    '''        
     
 
 class Run:
     '''
-    This class runs the background subtraction methods.
+    The class with funcs to run each bkg subtraction method in one step.
     
-    * The class contains functions for each bkg subtraction method.
-    * Each function initializes and runs the selected method in one step.
-    * Behind the scenes, the initializes bground.api.InputData and bground.api.
-    * This is convenient in our simple API and for the OO-use in EDIFF package.
+    * Funcs in this class initialize and run
+      a selected method in one step.
+    * They set bground.api.InputData and bground.api.BkgParams
+      and run the method.
+    * All parameters are set in one place,
+      which is convenient for the modern/simple OO-processing.
     
     List of the available methods:
     
     * Run.InteractivePlot   = run {InteractivePlot} bkg subtraction method
     * Run.RestoreFromPoints = run {RestoreFromPoints} bkg subtration method
-    * Run.FitFunction       = run {FitFunction} bkg subtraction method
+    * Run.SimpleFuncs       = run {SimpleFuncs} bkg subtraction method(s)
     * Run.BaseLines         = run {BaseLines} bkg subtraction method(s)
-    * Run.WaveletMethod     = run {WaveletMethod} bkg subtraction method(s)
-    
-    How does it work?
-    
-    * Behind the scenes, each Run-function in this class initializes
-      bground.api.InputData and bground.api.BkgParams.
-    * In the next step, the Run-function defines and runs selected method,
-      using all parameters for {InputData}, {BkgParams}, and the method itself.
-    * Important is that all parameters are set in one place,
-      within single Run-function without, which further simplifies the API.
+    * Run.Wavelets          = run {Wavelets} bkg subtraction method(s)    
     '''
 
     def InteractivePlot(
-            in_data, bkg_file, 
+            in_data, bkg_file=None,
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
-            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=True,
-            CLI=False):
+            xlabel=None, ylabel=None, xlim=None, ylim=None, 
+            saveTXT=True, messages=True, CLI=False):
         '''
         Run bground.api.InteractivePlot method with a single function/command.
                
@@ -620,22 +766,34 @@ class Run:
         in_data : filename or np.ndarray or pd.DataFrame or ELD profile
             Input XYdata, containing 2 columns:
             `[X, Y = Iraw = raw intensity]`.
-        bkg_file : filename
+        bkg_file : filename, optional, default is None
             Name of the background/output file(s).
             There can be three different output files:
-            data file (basic output; {bkg_file}.txt),
-            background points (if bkg points are defined; {bkg_file}.txt.bp),
-            background plot (if user requests this; {bkg_file}.txt.png).
-            The main output ({bkg_file}.txt) has 4 columns:
-            `[X, Y = Iraw, Ibkg, I = (Iraw - Ibkg)]`.
+            data file ({bkg_file}.txt),
+            background points ({bkg_file}.txt.bp),
+            background plot ({bkg_file}.txt.png).
+            If {bkg_file} is not specified (None) and {saveTXT}=False,
+            then the TXT-files are not created and the results are
+            saved only within the InteractivePlot object
+            (in self.data, self.background, and possibly self.diff1D).
+            The self.diff1D sub-object is saved only if the input is
+            a ediff.io.Diffractogram1D object.
         comment, skiprows, header, sep, usecols: params for pd.read_csv func
              Parameters that are passed to pd.read_csv function
              if the {in_data} is an XYfile with two columns.
              See bground.api.InputData docs for more details.
-         xlabel, ylabel, xlim, ylim, messages, CLI: params for plotting
+         xlabel, ylabel, xlim, ylim: params for plotting
              Parameters that are used when plotting the XYdata
              in the form of matplotlib interactive graph.
              See bground.api.BkgParams docs for more details.
+        saveTXT : bool, optional, default is True
+            If True (default), save results in both TXT-file and self.diff1D.
+            It can be switched to False in certain automated processing paths.            
+        messages : bool, optional, default is True
+            If True (default), print short messages on stdout.
+        CLI : bool, optional, default is False
+            Must be set to True when program runs from pure Python in CLI.
+            It ensures that the interactive plot will not close immediately.
         
         Returns
         -------
@@ -666,25 +824,26 @@ class Run:
         # (1) Define objects with input and output data
         DATA = InputData(in_data, sep=sep, usecols=usecols,
             comment=comment, skiprows=skiprows, header=header)
-        PARS = BkgParams(bkg_file, xlabel, ylabel, xlim, ylim, messages)
+        PARS = BkgParams(bkg_file, 
+            xlabel=xlabel, ylabel=ylabel, xlim=xlim, ylim=ylim,
+            messages=messages, saveTXT=saveTXT)
         
         # (2) Define the method
         # (including optional argument CLI if it runs from pure CLI python
-        BMET = InteractivePlot(DATA, PARS, CLI=CLI)
+        SMET = InteractivePlot(DATA, PARS, CLI=CLI)
         
         # (3) Run the method
-        BMET.run()
+        SMET.run()
         
         # (4) Return the final InteractivePlot object
         # (the data are auto-saved to bkg_file(s)
         # (BUT returning the object is useful to see/show/plot the data
-        return(BMET)
+        return(SMET)
         
     
-    def RestoreFromPoints(in_data, bkg_file, out_file=None,
+    def RestoreFromPoints(in_data, bkg_file, saveTXT=True,
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
-            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
-            CLI=False):
+            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False):
         '''
         Run bground.api.RestoreFromPoints method with a single func/command.
 
@@ -700,6 +859,9 @@ class Run:
             TXT-files contain the XY-data
             and TXT.BP-files contain background points.
             If {bkg_file} is a TXT file, the extension is converted to TXT.BP.
+        saveTXT : bool, optional, default is True
+            If True (default), save results in both TXT-file and self.diff1D.
+            It can be switched to False in certain automated processing paths.            
         comment, skiprows, header, sep, usecols: params for pd.read_csv func
             Parameters that are passed to pd.read_csv function
             if the {in_data} is an XYfile with two columns.
@@ -723,54 +885,74 @@ class Run:
         >>> import bground.api as bkg
         >>> 
         >>> # Define I/O files
-        >>> # (input file = XYdata, 2 cols: [X, Y = Iraw = Raw Intensity]
-        >>> # (bkg points = TXT.BP file from a previous run of InteractivePlot
-        >>> IN  = r'../_DATA/tbf3_sum_hsd_i300.txt'
-        >>> BKG = r'test2_simple.txt.bp'
+        >>> IN  = r'orig_data.txt'
+        >>> BKG = r'bkg-corrected_data.txt'
         >>> 
         >>> # Run RestoreFromPoints using a single command
-        >>> # (the method is initialized using the auxiliary objects and run
-        >>> # (SMET.data + SMET.background sub-objects will contain the results
-        >>> SMET = bkg.Run.RestoreFromPoints(
-        >>>         IN, BKG,
-        >>>         xlabel='Pix', ylabel='Intensity',xlim=[0,200],ylim=[0,180])
+        >>> SMET = bkg.Run.RestoreFromPoints(IN, BKG,
+        >>>         xlabel='Pix', ylabel='Intensity',xlim=[0,200],ylim=180)
         '''
         
         # (1) Define objects with input and output data
         DATA = InputData(in_data, sep=sep, usecols=usecols,
             comment=comment, skiprows=skiprows, header=header)
-        PARS = BkgParams(bkg_file, xlabel, ylabel, xlim, ylim, messages)
+        PARS = BkgParams(bkg_file, 
+             xlabel=xlabel, ylabel=ylabel, xlim=xlim, ylim=ylim,
+             saveTXT=saveTXT, messages=messages)
         
         # (2) Define the method
         # (including optional {out_file} to specify 
-        BMET = RestoreFromPoints(DATA, PARS, CLI)
+        SMET = RestoreFromPoints(DATA, PARS, CLI=False)
         
         # (3) Run the method
-        BMET.run()
+        SMET.run()
         
         # (4) Return the final RestoreFromPoints object
         # (the data are auto-saved to bkg_file(s)
         # (BUT returning the object is useful to see/show/plot the data
-        return(BMET)
+        return(SMET)
     
     
-    def FitFunction():
+    def SimpleFuncs(in_data, bkg_file=None, saveTXT=True,
+            comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
+            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
+            algorithm='RollingBall', **kwargs):
         '''
-        Blah...
+        Run bground.api.RestoreFromPoints method with a single func/command.
+        
+        TODO: docs => Adri
         '''
-        pass
+        
+        # (1) Define objects with input and output data
+        DATA = InputData(in_data, sep=sep, usecols=usecols,
+            comment=comment, skiprows=skiprows, header=header)
+        PARS = BkgParams(bkg_file, 
+             xlabel=xlabel, ylabel=ylabel, xlim=xlim, ylim=ylim,
+             saveTXT=saveTXT, messages=messages)
+        
+        # (2) Define the method
+        # (including optional {out_file} to specify
+        SMET = SimpleFuncs(DATA, PARS)
+        
+        # (3) Run the method
+        SMET.run(algorithm, **kwargs)
+        
+        # (4) Return the final RestoreFromPoints object
+        # (the data are auto-saved to bkg_file(s)
+        # (BUT returning the object is useful to see/show/plot the data
+        return(SMET)
 
 
     def BaseLines():
         '''
-        Blah...
+        TODO: Jakub ... 
         '''
         pass
         
     
-    def WaveletMethod():
+    def Wavelets():
         '''
-        Blah...
+        TODO: Adri ...
         '''
         pass
     
@@ -832,23 +1014,23 @@ class Help():
         bground.help.RestoreFromPoints.how_it_works()
     
     
-    def FitFunction():
+    def SimpleFuncs():
         '''
-        Help :: FitFunction method of background subtraction
+        Help :: SimpleFuncs method(s) of background subtraction
         '''
-        bground.help.FitFunctions.how_it_works()
+        bground.help.SimpleFunc.how_it_works()
 
 
     def BaseLines():
         '''
-        Help :: BaseLines method of background subtraction
+        Help :: BaseLines method(s) of background subtraction
         '''
         bground.help.BaseLines.how_it_works()
 
 
-    def WaveletMethod():
+    def Wavelets():
         '''
-        Help :: WaveletMethod method of background subtraction
+        Help :: Wavelets method(s) of background subtraction
         '''
         bground.help.Wavelet.how_it_works()
 
