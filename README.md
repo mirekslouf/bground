@@ -56,7 +56,7 @@ Versions of BGROUND
 * Version 0.2 = improved OO-implementation + better UI (commands, saving, help)
 * Version 1.0 = finalized version 1, fully working, and completely documented
 * Version 1.1 = prepared for multiple background subtraction algorithms
-* Version 1.2 = two bkg subtraction methods: InteractivePlot, RestoreFromPoints
+* Version 1.2 = 3 bkg methods: InteractivePlot, RestoreFromPoints, SimpleFunc
 
 
 Acknowledgement

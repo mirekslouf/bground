@@ -674,7 +674,12 @@ class SimpleFuncs:
         # (we can use the existing func from bground.points sub-package
         if self.pars.saveTXT is True:
             bground.points.bfunc.save_bkg_data(self)
-
+        
+        # (4) Print a brief message if requested
+        if self.pars.messages is True:
+            print('Backgroud subtraction :: SimpleFunc/RollingBall.')
+            if self.pars.saveTXT is True:
+                print(f'Background file: {self.pars.bkg_file}')
 
 class BaseLines:
     '''
