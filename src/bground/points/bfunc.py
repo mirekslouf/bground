@@ -260,8 +260,7 @@ def save_bkg_data(iplot):
     '''
     file_header = (
         'XY-data with background subtraction\n' +
-        '4 columns: [X, Y=Iraw, Ibkg, I=(Iraw-Ibkg)]\n'+
-        f'Background correction type: {iplot.background.btype}')
+        '4 columns: [X, Y=Iraw, Ibkg, I=(Iraw-Ibkg)]')
     np.savetxt(
         iplot.pars.bkg_file, 
         np.transpose(iplot.data),

@@ -6,10 +6,9 @@ Semi-automatic background subtraction.
 * The package can subtract background in 1D-data = XY-data.
 * The XY-data are typically saved in a file containing two (or more) columns.
 
-Key modules of bground package:
-
-* bground.api = API ~ UI = user interface to run all bkg subtraction methods
-* bground.help = help and links to docs to all background subtraction methods
+Key module to run all background subtraction methods:
+    
+* bground.api = read XY-data, subtract background, and save results
 
 Complete documentation and examples are available at www:
 
@@ -17,7 +16,7 @@ Complete documentation and examples are available at www:
 * https://mirekslouf.github.io/bground/docs
 '''
 
-__version__ = '1.2.2'
+__version__ = '1.2.5'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.
