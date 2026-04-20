@@ -786,7 +786,8 @@ class BaseLines:
         self.data = bground.blines.blines.subtract_baseline(
             self.x, self.y, bline_y, self.xrange)
         
-        bground.points.bfunc.save_bkg_data(self)
+        if self.pars.saveTXT:
+            bground.points.bfunc.save_bkg_data(self)
 
     
 
