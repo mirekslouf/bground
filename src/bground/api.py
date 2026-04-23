@@ -718,7 +718,7 @@ class BaseLines:
     '''
 
     
-    def __init__(self, input_data, bkg_params, method = "peak_filling", 
+    def __init__(self, input_data, bkg_params, algorithm = "peak_filling", 
                  xrange=(30,250), **kwargs):
         '''
         Initialize BaseLines.
@@ -729,7 +729,7 @@ class BaseLines:
             InputData directly or any type supported by InputData.
         bkg_params : str or BkgParams
             BkgParams or output file as a string.
-        method : str, optional, by default "peak_filling"
+        algorithm : str, optional, by default "peak_filling"
             Algorithm from pybaselines for baseline detection.     
         xrange : tuple, optional, by default (30,250)
             A range on the x axis, where the baseline should be subtracted.
@@ -739,7 +739,7 @@ class BaseLines:
         -----
         * `kwargs` are passed to the algorithm.
 
-        * Recommended methods (and parameters in kwargs):
+        * Recommended algorithms (and parameters in kwargs):
             * `peak_filling` (with parameter `half_window=1`),
             * `snip` (with parameter `decreasing=True`),
             * `pspline_iasls` (with parameter `lam=5`), 
@@ -749,12 +749,15 @@ class BaseLines:
 
         * Please refer to 
         https://pybaselines.readthedocs.io/en/latest/api/Baseline.html
-        for more methods and their details.
+        for more algorithms and their details.
         '''
         if isinstance(input_data, InputData):
             self.data = input_data.data
+            self.diff1D = input_data.diff1D
         else:
-            self.data = InputData(input_data).data
+            input_data = InputData(input_data)
+            self.data = input_data.data
+            self.diff1D = input_data.diff1D
 
         if isinstance(bkg_params, BkgParams):
             self.pars = bkg_params
@@ -763,13 +766,13 @@ class BaseLines:
 
         self.kwargs = kwargs
         self.xrange = xrange
-        self.method = method
+        self.algorithm = algorithm
         self.x, self.y = self.data
         
         # necessary for save_bkg_data function
         self.background = bground.points.bdata.XYbackground(
             self.pars.bkg_file,
-            btype="pybaselines " + method
+            btype="pybaselines " + algorithm
         )
 
         self.plots = Plots(self)
@@ -780,11 +783,15 @@ class BaseLines:
         '''
 
         bline_x, bline_y = bground.blines.blines.calculate_baseline(
-            self.x, self.y, self.method, self.xrange, **self.kwargs)
+            self.x, self.y, self.algorithm, self.xrange, **self.kwargs)
         
         self.background.curve.X, self.background.curve.Y = bline_x, bline_y
         self.data = bground.blines.blines.subtract_baseline(
             self.x, self.y, bline_y, self.xrange)
+        
+        if self.diff1D is not None:
+            self.diff1D['Ibkg'] = self.data[2]
+            self.diff1D['I']    = self.data[3]
         
         if self.pars.saveTXT:
             bground.points.bfunc.save_bkg_data(self)
@@ -1010,13 +1017,88 @@ class Run:
         return(SMET)
 
 
-    def BaseLines(
-            in_file, out_file, method="peak_filling", 
-            xrange=(30,250), **kwargs):
+    def BaseLines(in_data, bkg_file=None, saveTXT=True,
+            comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
+            xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
+            algorithm="peak_filling", xrange=(30,250), **kwargs):
         '''
         Run bground.api.BaseLines method with a single function/command.
+
+        Parameters
+        ----------
+        in_data : filename or np.ndarray or pd.DataFrame or ELD profile
+            Input XYdata, containing 2 columns:
+            `[X, Y = Iraw = raw intensity]`.
+        bkg_file : filename
+            Name of the file with background points.
+            According to bground package convention,
+            the filename should be `something.txt` or `something.txt.bp`.
+            TXT-files contain the XY-data
+            and TXT.BP-files contain background points.
+            If {bkg_file} is a TXT file, the extension is converted to TXT.BP.
+        saveTXT : bool, optional, default is True
+            If True (default), save results in both TXT-file and self.diff1D.
+            It can be switched to False in certain automated processing paths.            
+        comment, skiprows, header, sep, usecols: params for pd.read_csv func
+            Parameters that are passed to pd.read_csv function
+            if the {in_data} is an XYfile with two columns.
+            See bground.api.InputData docs for more details.
+         xlabel, ylabel, xlim, ylim, messages, CLI: params for plotting
+            Parameters that are used when plotting the XYdata
+            in the form of matplotlib interactive graph.
+            See bground.api.BkgParams docs for more details.
+        algorithm : str, optional, by default "peak_filling"
+            Algorithm from pybaselines for baseline detection.        
+        xrange : tuple, optional, by default (30,250)
+            A range on the x axis, where the baseline should be subtracted..
+            The range is inclusive.
+
+        Returns
+        -------
+        bground.api.BaseLines
+            The object is used to run the BaseLines method,
+            but it also saves and plots the original and bkg-corrected data.
+
+        Notes
+        -----
+        * `kwargs` are passed to the algorithm.
+
+        * Recommended algorithms (and parameters in kwargs):
+            * `peak_filling` (with parameter `half_window=1`),
+            * `snip` (with parameter `decreasing=True`),
+            * `pspline_iasls` (with parameter `lam=5`), 
+            * `irsqr` (with parameter `lam=1000`),
+            * `rubberband` (with parameter `lam=2`)
+        
+
+        * Please refer to 
+        https://pybaselines.readthedocs.io/en/latest/api/Baseline.html
+        for more algorithms and their details.
+
+        Example
+        -------
+        
+        >>> # Standard import
+        >>> # (alternative: import ediff as ed => bkg is available as ed.bkg
+        >>> import bground.api as bkg
+        >>> 
+        >>> # Define I/O files
+        >>> IN  = r'orig_data.txt'
+        >>> BKG = r'bkg-corrected_data.txt'
+        >>> 
+        >>> # Run BaseLines using a single command
+        >>> BMET = bkg.Run.BaseLines(IN, BKG,
+        >>>         xlabel='Pix', ylabel='Intensity',xlim=[0,200],ylim=180
+        >>>         method="snip", decreasing=True)
         '''
-        BMET = BaseLines(in_file, out_file, method, xrange, **kwargs)
+
+        DATA = InputData(in_data, sep=sep, usecols=usecols,
+            comment=comment, skiprows=skiprows, header=header)
+        PARS = BkgParams(bkg_file, 
+             xlabel=xlabel, ylabel=ylabel, xlim=xlim, ylim=ylim,
+             saveTXT=saveTXT, messages=messages)
+
+        BMET = BaseLines(DATA, PARS, algorithm, xrange, **kwargs)
         BMET.run()
 
         return BMET
