@@ -51,9 +51,9 @@ def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray,
         Y axis of the data.
     baseline : np.ndarray
         Baseline to be subtracted.
-    xrange : tuple[int, int]
+    xrange : tuple[int, int] or None
         A range on the x axis, where the baseline is defined.
-        The range is inclusive.
+        The range is inclusive. If None, the whole range is used.
 
     Returns
     -------
@@ -61,8 +61,10 @@ def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray,
         Array with 4 rows `[X, Iraw, Ibkg, I = Iraw - Ibkg]`.
     '''
 
-
-    start, end = xrange
+    if xrange == None:
+        start, end = x.min(), x.max()
+    else:
+        start, end = xrange
 
     bground_mask = (x >= start) & (x <= end)
     baseline_full = np.zeros_like(y)
@@ -75,7 +77,7 @@ def subtract_baseline(x: np.ndarray, y: np.ndarray, baseline: np.ndarray,
         np.where(bground_mask, y - baseline_full, 0)
     ))
 
-def calculate_baseline(x, y, algorithm = "peak_filling", xrange=(30,250), **kwargs):
+def calculate_baseline(x, y, algorithm="peak_filling", xrange=None, **kwargs):
     '''
     Calculate the baseline with algorithms from pybaselines.
 
@@ -90,9 +92,9 @@ def calculate_baseline(x, y, algorithm = "peak_filling", xrange=(30,250), **kwar
         Y axis of the data.
     algorithm : str, optional, by default "peak_filling"
         Algorithm from pybaselines for baseline detection.        
-    xrange : tuple, optional, by default (30,250)
-        A range on the x axis, where the baseline should be subtracted..
-        The range is inclusive.
+    xrange : tuple with two floats, optional, by default None
+            A range on the x axis, where the baseline should be subtracted.
+            The range is inclusive. If None, the whole range is used.
 
     Returns
     -------
@@ -115,11 +117,12 @@ def calculate_baseline(x, y, algorithm = "peak_filling", xrange=(30,250), **kwar
     https://pybaselines.readthedocs.io/en/latest/api/Baseline.html
     for more algorithms and their details.
     '''
-    
-    x_xrange, y_xrange = select_xrange(x, y, xrange)
-    baseline_fitter = Baseline(x_data=x_xrange)
+    if xrange != None:
+        x, y = select_xrange(x, y, xrange)
+
+    baseline_fitter = Baseline(x_data=x)
 
     fn = getattr(baseline_fitter, algorithm)
-    baseline, _ = fn(y_xrange, **kwargs)
+    baseline, _ = fn(y, **kwargs)
 
-    return x_xrange, baseline
+    return x, baseline
