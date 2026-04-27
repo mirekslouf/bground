@@ -15,7 +15,6 @@ Define background by means of estimated/fitted baseline.
 >>> OUT_FILE = 'ed2_bkg.txt'  # output file, 4cols: X, Yraw, Ybkg, Y=Yraw-Ybkg
 >>>
 >>> # (2) Call the method, subtract background, and save results in OUT_FILE.
->>> BMET = bkg.BaseLines(
->>>     IN_FILE, OUT_FILE, method='method', xrange=(30,250), **kwargs)
->>> BMET.run()
+>>> BMET = bkg.BaseLines(IN_FILE, pars)
+>>> BMET.run(algorithm='peak_filling', xrange=(30,250))
 '''
