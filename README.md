@@ -57,6 +57,7 @@ Versions of BGROUND
 * Version 1.0 = finalized version 1, fully working, and completely documented
 * Version 1.1 = prepared for multiple background subtraction algorithms
 * Version 1.2 = 3 bkg methods: InteractivePlot, RestoreFromPoints, SimpleFunc
+* Version 1.3 = 4 bkg methods (added: Baselines method with PyBaseLines algs)
 
 
 Acknowledgement
