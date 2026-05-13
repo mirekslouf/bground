@@ -21,14 +21,14 @@ More details to all individual background subtraction methods:
 * bground.api.RestoreFromPoints
   = special case of the previous, restore bkg from saved bkg points  
 * bground.api.SimpleFuncs
-  = automatic methods, fit bkg with a simple funcs, TODO - Edvard (+ Adri)
+  = automatic methods, fit bkg with a simple funcs, TODO - Edvard
 * bground.api.BaseLines
   = automatic method, fit bkg with PyBaseLines funcs
-* bground.api.WaveletMethod
+* bground.api.Wavelets
   = automatic method, fit bkg with wavelet-based funcs, TODO - Adriana
 '''
 
-
+# BGROUND sub-backages
 # {points} sub-package
 import bground.points.bdata 
 import bground.points.bfunc
@@ -46,7 +46,7 @@ from pathlib import Path
 import matplotlib
 import matplotlib.pyplot as plt
 
-# Inteligent dedent (in Help class)
+# Inteligent dedent (used in Help class)
 import re
 
 
