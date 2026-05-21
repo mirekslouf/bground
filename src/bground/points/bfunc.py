@@ -158,8 +158,10 @@ def calculate_baseline(iplot):
         * iplot.background.curve.X = X-coordinates of the whole bkg curve
         * iplot.background.curve.Y = X-coordinates of the whole bkg curve
     '''
+    
     # (1) Prepare background points = X,Y coordinates for interpolation
     X,Y = (iplot.background.points.X, iplot.background.points.Y)
+    
     # (2) Interpolate background points = calculcate background curve
     try:
         # Interpolation = calculation of interpolation function F.
@@ -213,10 +215,12 @@ def calculate_bkg_data(iplot):
     * Where X = X-coordinate
       and Iraw, Ibkg a I = raw, background and net/final/corrected intensity.
     '''
+    
     # (0) Recalculate baseline
     # (in most cases, baseline is calculated when we call this function
     # (BUT calculation might be omitted or have just read the background points
     calculate_baseline(iplot)
+    
     # (1) Modify the data variable if needed.
     number_of_rows = iplot.data.shape[0]
     # If number_of_rows == 2 then add two new rows.
@@ -228,18 +232,22 @@ def calculate_bkg_data(iplot):
     # => func is called for 2nd, 3rd ... time and data already have 4 rows
     else:
         data[2],data[3] = data[1],data[1]   
+    
     # (2) Get Xmin and Xmax of background/baseline curve.
     Xmin = iplot.background.points.X[0]
     Xmax = iplot.background.points.X[-1]
+    
     # (3) Set range in which the background/baseline is defined.
     # (in this package, we define background only inside the selected range
     bkg_range = (Xmin<=data[0]) & (data[0]<=Xmax)
+    
     # (4) Define 2nd data row = Ibkg = baseline.
     # (the baseline will contain zeros outside bkg_range
     # (a) Zero intensities outside bkg_range.
     data[2] = np.where(bkg_range,data[2],0)
     # (b) Baseline intentities inside bkg_range
     data[2,bkg_range] = iplot.background.curve.Y
+    
     # (5) Define 3rd data row  = I = Iraw - Ibkg = net intensity.
     # (the net intensity will contain zeros outsice bkg_range
     # (a) Zero intensities outside bkg_range.
@@ -248,8 +256,9 @@ def calculate_bkg_data(iplot):
     data[3,bkg_range] = data[3,bkg_range] - iplot.background.curve.Y
     # (c) Set possible negative intensities after bkgr subtraction to zero
     data[3,data[3]<0] = 0
-    # (b) Return modified data array
-    # (the two rows of the modified array contain baseline and net intensity
+    
+    # (6) Return modified data array
+    # (two added rows of the modified array contain baseline and net intensity
     iplot.data = data
     return(iplot.data)
 

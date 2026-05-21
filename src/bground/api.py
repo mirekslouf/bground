@@ -404,7 +404,8 @@ class InteractivePlot:
         '''
 
         # (0) Clear background points from possible previous runs.
-        # * Issue in Jupyter, when re-running the cell with this command
+        # * Problem in Jupyter, when re-running the cell with this command
+        # * Applears also in Spyder, when calling the the method more times
         self.background.points.X = []
         self.background.points.Y = []
         
@@ -510,23 +511,29 @@ class RestoreFromPoints(InteractivePlot):
         * No params; everything defined during InteractivePlot initialization.
         '''
 
-        # (0) Read background points
+        # (0) Clear background points from possible previous runs.
+        # * Problem in Jupyter, when re-running the cell with this command
+        # * Applears also in Spyder, when calling the the method more times
+        self.background.points.X = []
+        self.background.points.Y = []
+
+        # (1) Read background points
         # (self.background comes from initialization
         # (it contains the name of the file with bkg points
         # (this filename is in PARS and saved in self.background.bname
         self.background = bground.points.bfunc.load_bkg_points(self)
         
-        # (1) Calculate background-corrected data AND save them to self.data
+        # (2) Calculate background-corrected data AND save them to self.data
         # (self.data = the RestoreFromPoints object ALWAYS contains the output
         self.data = bground.points.bfunc.calculate_bkg_data(self)
         
-        # (2) Save the calculated data ALSO in self.diff1D => if it was defined
+        # (3) Save the calculated data ALSO in self.diff1D => if it was defined
         # (self.diff1D IF ediff.io.Diffractogram1D used for the initialization 
         if self.diff1D is not None:
             self.diff1D['Ibkg'] = self.data[2]
             self.diff1D['I']    = self.data[3]
 
-        # (3) Save the calculated data ALSO to out_file => if it was defined
+        # (4) Save the calculated data ALSO to out_file => if it was defined
         # (save data to file IF {saveTXT} is True
         if self.pars.saveTXT is True:
             bground.points.bfunc.save_bkg_data(self)

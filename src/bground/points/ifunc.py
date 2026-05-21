@@ -50,8 +50,15 @@ def interactive_plot(iplot):
     '''
     
     # (0) Initialize
-    plt.close('all')  # Close all previous plots - to avoid mess in Jupyter
-    initialize_interactive_plot_parameters()
+    # -----
+    # (a) close all previous plots - to avoid mess in Jupyter
+    plt.close('all')  
+    # (b) store original plot params and initialize interactive plot params
+    # (original_plot_params are restored when the plot is closed => on_close
+    # (the on_close event/function is defined below
+    original_plot_params = plt.rcParams.copy()
+    initialize_interactive_plot_params()
+    # (c) print introductory help message to stdout
     print_brief_help(iplot)
     
     # (1) Prepare the plot: fig,ax including window title
@@ -86,7 +93,7 @@ def interactive_plot(iplot):
     
     # (3b) Connect plot with close_event (= when the window is closed)
     fig.canvas.mpl_connect('close_event',
-        lambda event: on_close(event))
+        lambda event: on_close(event, original_plot_params))
     
     # (4) Optimize the plot layout
     plt.tight_layout()
@@ -136,22 +143,27 @@ def on_keypress(event, fig, ax, iplot):
             elif key == 'b': save_bkg_points(iplot)
             elif key == 's': save_PNG_image(iplot) 
             elif key == 't': subtract_bkg_and_save(iplot)
-            elif key == 'u': subtract_bkg_and_udate(iplot)
             elif iplot.pars.messages: print()  # any other key => empty line
         except Exception as err:
             print()  # allways start error message in a new line  
             raise Exception(err)
 
 
-def on_close(event):
+def on_close(event, original_plot_params):
     '''
     Definition of on_close event of the plot.
     
     * The simple callback function, which runs
       when the interactive plot window is closed.
-    * The function prints concluding remarks
-      and information about the output files.
+    * The function
+      restores the original plot parameters
+      and prints concluding remarks on stdout.
     '''
+    
+    # (1) Restore original plot parameters
+    plt.rcParams.update(original_plot_params)
+    
+    # (2) Print "close" message on stdout
     print()
     print('The interactive plot was closed.')
     print('If you followed the documentation and instructions,')
@@ -262,7 +274,7 @@ def load_bkg_points(ax, iplot):
     # (the filename is fixed to {bname}.bp
     # (the {bname} is stored in {bkg_object} = here {bkgr} argument
     # (reason: to insert a name during an interactive plot session is a hassle
-    input_filename = iplot.background.bname + '.bkg'
+    input_filename = iplot.background.bname + '.bp'
     # b) read input file to DataFrame
     bfunc.load_bkg_points(iplot)
     # c) print message if requested
@@ -360,24 +372,20 @@ def save_PNG_image(iplot):
     * At second, this function prints a message on stdout (if requested).
     '''
     
-    # 0) If 's' was pressed the current plot is saved automatically.
+    # (1) If 's' was pressed the current plot is saved automatically.
     # (Note: default Matplotlib UI shortcut
     
-    # 1) We define the output filename.
-    # (Note: this is only RECOMMENDED filename - user can select anything...
-    output_filename = iplot.pars.bkg_file + '.png'
-    
-    # 2) We print the message that the plot was saved
+    # (2) We just print the message that the plot was saved
     # (Note: we add the info about the recommended filename
     if iplot.pars.messages:
-        print(f'plot saved to a PNG file.')
+        print('plot saved to a PNG file.')
 
 
 # =============================================================================
 # Level 4: Auxiliary functions for the interactive plot
 
 
-def initialize_interactive_plot_parameters():
+def initialize_interactive_plot_params():
     '''
     Initialize parameters of the interactive plot.
     '''
@@ -386,7 +394,7 @@ def initialize_interactive_plot_parameters():
         'figure.dpi' : 100,
         'font.size' : 12,
         'lines.linewidth' : 1.0})
-
+        
 
 def print_brief_help(iplot):
     '''
