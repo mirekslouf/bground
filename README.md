@@ -29,21 +29,24 @@ Installation
 Quick start
 -----------
 
-* Look at the
-  [worked example](https://drive.google.com/file/d/15kHdMp8PUv8rna-qFwVENhjYGRXsxmHE/view?usp=sharing)
-  to see how BGROUND works.
+* [Worked example](https://drive.google.com/file/d/15kHdMp8PUv8rna-qFwVENhjYGRXsxmHE/view?usp=sharing)
+  shows the BGROUND package in action.
+* [Help on GitHub](https://mirekslouf.github.io/bground/docs/)
+  with complete
+  [package documentation](https://mirekslouf.github.io/bground/docs/pdoc.html/bground.html)
+  and
+  [additional examples](https://drive.google.com/drive/folders/1ET-rEUn-G8W1QffAnDhHEJdmJaBPNITp?usp=sharing).
 
 
-Documentation, help and examples
---------------------------------
+Additional resources
+--------------------
 
 * [PyPI](https://pypi.org/project/bground) repository -
   the stable version to install.
 * [GitHub](https://github.com/mirekslouf/bground) repository - 
   the current version under development.
-* [GitHub Pages](https://mirekslouf.github.io/bground/)
-  with [help](https://mirekslouf.github.io/bground/docs)
-  and [complete package documentation](https://mirekslouf.github.io/bground/docs/pdoc.html/bground.html).
+* [GitHub Pages](https://mirekslouf.github.io/bground/) -
+  the more user-friendly version of GitHub website.
 
 
 Versions of BGROUND
