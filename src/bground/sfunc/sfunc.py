@@ -93,3 +93,66 @@ def rolling_ball(bsObj, **kwargs):
     
     # (7) Save the complete data to sbObj
     bsObj.data = data
+
+
+def top_hat(bsObj, **kwargs):
+    '''
+    Subtract background from an array using *top-hat* morphological filter.
+
+    Parameters
+    ----------
+    bsObj : bground.api.SimpleFunction object
+        The object for bckground subtraction.
+        It contains all necessary parameters for background subtraction.
+        Namely, bsObj.data contains XYdata = array with [X, Y=Intensity].
+    radius : int, optional, default is 20
+        Radius of the top-hat filter.
+
+    Returns
+    -------
+    None 
+        The background is subtracted and stored
+        in bsObj.data and bsObj.background.
+    '''
+
+    # (0) Get parameters
+    xrange = kwargs.get('xrange') or None
+    radius = kwargs.get('radius') or 70
+    
+    # (1) Prepare variables for calculation
+    if xrange is not None:
+        xmin, xmax = xrange
+    else:
+        xmin, xmax = bsObj.pars.xlim
+
+    data = bsObj.data
+
+    # (2) Prepare XY-data for bkg calculation
+    bkg_range = (xmin <= data[0]) & (data[0] <= xmax)
+    Xbkg = data[0, bkg_range]
+    Ybkg = data[1, bkg_range]
+
+    # (3) Calculate background
+    footprint = np.ones(radius)
+    Ybkg = ski.morphology.white_tophat(Ybkg, footprint=footprint)
+
+    # (4) Save the calculated background => update bsObj.background.curve
+    bsObj.background.curve.X = Xbkg
+    bsObj.background.curve.Y = Ybkg
+
+    # (5) Prepare the data => we need array with 4 rows
+    number_of_rows = data.shape[0]
+    if number_of_rows == 2:
+        data = np.vstack(
+            [data, np.zeros((2, data.shape[1]), dtype=data.dtype)]
+        )
+    else:
+        data[2] = 0
+        data[3] = 0
+
+    # (6) Subtract background
+    data[2, bkg_range] = bsObj.background.curve.Y
+    data[3] = np.where(bkg_range, data[1]-data[2], 0)
+
+    # (7) Save the complete data to sbObj
+    bsObj.data = data
