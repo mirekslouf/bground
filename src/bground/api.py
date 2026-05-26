@@ -664,6 +664,10 @@ class SimpleFuncs:
         # (the results are ALWAYS auto-saved in self.background and self.data
         if algorithm == 'RollingBall':
             bground.sfunc.sfunc.rolling_ball(self, **kwargs)
+        
+        elif algorithm == 'top_hat':
+            bground.sfunc.sfunc.top_hat(self, **kwargs)
+        
         else:
             raise ValueError('Uknown background subtraction method!')
         
@@ -672,7 +676,7 @@ class SimpleFuncs:
         if self.diff1D is not None:
             self.diff1D['Ibkg'] = self.data[2]
             self.diff1D['I']    = self.data[3]
-
+        
         # (3) Save the calculated data ALSO to out_file => if it was defined
         # (save data to file IF {saveTXT} is True
         # (we can use the existing func from bground.points sub-package
