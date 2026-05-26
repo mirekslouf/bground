@@ -665,7 +665,7 @@ class SimpleFuncs:
         if algorithm == 'RollingBall':
             bground.sfunc.sfunc.rolling_ball(self, **kwargs)
         
-        elif algorithm == 'top_hat':
+        elif algorithm == 'TopHat':
             bground.sfunc.sfunc.top_hat(self, **kwargs)
         
         else:
