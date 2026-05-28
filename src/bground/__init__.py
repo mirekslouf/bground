@@ -16,7 +16,7 @@ Complete documentation and examples are available at www:
 * https://mirekslouf.github.io/bground/docs
 '''
 
-__version__ = '1.3.3'
+__version__ = '1.3.4'
 
 
 # Obligatory acknowledgement -- the development was co-funded by TACR.

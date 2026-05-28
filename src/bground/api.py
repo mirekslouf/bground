@@ -664,6 +664,8 @@ class SimpleFuncs:
         # (the results are ALWAYS auto-saved in self.background and self.data
         if algorithm == 'RollingBall':
             bground.sfunc.sfunc.rolling_ball(self, **kwargs)
+        elif algorithm == 'TopHat':
+            bground.sfunc.sfunc.top_hat(self, **kwargs)
         else:
             raise ValueError('Uknown background subtraction method!')
         
