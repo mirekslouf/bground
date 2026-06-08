@@ -19,7 +19,7 @@ import numpy as np
 import skimage as ski
 
 
-def rolling_ball(bsObj, **kwargs):
+def rolling_ball(bsObj, xrange=None, **kwargs):
     '''
     Subtract background from an array using *rolling ball* algorithm.
 
@@ -40,7 +40,6 @@ def rolling_ball(bsObj, **kwargs):
     '''
     
     # (0) Get parameters
-    xrange = kwargs.get('xrange') or None
     radius = kwargs.get('radius') or 70
     
     # (1) Prepare variables for calculation
@@ -94,7 +93,7 @@ def rolling_ball(bsObj, **kwargs):
     bsObj.data = data
 
 
-def top_hat(bsObj, **kwargs):
+def top_hat(bsObj, xrange=None, **kwargs):
     '''
     Subtract background from an array using *top-hat* morphological filter.
 
@@ -115,7 +114,6 @@ def top_hat(bsObj, **kwargs):
     '''
 
     # (0) Get parameters
-    xrange = kwargs.get('xrange') or None
     radius = kwargs.get('radius') or 70
     
     # (1) Prepare variables for calculation
@@ -123,20 +121,28 @@ def top_hat(bsObj, **kwargs):
         xmin, xmax = xrange
     else:
         xmin, xmax = bsObj.pars.xlim
-
+    # (data = just convenience to have a shorter name
     data = bsObj.data
 
     # (2) Prepare XY-data for bkg calculation
     bkg_range = (xmin <= data[0]) & (data[0] <= xmax)
-    Xbkg = data[0, bkg_range]
+    # TopHat algorithm does not return bkg-intensity, but net-intensity
+    # (therefore, we prepare Yraw, Ybkg, Ynet and calculate Ybkg = Yraw-Ynet
+    Xraw = data[0, bkg_range]
+    Yraw = data[1, bkg_range]
     Ybkg = data[1, bkg_range]
+    Ynet = data[1, bkg_range]
 
-    # (3) Calculate background
+    # (3) Calculate net intensity and background
+    # (a) footprint ~ radius in RollingBall algorithm
     footprint = np.ones(radius)
-    Ybkg = ski.morphology.white_tophat(Ybkg, footprint=footprint)
+    # (b) net intensity using white_tophat with footprint
+    Ynet = ski.morphology.white_tophat(Ynet, footprint=footprint)
+    # (c) bkg-intensity, which is employed in the following calculations
+    Ybkg = Yraw - Ynet
 
     # (4) Save the calculated background => update bsObj.background.curve
-    bsObj.background.curve.X = Xbkg
+    bsObj.background.curve.X = Xraw
     bsObj.background.curve.Y = Ybkg
 
     # (5) Prepare the data => we need array with 4 rows
@@ -149,8 +155,8 @@ def top_hat(bsObj, **kwargs):
         data[3] = 0
 
     # (6) Subtract background
-    data[2, bkg_range] = bsObj.background.curve.Y
-    data[3] = np.where(bkg_range, data[1]-data[2], 0)
+    data[2, bkg_range] = Ybkg
+    data[3, bkg_range] = Ynet
 
     # (7) Save the complete data to sbObj
     bsObj.data = data

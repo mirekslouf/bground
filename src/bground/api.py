@@ -289,9 +289,9 @@ class BkgParams:
         self.xlabel = xlabel            # x-axis label of the interactive plot
         self.ylabel = ylabel            # y-axis label of the interactive plot
         # (x,y-limits
-        if isinstance(xlim,list): self.xlim = xlim  # xlim = [xmin,xmax]
+        if isinstance(xlim,(list,tuple)): self.xlim = xlim  # xlim = [xmin,xmax]
         else: self.xlim = [0,xlim]                  # ...or just xmax
-        if isinstance(ylim,list): self.ylim = ylim  # ylim = [ymin,ymax]
+        if isinstance(ylim,(list,tuple)): self.ylim = ylim  # ylim = [ymin,ymax]
         else: self.ylim = [0,ylim]                  # ...or just ymax
         
         # (3) Additional parameters
@@ -621,7 +621,7 @@ class SimpleFuncs:
         self.plots = Plots(self)
         
 
-    def run(self, algorithm='RollingBall', **kwargs):
+    def run(self, algorithm='RollingBall', xrange=None, **kwargs):
         '''
         Run specific background subtraction {method} from {SimpleFunc} class.
         
@@ -663,9 +663,9 @@ class SimpleFuncs:
         # (1) Run the selected bkg subtraction method
         # (the results are ALWAYS auto-saved in self.background and self.data
         if algorithm == 'RollingBall':
-            bground.sfunc.sfunc.rolling_ball(self, **kwargs)
+            bground.sfunc.sfunc.rolling_ball(self, xrange, **kwargs)
         elif algorithm == 'TopHat':
-            bground.sfunc.sfunc.top_hat(self, **kwargs)
+            bground.sfunc.sfunc.top_hat(self, xrange, **kwargs)
         else:
             raise ValueError('Uknown background subtraction method!')
         
@@ -687,7 +687,7 @@ class SimpleFuncs:
             if self.pars.saveTXT is True:
                 print(f'Background file: {self.pars.bkg_file}')
 
-class BaseLines:
+class Baselines:
     '''
     BaseLines method of backround subtraction.
 
@@ -1006,11 +1006,11 @@ class Run:
     def SimpleFuncs(in_data, bkg_file=None, saveTXT=True,
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
             xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
-            algorithm='RollingBall', **kwargs):
+            algorithm='RollingBall', xrange=None, **kwargs):
         '''
-        Run bground.api.RestoreFromPoints method with a single func/command.
+        Run bground.api.SimpleFuncs method with a single func/command.
         
-        TODO: docs => Adri
+        TODO: docs + correction of TopHat, Mirek
         '''
         
         # (1) Define objects with input and output data
@@ -1021,11 +1021,10 @@ class Run:
              saveTXT=saveTXT, messages=messages)
         
         # (2) Define the method
-        # (including optional {out_file} to specify
         SMET = SimpleFuncs(DATA, PARS)
         
         # (3) Run the method
-        SMET.run(algorithm, **kwargs)
+        SMET.run(algorithm, xrange, **kwargs)
         
         # (4) Return the final RestoreFromPoints object
         # (the data are auto-saved to bkg_file(s)
@@ -1033,12 +1032,12 @@ class Run:
         return(SMET)
 
 
-    def BaseLines(in_data, bkg_file=None, saveTXT=True,
+    def Baselines(in_data, bkg_file=None, saveTXT=True,
             comment='#', skiprows=0, header='infer', sep=r'\s+', usecols=[0,1], 
             xlabel=None, ylabel=None, xlim=None, ylim=None, messages=False,
             algorithm="peak_filling", xrange=None, **kwargs):
         '''
-        Run bground.api.BaseLines method with a single function/command.
+        Run bground.api.Baselines method with a single function/command.
 
         Parameters
         ----------
@@ -1071,8 +1070,8 @@ class Run:
 
         Returns
         -------
-        bground.api.BaseLines
-            The object is used to run the BaseLines method,
+        bground.api.Baselines
+            The object is used to run the Baselines method,
             but it also saves and plots the original and bkg-corrected data.
 
         Notes
@@ -1102,7 +1101,7 @@ class Run:
         >>> IN  = r'orig_data.txt'
         >>> BKG = r'bkg-corrected_data.txt'
         >>> 
-        >>> # Run BaseLines using a single command
+        >>> # Run Baselines using a single command
         >>> BMET = bkg.Run.BaseLines(IN, BKG,
         >>>         xlabel='Pix', ylabel='Intensity',xlim=[0,200],ylim=180,
         >>>         algorithm="snip", xrange=(20, 200), decreasing=True)
@@ -1114,7 +1113,7 @@ class Run:
              xlabel=xlabel, ylabel=ylabel, xlim=xlim, ylim=ylim,
              saveTXT=saveTXT, messages=messages)
 
-        BMET = BaseLines(DATA, PARS)
+        BMET = Baselines(DATA, PARS)
         BMET.run(algorithm, xrange, **kwargs)
 
         return BMET
@@ -1486,8 +1485,44 @@ class Plots:
         if my_rcParams:  # Other possible rcParams in the form of dictionary
             plt.rcParams.update(my_rcParams)
 
+    def get_axis_limits(self, my_limits, axis='x'):
+        '''
+        Get plotting limits = xlim or ylim.
+        
+        * Auxilliary function for plotting.
+        * If None, use xlim from parent object = bkg-subtraction method.
+        * If list/tuple, use it (assumption: it is something like [50,450]).
+        * If float/int (for example 450), convert it to [0,450] and return.
 
-    def plot_original(self, title='Raw data before processing', grid=True):
+        Parameters
+        ----------
+        my_limits : None or list/tuple or float/int.
+            my_limits is xlim or ylim parameter from calling function.
+        axis : str, optional, default is 'x'
+            The axis, for which we would like to determine the limits.
+            
+        Returns
+        -------
+        my_limits
+            Range for plotting, input for plt.xlim or plt.ylim.
+        '''
+        
+        if my_limits is None:
+            # Plotting ;imits not defined => use the value from parent object.
+            # (None from the parent object is acceptable as well
+            if   axis == 'x': return(self._parent.pars.xlim)
+            elif axis == 'y': return(self._parent.pars.ylim)
+            else: raise(ValueError, "The axis parameter must be 'x' or 'y'!")
+        elif isinstance(my_limits, (list, tuple)):
+            # Plotting limits are given as list/tuple => Ok, use it.
+            return( my_limits)
+        elif isinstance(my_limits, (int,float)):
+            # Plotting limits are given as float/int => return [0,my_limits].
+            return( [0,my_limits] )
+        
+    
+    def plot_original(self, title='Raw data before processing', 
+                      xlim=None, ylim=None, grid=True):
         '''
         Plot raw XY-data BEFORE any processing.
         
@@ -1504,28 +1539,37 @@ class Plots:
         None
             The result is the plot shown on the screen.
         '''        
+        
+        # (0) Initialize, prepare parametes for plotting
         # Close all previous plots.
         # (necessary to avoid confusions about current plot in Jupyter
         plt.close('all')
         # Get XY-data
         X,Y = self._parent.data[0:2]
-        # PLot XY-data
+        
+        # (1) PLot XY-data
         plt.plot(X,Y, 'b-')
         if title is not None: plt.title(title)
-        # ...add xy-labels and limits
+        
+        # (2) Finalize the plot
+        # ...add xy-labels
         plt.xlabel(self._parent.pars.xlabel)
         plt.ylabel(self._parent.pars.ylabel)
-        plt.xlim(self._parent.pars.xlim)
-        plt.ylim (self._parent.pars.ylim)
+        # ...add xy-limits
+        my_xlim = self.get_axis_limits(xlim, axis='x')
+        my_ylim = self.get_axis_limits(ylim, axis='y')
+        plt.xlim(my_xlim)
+        plt.ylim(my_ylim)
         # ...add grid
         if grid is not None: plt.grid()
-        # Show the final plot
+        
+        # (3) Show the finalized plot
         plt.tight_layout()
         plt.show()
 
     
-    def plot_with_bkg(       
-            self, title='Data with background definition', grid=True):
+    def plot_with_bkg(self, title='Data with background definition', 
+                      xlim=None, ylim=None, grid=True):
         '''
         Plot XY-data and background AFTER the interactive plot is closed.
 
@@ -1572,11 +1616,14 @@ class Plots:
         # (2) Finalize the plot
         # ...add title
         if title is not None: plt.title(title)
-        # ...add xy-labels and limits
+        # ...add xy-labels
         plt.xlabel(self._parent.pars.xlabel)
         plt.ylabel(self._parent.pars.ylabel)
-        plt.xlim(self._parent.pars.xlim)
-        plt.ylim (self._parent.pars.ylim)
+        # ...add xy-limits
+        my_xlim = self.get_axis_limits(xlim, axis='x')
+        my_ylim = self.get_axis_limits(ylim, axis='y')
+        plt.xlim(my_xlim)
+        plt.ylim(my_ylim)
         # ...add grid
         if grid is not None: plt.grid()
         
@@ -1585,9 +1632,8 @@ class Plots:
         plt.show()
 
     
-    def plot_without_bkg(
-            self, title='Data after background subtraction', 
-            xlim=None, ylim=None, grid=True):
+    def plot_without_bkg(self, title='Data after background subtraction', 
+                         xlim=None, ylim=None, grid=True):
         '''
         Show background-corrected XY-data AFTER the interactive plot is closed.
 
@@ -1613,10 +1659,10 @@ class Plots:
             The result is the plot shown on the screen.
         '''
         
+        # (0) Initialize, prepare parameters for plotting 
         # Close all previous plots.
         # (necessary to avoid confusions about current plot in Jupyter
         plt.close('all')
-        
         # Re-subtract background from points => if the points exist!
         # (just to be sure, it is quite fast
         # (only for methods that use background.points
@@ -1624,27 +1670,29 @@ class Plots:
             # If there are background points defined, recalculate.
             # (not necessary to save result => auto-saved in self._parent.data
             bground.points.bfunc.calculate_bkg_data(self._parent)
-        
         # Define X,Y (X-coordinate, Intensity after bkg subtraction)
         # (the data have been recalculated above
         # (OR they should be present from automated bkg subtraction methods
         X,Y = self._parent.data[0], self._parent.data[3]
         
-        # Plot background-corrected XY-data
+        # (1) Plot background-corrected XY-data
         plt.plot(X,Y, 'b-')
         # ...add title
         if title is not None:
             plt.title(title)
+        
+        # (2) Finalize the plot
         # ...add xy-labels
         plt.xlabel(self._parent.pars.xlabel)
         plt.ylabel(self._parent.pars.ylabel)
         # ...add xy-limits
-        if xlim is None: xlim = self._parent.pars.xlim
-        if ylim is None: ylim = self._parent.pars.ylim
-        plt.xlim(xlim)
-        plt.ylim(ylim)
+        my_xlim = self.get_axis_limits(xlim, axis='x')
+        my_ylim = self.get_axis_limits(ylim, axis='y')
+        plt.xlim(my_xlim)
+        plt.ylim(my_ylim)
         # ...add grid
         if grid is True: plt.grid()
-        # Show the final plot
+        
+        # (3) Show the finalized plot
         plt.tight_layout()
         plt.show()
